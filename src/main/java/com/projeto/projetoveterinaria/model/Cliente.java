@@ -1,4 +1,4 @@
-package com.projeto.projetoveterinaria;
+package com.projeto.projetoveterinaria.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class Cliente {
 
+    private final int id;
     private String nome;
     private String endereco;
     private String telefone;
     private String cep;
     private String email;
     
-    private List<Animal> animais;
+    private final List<Animal> animais;
 
-    private int id;
     /**
      *
      * @param id
@@ -66,15 +66,16 @@ public class Cliente {
         this.animais.add(novoAnimal);
     }
     
+    
+    
     public List<Animal> obterAnimais() {
-        return this.animais;
+        return new ArrayList<>(this.animais);
     }
 
     @Override
     public String toString() {
         return "Cliente{" + " id=" + id + ", nome=" + nome + ", endereco=" + endereco + ", telefone=" + telefone + ", cep=" + cep + ", email=" + email + ", \nanimais=" + animais + '}';
     }
-    
     
 
 }

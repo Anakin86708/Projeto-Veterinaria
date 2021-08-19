@@ -1,4 +1,4 @@
-package com.projeto.projetoveterinaria;
+package com.projeto.projetoveterinaria.model;
 
 /**
  *

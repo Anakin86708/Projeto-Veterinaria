@@ -1,6 +1,7 @@
 package com.projeto.projetoveterinaria;
 
-import com.projeto.projetoveterinaria.Cliente;
+import com.projeto.projetoveterinaria.model.Animal;
+import com.projeto.projetoveterinaria.model.Cliente;
 
 /**
  *
@@ -12,16 +13,16 @@ public class Main {
         Cliente eu = new Cliente(0, "Ariel", "Rua 123", "9888023", "13280000", "a231602@dac.unicamp.br");
 
         Animal[] meusGatos = {
-            new Animal(0, "Holly", 8, 1), 
-            new Animal(1, "Nina", 4, 1), 
+            new Animal(0, "Holly", 8, 1),
+            new Animal(1, "Nina", 4, 1),
             new Animal(2, "Belinha", 3, 1),
             new Animal(3, "Dorinha", 3, 1)
         };
 
-        for (Animal gato: meusGatos) {
+        for (Animal gato : meusGatos) {
             eu.adicinarAnimal(gato);
         }
-        
+
         System.out.println(eu);
     }
 }
