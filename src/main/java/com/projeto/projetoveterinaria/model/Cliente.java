@@ -1,5 +1,7 @@
 package com.projeto.projetoveterinaria.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public class Cliente {
 
-    private final int id;
+    private int id;
     private String nome;
     private String endereco;
     private String telefone;
@@ -34,6 +36,20 @@ public class Cliente {
         this.telefone = telefone;
         this.cep = cep;
         this.email = email;
+        this.animais = new ArrayList<>();
+    }
+
+    public Cliente(ResultSet rs) {
+        try {
+            this.id = rs.getInt("id");
+            this.nome = rs.getString("nome");
+            this.endereco = rs.getString("endereco");
+            this.telefone = rs.getString("telefone");
+            this.cep = rs.getString("cep");
+            this.email = rs.getString("email");
+        } catch (SQLException ex) {
+            System.err.println("EXCEPTION: " + ex.getMessage());
+        }
         this.animais = new ArrayList<>();
     }
 
