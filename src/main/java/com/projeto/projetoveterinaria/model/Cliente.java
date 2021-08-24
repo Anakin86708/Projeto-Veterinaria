@@ -39,20 +39,6 @@ public class Cliente {
         this.animais = new ArrayList<>();
     }
 
-    public Cliente(ResultSet rs) {
-        try {
-            this.id = rs.getInt("id");
-            this.nome = rs.getString("nome");
-            this.endereco = rs.getString("endereco");
-            this.telefone = rs.getString("telefone");
-            this.cep = rs.getString("cep");
-            this.email = rs.getString("email");
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
-        this.animais = new ArrayList<>();
-    }
-
     public int getId() {
         return id;
     }
