@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author ariel
  */
-public class ClienteDAO extends DAO {
+public class ClienteDAO extends DAO<Cliente> {
 
     private static ClienteDAO instance;
 
@@ -35,7 +35,8 @@ public class ClienteDAO extends DAO {
             stmt.setString(4, email);
             stmt.setString(5, telefone);
             this.executeUpdate(stmt);
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            System.err.println("EXCEPTION: " + ex.getMessage());
         }
     }
 
@@ -58,20 +59,7 @@ public class ClienteDAO extends DAO {
         return retrieve(query);
     }
 
-    public List<Cliente> retrieve(String query) {
-        ResultSet rs = this.getResultSet(query);
-        List<Cliente> clients = new ArrayList<>();
-        try {
-            while (rs.next()) {
-                clients.add(buildObject(rs));
-            }
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
-        return clients;
-    }
-
-    private Cliente buildObject(ResultSet rs) throws SQLException {
+    protected Cliente buildObject(ResultSet rs) throws SQLException {
         return new Cliente(
                 rs.getInt("id"),
                 rs.getString("nome"),

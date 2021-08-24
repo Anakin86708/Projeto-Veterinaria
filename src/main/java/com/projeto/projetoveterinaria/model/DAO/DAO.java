@@ -1,6 +1,10 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
+import com.projeto.projetoveterinaria.model.Cliente;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author ariel
  */
-public abstract class DAO {
+public abstract class DAO<T> {
 
     public static final String DBURL = "jdbc:sqlite:vet2021.db";
     private static Connection connection;
@@ -97,14 +101,26 @@ public abstract class DAO {
                     + "nome VARCHAR, \n"
                     + "id_consulta INTEGER); \n");
             executeUpdate(stmt);
-            // Default element for species:
-            stmt = DAO.getConnection().prepareStatement("INSERT OR IGNORE INTO especie (id, nome) VALUES (1, 'Cachorro')");
-            executeUpdate(stmt);
             return true;
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
         return false;
+    }
+
+    protected abstract T buildObject(ResultSet rs) throws SQLException;
+
+    public List<T> retrieve(String query) {
+        ResultSet rs = this.getResultSet(query);
+        List<T> clients = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                clients.add(buildObject(rs));
+            }
+        } catch (SQLException ex) {
+            System.err.println("EXCEPTION: " + ex.getMessage());
+        }
+        return clients;
     }
 
     protected int executeUpdate(PreparedStatement queryStatement) throws SQLException {
