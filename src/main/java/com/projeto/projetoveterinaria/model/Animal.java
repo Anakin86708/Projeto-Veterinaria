@@ -8,15 +8,15 @@ public class Animal {
 
     private int id;
     private String nome;
-    private int idade;
+    private int idade;  // TODO: alterar para condizer com BD
     private int sexo;  // 0 - Macho; 1 - Fêmea
 
     /**
      *
-     * @param id
-     * @param nome
-     * @param idade
-     * @param sexo
+     * @param id identificação interna do BD
+     * @param nome nome do animal
+     * @param idade idade do animal
+     * @param sexo sexo do animal
      */
     public Animal(int id, String nome, int idade, int sexo) {
         this.id = id;

@@ -1,13 +1,10 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
-import com.projeto.projetoveterinaria.model.Cliente;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Implementação DAO para acesso ao SQLite
@@ -18,7 +15,6 @@ public abstract class DAO<T> {
 
     public static final String DBURL = "jdbc:sqlite:vet2021.db";
     private static Connection connection;
-    protected static final Properties sqlProperties = SQLProperties.getProperties();
 
     public static Connection getConnection() {
         if (DAO.connection == null) {
