@@ -1,28 +1,30 @@
 package com.projeto.projetoveterinaria.model;
 
 /**
- *
  * @author Ariel Tadeu da Silva
  */
 public class Animal {
 
-    private int id;
+    private final int id;
     private String nome;
-    private int idade;  // TODO: alterar para condizer com BD
+    private int anoNasc;
     private int sexo;  // 0 - Macho; 1 - Fêmea
+    private final int idEspecie;
+    private final int idCliente;
 
     /**
-     *
-     * @param id identificação interna do BD
-     * @param nome nome do animal
-     * @param idade idade do animal
-     * @param sexo sexo do animal
+     * @param id      identificação interna do BD
+     * @param nome    nome
+     * @param anoNasc ano de nascimento
+     * @param sexo    sexo
      */
-    public Animal(int id, String nome, int idade, int sexo) {
+    public Animal(int id, String nome, int anoNasc, int sexo, int idEspecie, int idCliente) {
         this.id = id;
         this.nome = nome;
-        this.idade = idade;
+        this.anoNasc = anoNasc;
         this.sexo = sexo;
+        this.idEspecie = idEspecie;
+        this.idCliente = idCliente;
     }
 
     public int getId() {
@@ -35,8 +37,8 @@ public class Animal {
     }
 
 
-    public int getIdade() {
-        return idade;
+    public int getAnoNasc() {
+        return anoNasc;
     }
 
 
@@ -44,9 +46,17 @@ public class Animal {
         return sexo;
     }
 
+    public int getIdEspecie() {
+        return idEspecie;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
     @Override
     public String toString() {
-        return "Animal{" + "id=" + id + ", nome=" + nome + ", idade=" + idade + ", sexo=" + sexo + '}';
+        return "Animal{" + "id=" + id + ", nome=" + nome + ", anoNasc=" + anoNasc + ", sexo=" + sexo + ", idEspecie=" + idEspecie + '}';
     }
 
 }

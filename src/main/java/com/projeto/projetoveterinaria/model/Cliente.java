@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author Ariel Tadeu da Silva
  */
 public class Cliente {
@@ -17,17 +16,16 @@ public class Cliente {
     private String telefone;
     private String cep;
     private String email;
-    
+
     private final List<Animal> animais;
 
     /**
-     *
-     * @param id
-     * @param nome
-     * @param endereco
-     * @param telefone
-     * @param cep
-     * @param email
+     * @param id identificação do animal no BD
+     * @param nome nome
+     * @param endereco endereco
+     * @param telefone telefone
+     * @param cep cep
+     * @param email email
      */
     public Cliente(int id, String nome, String endereco, String telefone, String cep, String email) {
         this.id = id;
@@ -42,7 +40,6 @@ public class Cliente {
     public int getId() {
         return id;
     }
-
 
     public String getNome() {
         return nome;
@@ -63,13 +60,11 @@ public class Cliente {
     public String getEmail() {
         return email;
     }
-    
+
     public void adicinarAnimal(Animal novoAnimal) {
         this.animais.add(novoAnimal);
     }
-    
-    
-    
+
     public List<Animal> obterAnimais() {
         return new ArrayList<>(this.animais);
     }
@@ -78,6 +73,6 @@ public class Cliente {
     public String toString() {
         return "Cliente{" + " id=" + id + ", nome=" + nome + ", endereco=" + endereco + ", telefone=" + telefone + ", cep=" + cep + ", email=" + email + ", \nanimais=" + animais + '}';
     }
-    
+
 
 }

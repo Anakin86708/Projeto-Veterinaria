@@ -1,7 +1,6 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
 import com.projeto.projetoveterinaria.model.Animal;
-import com.projeto.projetoveterinaria.model.Cliente;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,11 +31,13 @@ public class AnimalDAO extends DAO<Animal> {
     }
 
     public List<Animal> retrieveAll() {
+        //language=SQL
         String query = "SELECT * FROM animal";
         return retrieve(query);
     }
 
     public Animal retrieveById(int id) {
+        //language=SQL
         String query = "SELECT * FROM animal WHERE id = " + id;
         List<Animal> client = retrieve(query);
         if (client.isEmpty()) {
@@ -46,11 +47,16 @@ public class AnimalDAO extends DAO<Animal> {
     }
 
     public List<Animal> retrieveBySimilarName(String nome) {
-        String query = "SELECT * FROM cliente WHERE nome LIKE '%" + nome + "%'";
+        //language=SQL
+        String query = "SELECT * FROM animal WHERE nome LIKE '%" + nome + "%'";
         return retrieve(query);
     }
 
-    // TODO: implementar retriveByOwnerID
+    public List<Animal> retriveByOwnerID(int id_cliente) {
+        //language=SQL
+        String query = "SELECT * FROM animal WHERE id_cliente = " + id_cliente;
+        return retrieve(query);
+    }
 
 
     @Override
@@ -59,16 +65,20 @@ public class AnimalDAO extends DAO<Animal> {
                 rs.getInt("id"),
                 rs.getString("nome"),
                 rs.getInt("anoNasc"),
-                rs.getInt("sexo")
+                rs.getInt("sexo"),
+                rs.getInt("id_especie"),
+                rs.getInt("id_cliente")
         );
     }
 
     public void update(Animal animal) {
         try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE animal SET nome=?, anoNasc=?, sexo=? WHERE id=?");
+            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE animal SET nome=?, anoNasc=?, sexo=?, id_especie=?, id_cliente=? WHERE id=?");
             stmt.setString(1, animal.getNome());
-            stmt.setInt(2, animal.getIdade());
+            stmt.setInt(2, animal.getAnoNasc());
             stmt.setInt(3, animal.getSexo());
+            stmt.setInt(4, animal.getIdEspecie());
+            stmt.setInt(5,animal.getIdCliente());
             this.executeUpdate(stmt);
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
