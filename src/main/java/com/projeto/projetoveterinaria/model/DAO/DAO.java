@@ -13,7 +13,7 @@ import java.util.Properties;
  */
 public abstract class DAO<T> {
 
-    public static final String DBURL = "jdbc:sqlite:vet2021.db";
+    public final static String DBURL = "jdbc:sqlite:vet2021.db";
     private static Connection connection;
 
     public static Connection getConnection() {
@@ -34,6 +34,21 @@ public abstract class DAO<T> {
         } catch (SQLException e) {
             System.err.println("EXCEPTION: " + e.getMessage());
         }
+    }
+
+    protected int lastId(String tableName, String primaryKey) {
+        Statement s;
+        int lastId = -1;
+        try {
+            s = connection.createStatement();
+            ResultSet rs = s.executeQuery("SELECT MAX(" + primaryKey + ") AS id FROM " + tableName);
+            if (rs.next()) {
+                lastId = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
+        return lastId;
     }
     
 

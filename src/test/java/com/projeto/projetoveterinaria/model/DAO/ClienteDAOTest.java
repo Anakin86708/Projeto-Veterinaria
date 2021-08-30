@@ -43,14 +43,14 @@ public class ClienteDAOTest {
     public void tearDown() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testCreate() {
         System.out.println("create");
         this.instance.create(nome, endereco, cep, email, telefone);
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRetrieveAll() {
         System.out.println("retrieveAll");
         List<Cliente> expResult = null;
@@ -59,7 +59,7 @@ public class ClienteDAOTest {
 //        assertEquals(expResult, result);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRetrieveById() {
         System.out.println("retrieveById");
         int id = 1;
@@ -67,7 +67,7 @@ public class ClienteDAOTest {
         assertEquals(expResult, result);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testRetrieveBySimilarName() {
         System.out.println("retrieveBySimilarName");
         String likeNome = "Ari";

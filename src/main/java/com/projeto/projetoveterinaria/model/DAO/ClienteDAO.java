@@ -26,7 +26,7 @@ public class ClienteDAO extends DAO<Cliente> {
 
 
     // CRUD
-    public void create(String nome, String endereco, String cep, String email, String telefone) {
+    public Cliente create(String nome, String endereco, String cep, String email, String telefone) {
         try {
             PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO cliente (nome, end, cep, email, telefone) VALUES (?,?,?,?,?)");
             stmt.setString(1, nome);
@@ -38,6 +38,7 @@ public class ClienteDAO extends DAO<Cliente> {
         } catch (Exception ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
+        return retrieveById(lastId("cliente","id"));
     }
 
     public List<Cliente> retrieveAll() {
@@ -67,6 +68,7 @@ public class ClienteDAO extends DAO<Cliente> {
                 rs.getString("telefone"),
                 rs.getString("cep"),
                 rs.getString("email")
+
         );
     }
 

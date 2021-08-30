@@ -1,6 +1,7 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
 import com.projeto.projetoveterinaria.model.Animal;
+import com.projeto.projetoveterinaria.model.Cliente;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,16 +19,19 @@ public class AnimalDAO extends DAO<Animal> {
 
     public static AnimalDAO getInstance() {return (instance == null ? (instance = new AnimalDAO()) : instance);}
 
-    public void create(String nome, int anoNasc, int sexo) {
+    public Animal create(String nome, int anoNasc, int sexo, int idEspecie, Cliente cliente) {
         try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO animal (nome, anoNasc, sexo) VALUES (?,?,?)");
+            PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO animal (nome, anoNasc, sexo, id_especie, id_cliente) VALUES (?,?,?,?,?)");
             stmt.setString(1, nome);
             stmt.setInt(2, anoNasc);
             stmt.setInt(3, sexo);
+            stmt.setInt(4,idEspecie);
+            stmt.setInt(5,cliente.getId());
             this.executeUpdate(stmt);
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
+        return retrieveById(lastId("animal","id"));
     }
 
     public List<Animal> retrieveAll() {
