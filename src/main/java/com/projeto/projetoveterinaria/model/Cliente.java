@@ -1,10 +1,5 @@
 package com.projeto.projetoveterinaria.model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Ariel Tadeu da Silva
  */
@@ -17,7 +12,6 @@ public class Cliente {
     private String cep;
     private String email;
 
-    private final List<Animal> animais;
 
     /**
      * @param id identificação do animal no BD
@@ -34,7 +28,6 @@ public class Cliente {
         this.telefone = telefone;
         this.cep = cep;
         this.email = email;
-        this.animais = new ArrayList<>();
     }
 
     public int getId() {
@@ -61,17 +54,9 @@ public class Cliente {
         return email;
     }
 
-    public void adicinarAnimal(Animal novoAnimal) {
-        this.animais.add(novoAnimal);
-    }
-
-    public List<Animal> obterAnimais() {
-        return new ArrayList<>(this.animais);
-    }
-
     @Override
     public String toString() {
-        return "Cliente{" + " id=" + id + ", nome=" + nome + ", endereco=" + endereco + ", telefone=" + telefone + ", cep=" + cep + ", email=" + email + ", \nanimais=" + animais + '}';
+        return "Cliente{" + " id=" + id + ", nome=" + nome + ", endereco=" + endereco + ", telefone=" + telefone + ", cep=" + cep + ", email=" + email + + '}';
     }
 
 

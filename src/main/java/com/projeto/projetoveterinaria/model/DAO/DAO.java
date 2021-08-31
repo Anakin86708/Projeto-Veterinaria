@@ -109,7 +109,7 @@ public abstract class DAO<T> {
             // Table exam:
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS exame( \n"
                     + "id INTEGER PRIMARY KEY, \n"
-                    + "nome VARCHAR, \n"
+                    + "decricao_exame VARCHAR, \n"
                     + "id_consulta INTEGER); \n");
             executeUpdate(stmt);
             return true;
