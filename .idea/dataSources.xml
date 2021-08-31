@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:E:\Data\OneDrive - Universidade Estadual de Campinas\2021.2\TT001\ProjetoVeterinaria\vet2021.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="vet2021 [2]" uuid="c8c8ef9a-b655-4c88-a697-df4ae7b41faa">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/vet2021.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
