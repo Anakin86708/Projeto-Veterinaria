@@ -1,24 +1,24 @@
 package com.projeto.projetoveterinaria.model;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.util.Date;
 
 /**
- *
  * @author ariel
  */
 public class Consulta {
 
-    private Calendar data;
-    private int hora;
+    private final int id;
+    private Instant data;
     private String comentarios;
     private int idAnimal;
     private int idTratamento;
     private int idVeterinario;
     private boolean terminou;
 
-    public Consulta(Calendar data, int hora, String comentarios, int idAnimal, int idTratamento, int idVeterinario, boolean terminou) {
+    public Consulta(int id, Instant data, String comentarios, int idAnimal, int idTratamento, int idVeterinario, boolean terminou) {
+        this.id = id;
         this.data = data;
-        this.hora = hora;
         this.comentarios = comentarios;
         this.idAnimal = idAnimal;
         this.idTratamento = idTratamento;
@@ -26,20 +26,16 @@ public class Consulta {
         this.terminou = terminou;
     }
 
-    public Calendar getData() {
+    public int getId() {
+        return id;
+    }
+
+    public Instant getData() {
         return data;
     }
 
-    public void setData(Calendar data) {
+    public void setData(Instant data) {
         this.data = data;
-    }
-
-    public int getHora() {
-        return hora;
-    }
-
-    public void setHora(int hora) {
-        this.hora = hora;
     }
 
     public String getComentarios() {
@@ -74,7 +70,7 @@ public class Consulta {
         this.idVeterinario = idVeterinario;
     }
 
-    public boolean isTerminou() {
+    public boolean getTerminou() {
         return terminou;
     }
 

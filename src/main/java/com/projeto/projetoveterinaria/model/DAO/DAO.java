@@ -83,7 +83,7 @@ public abstract class DAO<T> {
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS vet( \n"
                     + "id INTEGER PRIMARY KEY, \n"
                     + "nome VARCHAR, \n"
-                    + "email VARCHAR, \n"
+                    + "endereco VARCHAR, \n"
                     + "telefone VARCHAR); \n");
             executeUpdate(stmt);
             // Table treatment:
@@ -98,13 +98,12 @@ public abstract class DAO<T> {
             // Table appointment:
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS consulta( \n"
                     + "id INTEGER PRIMARY KEY, \n"
-                    + "data TEXT, \n"
-                    + "horario VARCHAR, \n"
+                    + "data DATE, \n"
                     + "comentario VARCHAR, \n"
                     + "id_animal INTEGER, \n"
                     + "id_vet INTEGER, \n"
                     + "id_tratamento INTEGER, \n"
-                    + "terminado INTEGER); \n");
+                    + "terminado BOOLEAN); \n");
             executeUpdate(stmt);
             // Table exam:
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS exame( \n"
