@@ -4,7 +4,6 @@ package com.projeto.projetoveterinaria.model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Implementação DAO para acesso ao SQLite
@@ -83,7 +82,7 @@ public abstract class DAO<T> {
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS vet( \n"
                     + "id INTEGER PRIMARY KEY, \n"
                     + "nome VARCHAR, \n"
-                    + "email VARCHAR, \n"
+                    + "endereco VARCHAR, \n"
                     + "telefone VARCHAR); \n");
             executeUpdate(stmt);
             // Table treatment:
