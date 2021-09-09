@@ -25,7 +25,6 @@ public class Main {
                 new Animal(3, "Dorinha", 2019, 1, 0, 0)
         };
         for (Animal gato : meusGatos) {
-            eu.adicinarAnimal(gato);
             AnimalDAO.getInstance().create(gato.getNome(), gato.getAnoNasc(), gato.getSexo(), gato.getIdEspecie(), eu);
         }
 
@@ -41,7 +40,6 @@ public class Main {
                 new Animal(4, "Bob", 2015, 1, 1, 1),
         };
         for (Animal c: cachorros){
-            cliente2.adicinarAnimal(c);
             AnimalDAO.getInstance().create(c.getNome(),c.getAnoNasc(),c.getSexo(),c.getIdEspecie(),cliente2);
         }
         System.out.println("Clientes: listar todos");
