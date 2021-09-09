@@ -8,6 +8,7 @@ import java.util.Calendar;
  */
 public class Consulta {
 
+    private final int id;
     private Calendar data;
     private int hora;
     private String comentarios;
@@ -16,7 +17,8 @@ public class Consulta {
     private int idVeterinario;
     private boolean terminou;
 
-    public Consulta(Calendar data, int hora, String comentarios, int idAnimal, int idTratamento, int idVeterinario, boolean terminou) {
+    public Consulta(int id, Calendar data, int hora, String comentarios, int idAnimal, int idTratamento, int idVeterinario, boolean terminou) {
+        this.id = id;
         this.data = data;
         this.hora = hora;
         this.comentarios = comentarios;
@@ -74,7 +76,7 @@ public class Consulta {
         this.idVeterinario = idVeterinario;
     }
 
-    public boolean isTerminou() {
+    public boolean getTerminou() {
         return terminou;
     }
 
@@ -82,4 +84,7 @@ public class Consulta {
         this.terminou = terminou;
     }
 
+    public int getId() {
+        return id;
+    }
 }
