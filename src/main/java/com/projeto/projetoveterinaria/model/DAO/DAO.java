@@ -90,14 +90,14 @@ public abstract class DAO<T> {
                     + "id INTEGER PRIMARY KEY, \n"
                     + "id_animal INTEGER, \n"
                     + "nome VARCHAR, \n"
-                    + "dataIni TEXT, \n"
-                    + "dataFim TEXT, \n"
+                    + "dataIni INTEGER, \n"
+                    + "dataFim INTEGER, \n"
                     + "terminado INTEGER); \n");
             executeUpdate(stmt);
             // Table appointment:
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS consulta( \n"
                     + "id INTEGER PRIMARY KEY, \n"
-                    + "data TEXT, \n"
+                    + "data INTEGER, \n"
                     + "horario INTEGER, \n"
                     + "comentario VARCHAR, \n"
                     + "id_animal INTEGER, \n"

@@ -6,20 +6,32 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.List;
 
 public class ConsultaDAO extends DAO<Consulta> {
 
+    private static ConsultaDAO instance;
+
+    private ConsultaDAO() {
+        getConnection();
+        createTable();
+    }
+
+    public static ConsultaDAO getInstance() {
+        return (instance == null ? (instance = new ConsultaDAO()) : instance);
+    }
+
     @Override
     protected Consulta buildObject(ResultSet rs) throws SQLException {
         Calendar data = Calendar.getInstance();
-        data.setTime(rs.getDate("data"));
+        data.setTime(Date.from(Instant.ofEpochMilli(rs.getLong("data"))));
         return new Consulta(
                 rs.getInt("id"),
                 data,
                 rs.getInt("horario"),
-                rs.getString("comentrio"),
+                rs.getString("comentario"),
                 rs.getInt("id_animal"),
                 rs.getInt("id_tratamento"),
                 rs.getInt("id_vet"),
@@ -34,7 +46,7 @@ public class ConsultaDAO extends DAO<Consulta> {
             stmt.setInt(2, horario);
             stmt.setString(3, comentario);
             stmt.setInt(4, idAnimal);
-            stmt.setInt(5, idTratamento);
+            stmt.setInt(5, idVeterinario);
             stmt.setInt(6, idTratamento);
             stmt.setBoolean(7, terminou);
             executeUpdate(stmt);

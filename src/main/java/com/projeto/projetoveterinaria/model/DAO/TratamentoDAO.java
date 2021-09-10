@@ -6,24 +6,37 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.List;
 
 public class TratamentoDAO extends DAO<Tratamento> {
+
+    private static TratamentoDAO instance;
+
+    private TratamentoDAO() {
+        getConnection();
+        createTable();
+    }
+
+    public static TratamentoDAO getInstance() {
+        return (instance == null ? (instance = new TratamentoDAO()) : instance);
+    }
+
     @Override
     protected Tratamento buildObject(ResultSet rs) throws SQLException {
         Calendar dataEntrada = Calendar.getInstance();
-        dataEntrada.setTime(rs.getDate("dataEntrada"));
+        dataEntrada.setTime(Date.from(Instant.ofEpochMilli(rs.getLong("dataIni"))));
 
         Calendar dataSaida = Calendar.getInstance();
-        dataSaida.setTime(rs.getDate("dataSaida"));
+        dataSaida.setTime(Date.from(Instant.ofEpochMilli(rs.getLong("dataFim"))));
         return new Tratamento(
                 rs.getInt("id"),
                 rs.getString("nome"),
                 dataEntrada,
                 dataSaida,
-                rs.getInt("idAnimal"),
-                rs.getBoolean("terminou")
+                rs.getInt("id_animal"),
+                rs.getBoolean("terminado")
         );
     }
 
@@ -31,8 +44,8 @@ public class TratamentoDAO extends DAO<Tratamento> {
         try {
             PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO tratamento (nome, dataIni, dataFim, id_animal, terminado) VALUES  (?,?,?,?,?)");
             stmt.setString(1, nome);
-            stmt.setDate(2, new Date(dataEntrada.getTimeInMillis()));
-            stmt.setDate(3, new Date(dataSaida.getTimeInMillis()));
+            stmt.setLong(2, dataEntrada.getTimeInMillis());
+            stmt.setLong(3, dataSaida.getTimeInMillis());
             stmt.setInt(4, idAnimal);
             stmt.setBoolean(5, terminou);
             executeUpdate(stmt);

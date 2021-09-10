@@ -8,7 +8,7 @@ public class Animal {
     private final int id;
     private String nome;
     private int anoNasc;
-    private int sexo;  // 0 - Macho; 1 - Fêmea
+    private Sexo sexo;  // 0 - Macho; 1 - Fêmea
     private final int idEspecie;
     private final int idCliente;
 
@@ -18,7 +18,7 @@ public class Animal {
      * @param anoNasc ano de nascimento
      * @param sexo    sexo
      */
-    public Animal(int id, String nome, int anoNasc, int sexo, int idEspecie, int idCliente) {
+    public Animal(int id, String nome, int anoNasc, Sexo sexo, int idEspecie, int idCliente) {
         this.id = id;
         this.nome = nome;
         this.anoNasc = anoNasc;
@@ -42,7 +42,7 @@ public class Animal {
     }
 
 
-    public int getSexo() {
+    public Sexo getSexo() {
         return sexo;
     }
 

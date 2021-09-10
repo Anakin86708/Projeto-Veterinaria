@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class VeterinarioDAO extends DAO<Veterinario> {
+
+    private static VeterinarioDAO instance;
+
+    private VeterinarioDAO() {
+        getConnection();
+        createTable();
+    }
+
+    public static VeterinarioDAO getInstance() {
+        return (instance == null ? (instance = new VeterinarioDAO()) : instance);
+    }
+
     @Override
     protected Veterinario buildObject(ResultSet rs) throws SQLException {
         return new Veterinario(

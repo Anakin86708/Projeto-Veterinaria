@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ExameDAO extends DAO<Exame> {
+
+    private static ExameDAO instance;
+
+    private ExameDAO() {
+        getConnection();
+        createTable();
+    }
+
+    public static ExameDAO getInstance() {
+        return (instance == null ? (instance = new ExameDAO()) : instance);
+    }
+
     @Override
     protected Exame buildObject(ResultSet rs) throws SQLException {
         return new Exame(
