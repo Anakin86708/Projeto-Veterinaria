@@ -2,6 +2,8 @@ package com.projeto.projetoveterinaria.model.DAO;
 
 import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.Cliente;
+import com.projeto.projetoveterinaria.model.Especie;
+import com.projeto.projetoveterinaria.model.Sexo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,14 +21,14 @@ public class AnimalDAO extends DAO<Animal> {
 
     public static AnimalDAO getInstance() {return (instance == null ? (instance = new AnimalDAO()) : instance);}
 
-    public Animal create(String nome, int anoNasc, int sexo, int idEspecie, Cliente cliente) {
+    public Animal create(String nome, int anoNasc, Sexo sexo, Especie especie, Cliente cliente) {
         try {
             PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO animal (nome, anoNasc, sexo, id_especie, id_cliente) VALUES (?,?,?,?,?)");
             stmt.setString(1, nome);
             stmt.setInt(2, anoNasc);
-            stmt.setInt(3, sexo);
-            stmt.setInt(4,idEspecie);
-            stmt.setInt(5,cliente.getId());
+            stmt.setString(3, sexo.toString());
+            stmt.setInt(4, especie.getId());
+            stmt.setInt(5, cliente.getId());
             this.executeUpdate(stmt);
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
@@ -69,7 +71,7 @@ public class AnimalDAO extends DAO<Animal> {
                 rs.getInt("id"),
                 rs.getString("nome"),
                 rs.getInt("anoNasc"),
-                rs.getInt("sexo"),
+                Sexo.valueOf(rs.getString("sexo")),
                 rs.getInt("id_especie"),
                 rs.getInt("id_cliente")
         );
@@ -80,7 +82,7 @@ public class AnimalDAO extends DAO<Animal> {
             PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE animal SET nome=?, anoNasc=?, sexo=?, id_especie=?, id_cliente=? WHERE id=?");
             stmt.setString(1, animal.getNome());
             stmt.setInt(2, animal.getAnoNasc());
-            stmt.setInt(3, animal.getSexo());
+            stmt.setString(3, animal.getSexo().toString());
             stmt.setInt(4, animal.getIdEspecie());
             stmt.setInt(5,animal.getIdCliente());
             this.executeUpdate(stmt);

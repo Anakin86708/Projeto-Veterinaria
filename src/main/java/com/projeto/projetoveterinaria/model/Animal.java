@@ -8,9 +8,9 @@ public class Animal {
     private final int id;
     private String nome;
     private int anoNasc;
-    private int sexo;  // 0 - Macho; 1 - Fêmea
-    private final int idEspecie;
-    private final int idCliente;
+    private Sexo sexo;  // 0 - Macho; 1 - Fêmea
+    private int idEspecie;
+    private int idCliente;
 
     /**
      * @param id      identificação interna do BD
@@ -18,7 +18,7 @@ public class Animal {
      * @param anoNasc ano de nascimento
      * @param sexo    sexo
      */
-    public Animal(int id, String nome, int anoNasc, int sexo, int idEspecie, int idCliente) {
+    public Animal(int id, String nome, int anoNasc, Sexo sexo, int idEspecie, int idCliente) {
         this.id = id;
         this.nome = nome;
         this.anoNasc = anoNasc;
@@ -31,27 +31,44 @@ public class Animal {
         return id;
     }
 
-
     public String getNome() {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public int getAnoNasc() {
         return anoNasc;
     }
 
+    public void setAnoNasc(int anoNasc) {
+        this.anoNasc = anoNasc;
+    }
 
-    public int getSexo() {
+    public Sexo getSexo() {
         return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
     public int getIdEspecie() {
         return idEspecie;
     }
 
+    public void setIdEspecie(int idEspecie) {
+        this.idEspecie = idEspecie;
+    }
+
     public int getIdCliente() {
         return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.projeto.projetoveterinaria.model.Cliente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,15 +37,17 @@ public class ClienteDAO extends DAO<Cliente> {
         } catch (Exception ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
-        return retrieveById(lastId("cliente","id"));
+        return retrieveLast();
     }
 
     public List<Cliente> retrieveAll() {
+        //language=SQL
         String query = "SELECT * FROM cliente";
         return retrieve(query);
     }
 
     public Cliente retrieveById(int id) {
+        //language=SQL
         String query = "SELECT * FROM cliente WHERE id = " + id;
         List<Cliente> client = retrieve(query);
         if (client.isEmpty()) {
@@ -55,7 +56,15 @@ public class ClienteDAO extends DAO<Cliente> {
         return client.get(0);
     }
 
+    public Cliente retrieveLast() {
+        //language=SQL
+        String query = "SELECT * FROM cliente WHERE id = (SELECT max(id) FROM cliente)";
+        List<Cliente> client = retrieve(query);
+        return client.get(0);
+    }
+
     public List<Cliente> retrieveBySimilarName(String nome) {
+        //language=SQL
         String query = "SELECT * FROM cliente WHERE nome LIKE '%" + nome + "%'";
         return retrieve(query);
     }

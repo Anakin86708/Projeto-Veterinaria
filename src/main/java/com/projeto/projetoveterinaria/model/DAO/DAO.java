@@ -4,7 +4,6 @@ package com.projeto.projetoveterinaria.model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Implementação DAO para acesso ao SQLite
@@ -83,7 +82,7 @@ public abstract class DAO<T> {
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS vet( \n"
                     + "id INTEGER PRIMARY KEY, \n"
                     + "nome VARCHAR, \n"
-                    + "email VARCHAR, \n"
+                    + "endereco VARCHAR, \n"
                     + "telefone VARCHAR); \n");
             executeUpdate(stmt);
             // Table treatment:
@@ -91,15 +90,15 @@ public abstract class DAO<T> {
                     + "id INTEGER PRIMARY KEY, \n"
                     + "id_animal INTEGER, \n"
                     + "nome VARCHAR, \n"
-                    + "dataIni TEXT, \n"
-                    + "dataFim TEXT, \n"
+                    + "dataIni INTEGER, \n"
+                    + "dataFim INTEGER, \n"
                     + "terminado INTEGER); \n");
             executeUpdate(stmt);
             // Table appointment:
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS consulta( \n"
                     + "id INTEGER PRIMARY KEY, \n"
-                    + "data TEXT, \n"
-                    + "horario VARCHAR, \n"
+                    + "data INTEGER, \n"
+                    + "horario INTEGER, \n"
                     + "comentario VARCHAR, \n"
                     + "id_animal INTEGER, \n"
                     + "id_vet INTEGER, \n"
@@ -109,7 +108,7 @@ public abstract class DAO<T> {
             // Table exam:
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS exame( \n"
                     + "id INTEGER PRIMARY KEY, \n"
-                    + "nome VARCHAR, \n"
+                    + "decricao_exame VARCHAR, \n"
                     + "id_consulta INTEGER); \n");
             executeUpdate(stmt);
             return true;
