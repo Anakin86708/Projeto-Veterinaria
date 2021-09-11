@@ -18,6 +18,10 @@ public class Especie {
         return nomeEspecie;
     }
 
+    public void setNomeEspecie(String nomeEspecie) {
+        this.nomeEspecie = nomeEspecie;
+    }
+
     public int getId() {
         return id;
     }

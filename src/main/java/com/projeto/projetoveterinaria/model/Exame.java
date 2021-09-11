@@ -24,8 +24,16 @@ public class Exame {
         return idConsulta;
     }
 
+    public void setIdConsulta(int idConsulta) {
+        this.idConsulta = idConsulta;
+    }
+
     public String getDescricaoExame() {
         return descricaoExame;
+    }
+
+    public void setDescricaoExame(String descricaoExame) {
+        this.descricaoExame = descricaoExame;
     }
 
 }

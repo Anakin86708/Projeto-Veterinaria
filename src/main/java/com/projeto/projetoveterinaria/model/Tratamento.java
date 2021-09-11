@@ -11,10 +11,10 @@ public class Tratamento {
     private String nome;
     private Calendar dataEntrada;
     private Calendar dataSaida;
-    private final int idAnimal;
+    private int idAnimal;
     private boolean terminou;
 
-    public Tratamento(int id ,String nome, Calendar dataEntrada, Calendar dataSaida, int idAnimal, boolean terminou) {
+    public Tratamento(int id, String nome, Calendar dataEntrada, Calendar dataSaida, int idAnimal, boolean terminou) {
         this.id = id;
         this.nome = nome;
         this.dataEntrada = dataEntrada;
@@ -31,16 +31,32 @@ public class Tratamento {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public Calendar getDataEntrada() {
         return dataEntrada;
+    }
+
+    public void setDataEntrada(Calendar dataEntrada) {
+        this.dataEntrada = dataEntrada;
     }
 
     public Calendar getDataSaida() {
         return dataSaida;
     }
 
+    public void setDataSaida(Calendar dataSaida) {
+        this.dataSaida = dataSaida;
+    }
+
     public int getIdAnimal() {
         return idAnimal;
+    }
+
+    public void setIdAnimal(int idAnimal) {
+        this.idAnimal = idAnimal;
     }
 
     public boolean isTerminou() {
