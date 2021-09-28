@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class ConsultaDAO extends DAO<Consulta> {
     @Override
     protected Consulta buildObject(ResultSet rs) throws SQLException {
         Calendar data = Calendar.getInstance();
-        data.setTime(Date.from(Instant.ofEpochMilli(rs.getLong("data"))));
+        data.setTimeInMillis(rs.getLong("data"));
         return new Consulta(
                 rs.getInt("id"),
                 data,
