@@ -84,7 +84,7 @@
                                       <Component id="jComboBox2" alignment="0" pref="191" max="32767" attributes="0"/>
                                       <Component id="jComboBox3" alignment="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="108" max="32767" attributes="0"/>
+                                  <EmptySpace pref="55" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                                       <Component id="jFormattedTextField1" max="32767" attributes="0"/>
@@ -257,7 +257,7 @@
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="01/01/2021"/>
+            <Property name="text" type="java.lang.String" value="jFormattedTextField1"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
