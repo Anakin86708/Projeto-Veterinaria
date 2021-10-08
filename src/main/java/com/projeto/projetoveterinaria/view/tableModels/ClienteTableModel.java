@@ -35,7 +35,7 @@ public class ClienteTableModel extends GenericTableModel<Cliente>{
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        Cliente linha = getItem(rowIndex);
+        Cliente linha = dados.get(rowIndex);
         
         switch (columnIndex) {
             case 0:

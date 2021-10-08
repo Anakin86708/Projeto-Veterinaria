@@ -28,6 +28,11 @@ public abstract class GenericTableModel<T> extends AbstractTableModel{
     public int getColumnCount() {
         return colunas.length;
     }
+    
+    @Override
+    public String getColumnName(int columnIndex) {
+        return colunas[columnIndex];
+    }
 
     
     // Metodos auxiliares:
