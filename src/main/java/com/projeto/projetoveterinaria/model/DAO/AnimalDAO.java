@@ -67,6 +67,14 @@ public class AnimalDAO extends DAO<Animal> {
 
     @Override
     protected Animal buildObject(ResultSet rs) throws SQLException {
+        System.out.println(rs.getInt("id"));
+        System.out.println(rs.getString("nome"));
+        System.out.println(rs.getInt("anoNasc"));
+        System.out.println(rs.getString("sexo"));
+        System.out.println(rs.getInt("id_especie"));
+        System.out.println(rs.getInt("id_cliente"));
+        System.out.println("----------------------------------------------------");
+
         return new Animal(
                 rs.getInt("id"),
                 rs.getString("nome"),

@@ -5,6 +5,8 @@
  */
 package com.projeto.projetoveterinaria.view;
 
+import com.projeto.projetoveterinaria.controller.Controller;
+
 /**
  *
  * @author ariel
@@ -16,6 +18,15 @@ public class FormMain extends javax.swing.JFrame {
      */
     public FormMain() {
         initComponents();
+        initPanels();
+    }
+    
+    private void initPanels() {
+        jTabbedPane1.add("Animais", Controller.getPanelAnimal());
+//        jTabbedPane1.add("Consultas", new PanelPadrao());
+//        jTabbedPane1.add("Exames", new PanelPadrao());
+//        jTabbedPane1.add("Tratamentos", new PanelPadrao());
+//        jTabbedPane1.add("Veterinarios", new PanelPadrao());
     }
 
     /**
@@ -28,7 +39,14 @@ public class FormMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        panelTabInicio = new javax.swing.JPanel();
+        panelProximasConsultas = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tableProximasConsultas = new javax.swing.JTable();
+        panelHistorico = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableHistorico = new javax.swing.JTable();
+        panelTabCliente = new javax.swing.JPanel();
         panelClientes = new javax.swing.JPanel();
         panelTop3 = new javax.swing.JPanel();
         btnNovo3 = new javax.swing.JButton();
@@ -45,6 +63,94 @@ public class FormMain extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        panelProximasConsultas.setBorder(javax.swing.BorderFactory.createTitledBorder("Próximas consultas"));
+        panelProximasConsultas.setPreferredSize(new java.awt.Dimension(838, 336));
+
+        tableProximasConsultas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tableProximasConsultas);
+
+        javax.swing.GroupLayout panelProximasConsultasLayout = new javax.swing.GroupLayout(panelProximasConsultas);
+        panelProximasConsultas.setLayout(panelProximasConsultasLayout);
+        panelProximasConsultasLayout.setHorizontalGroup(
+            panelProximasConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProximasConsultasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 816, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelProximasConsultasLayout.setVerticalGroup(
+            panelProximasConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProximasConsultasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        panelHistorico.setBorder(javax.swing.BorderFactory.createTitledBorder("Histórico"));
+
+        tableHistorico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tableHistorico);
+
+        javax.swing.GroupLayout panelHistoricoLayout = new javax.swing.GroupLayout(panelHistorico);
+        panelHistorico.setLayout(panelHistoricoLayout);
+        panelHistoricoLayout.setHorizontalGroup(
+            panelHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHistoricoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4)
+                .addContainerGap())
+        );
+        panelHistoricoLayout.setVerticalGroup(
+            panelHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHistoricoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panelTabInicioLayout = new javax.swing.GroupLayout(panelTabInicio);
+        panelTabInicio.setLayout(panelTabInicioLayout);
+        panelTabInicioLayout.setHorizontalGroup(
+            panelTabInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTabInicioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelTabInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelProximasConsultas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelHistorico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panelTabInicioLayout.setVerticalGroup(
+            panelTabInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTabInicioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelProximasConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelHistorico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Início", panelTabInicio);
 
         btnNovo3.setText("Novo");
 
@@ -112,14 +218,14 @@ public class FormMain extends javax.swing.JFrame {
         );
         panelClientesLayout.setVerticalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 479, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
             .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelClientesLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(panelTop3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(12, Short.MAX_VALUE)))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -165,21 +271,20 @@ public class FormMain extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelTabClienteLayout = new javax.swing.GroupLayout(panelTabCliente);
+        panelTabCliente.setLayout(panelTabClienteLayout);
+        panelTabClienteLayout.setHorizontalGroup(
+            panelTabClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(panelTabClienteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(panelAnimais, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+        panelTabClienteLayout.setVerticalGroup(
+            panelTabClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTabClienteLayout.createSequentialGroup()
                 .addComponent(panelClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,7 +292,7 @@ public class FormMain extends javax.swing.JFrame {
                 .addComponent(panelAnimais, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Cliente", jPanel1);
+        jTabbedPane1.addTab("Cliente", panelTabCliente);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -239,39 +344,28 @@ public class FormMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEditar1;
-    private javax.swing.JButton btnEditar2;
     private javax.swing.JButton btnEditar3;
-    private javax.swing.JButton btnNovo;
-    private javax.swing.JButton btnNovo1;
-    private javax.swing.JButton btnNovo2;
     private javax.swing.JButton btnNovo3;
-    private javax.swing.JButton btnRemover;
-    private javax.swing.JButton btnRemover1;
-    private javax.swing.JButton btnRemover2;
     private javax.swing.JButton btnRemover3;
-    private javax.swing.JComboBox<String> cmbFiltro;
-    private javax.swing.JComboBox<String> cmbFiltro1;
-    private javax.swing.JComboBox<String> cmbFiltro2;
     private javax.swing.JComboBox<String> cmbFiltro3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JPanel panelAnimais;
     private javax.swing.JPanel panelClientes;
-    private javax.swing.JPanel panelTop;
-    private javax.swing.JPanel panelTop1;
-    private javax.swing.JPanel panelTop2;
+    private javax.swing.JPanel panelHistorico;
+    private javax.swing.JPanel panelProximasConsultas;
+    private javax.swing.JPanel panelTabCliente;
+    private javax.swing.JPanel panelTabInicio;
     private javax.swing.JPanel panelTop3;
-    private javax.swing.JTextField txtBusca;
-    private javax.swing.JTextField txtBusca1;
-    private javax.swing.JTextField txtBusca2;
+    private javax.swing.JTable tableHistorico;
+    private javax.swing.JTable tableProximasConsultas;
     private javax.swing.JTextField txtBusca3;
     // End of variables declaration//GEN-END:variables
 }
