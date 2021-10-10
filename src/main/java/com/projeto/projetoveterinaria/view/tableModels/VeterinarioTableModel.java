@@ -17,20 +17,15 @@ public class VeterinarioTableModel extends GenericTableModel<Veterinario> {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Veterinario item = dados.get(rowIndex);
 
-        if (item == null) {
+        if (item == null)
             throw new NullPointerException();
-        }
 
-        switch (columnIndex) {
-            case 0:
-                return item.getNome();
-            case 1:
-                return item.getEndereco();
-            case 2:
-                return item.getTelefone();
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        return switch (columnIndex) {
+            case 0 -> item.getNome();
+            case 1 -> item.getEndereco();
+            case 2 -> item.getTelefone();
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     @Override
@@ -51,14 +46,10 @@ public class VeterinarioTableModel extends GenericTableModel<Veterinario> {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-            case 1:
-            case 2:
-                return String.class;
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        return switch (columnIndex) {
+            case 0, 1, 2 -> String.class;
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
 }

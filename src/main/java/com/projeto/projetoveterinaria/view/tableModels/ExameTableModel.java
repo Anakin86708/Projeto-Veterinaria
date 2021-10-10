@@ -18,14 +18,14 @@ public class ExameTableModel extends GenericTableModel<Exame> {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Exame item = getItem(rowIndex);
 
-        switch (columnIndex) {
-            case 0:
-                return item.getIdConsulta();
-            case 1:
-                return item.getDescricaoExame();
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        if (item == null)
+            throw new NullPointerException();
+
+        return switch (columnIndex) {
+            case 0 -> item.getIdConsulta();
+            case 1 -> item.getDescricaoExame();
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     @Override
@@ -44,14 +44,11 @@ public class ExameTableModel extends GenericTableModel<Exame> {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return Integer.class;
-            case 1:
-                return String.class;
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        return switch (columnIndex) {
+            case 0 -> Integer.class;
+            case 1 -> String.class;
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
 }

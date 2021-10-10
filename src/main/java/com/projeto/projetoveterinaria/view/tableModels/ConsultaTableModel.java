@@ -21,24 +21,19 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Consulta item = getItem(rowIndex);
 
-        switch (columnIndex) {
-            case 0:
-                return humanDateFormat(item.getData());
-            case 1:
-                return item.getHora();
-            case 2:
-                return item.getComentarios();
-            case 3:
-                return item.getIdAnimal();
-            case 4:
-                return item.getIdTratamento();
-            case 5:
-                return item.getIdVeterinario();
-            case 6:
-                return item.getTerminou();
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        if (item == null)
+            throw new NullPointerException();
+
+        return switch (columnIndex) {
+            case 0 -> humanDateFormat(item.getData());
+            case 1 -> item.getHora();
+            case 2 -> item.getComentarios();
+            case 3 -> item.getIdAnimal();
+            case 4 -> item.getIdTratamento();
+            case 5 -> item.getIdVeterinario();
+            case 6 -> item.getTerminou();
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     @Override
@@ -67,19 +62,12 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-            case 2:
-                return String.class;
-            case 1:
-            case 3:
-            case 4:
-            case 5:
-                return int.class;
-            case 6:
-                return Boolean.class;
-        }
-        throw new IndexOutOfBoundsException();
+        return switch (columnIndex) {
+            case 0,2 -> String.class;
+            case 1,3,4,5 -> Integer.class;
+            case 6 -> Boolean.class;
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
 }

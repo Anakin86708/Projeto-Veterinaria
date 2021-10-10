@@ -19,24 +19,17 @@ public class AnimalTableModel extends GenericTableModel<Animal> {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Animal item = dados.get(rowIndex);
 
-        if (item == null) {
+        if (item == null)
             throw new NullPointerException();
-        }
 
-        switch (columnIndex) {
-            case 0:
-                return item.getNome();
-            case 1:
-                return item.getAnoNasc();
-            case 2:
-                return item.getSexo();
-            case 3:
-                return item.getIdEspecie();
-            case 4:
-                return item.getIdCliente();
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        return switch (columnIndex) {
+            case 0 -> item.getNome();
+            case 1 -> item.getAnoNasc();
+            case 2 -> item.getSexo();
+            case 3 -> item.getIdEspecie();
+            case 4 -> item.getIdCliente();
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     @Override
@@ -61,18 +54,12 @@ public class AnimalTableModel extends GenericTableModel<Animal> {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return String.class;
-            case 1:
-            case 3:
-            case 4:
-                return Integer.class;
-            case 2:
-                return Sexo.class;
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        return switch (columnIndex) {
+            case 0 -> String.class;
+            case 1, 3, 4 -> Integer.class;
+            case 2 -> Sexo.class;
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
 }

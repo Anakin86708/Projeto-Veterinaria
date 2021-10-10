@@ -15,22 +15,19 @@ public class ClienteTableModel extends GenericTableModel<Cliente>{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Cliente linha = getItem(rowIndex);
-        
-        switch (columnIndex) {
-            case 0:
-                return linha.getNome();
-            case 1:
-                return linha.getEndereco();
-            case 2:
-                return linha.getTelefone();
-            case 3:
-                return linha.getCep();
-            case 4:
-                return linha.getEmail();
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        Cliente item = getItem(rowIndex);
+
+        if (item == null)
+            throw new NullPointerException();
+
+        return switch (columnIndex) {
+            case 0 -> item.getNome();
+            case 1 -> item.getEndereco();
+            case 2 -> item.getTelefone();
+            case 3 -> item.getCep();
+            case 4 -> item.getEmail();
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     @Override

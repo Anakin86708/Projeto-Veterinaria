@@ -22,20 +22,14 @@ public class TratamentoTableModel extends GenericTableModel<Tratamento> {
             throw new NullPointerException();
         }
 
-        switch (columnIndex) {
-            case 0:
-                return item.getNome();
-            case 1:
-                return humanDateFormat(item.getDataEntrada());
-            case 2:
-                return humanDateFormat(item.getDataSaida());
-            case 3:
-                return item.getIdAnimal();
-            case 4:
-                return item.getTerminou();
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        return switch (columnIndex) {
+            case 0 -> item.getNome();
+            case 1 -> humanDateFormat(item.getDataEntrada());
+            case 2 -> humanDateFormat(item.getDataSaida());
+            case 3 -> item.getIdAnimal();
+            case 4 -> item.getTerminou();
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     @Override
@@ -60,19 +54,13 @@ public class TratamentoTableModel extends GenericTableModel<Tratamento> {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return String.class;
-            case 1:
-            case 2:
-                return Calendar.class;
-            case 3:
-                return Integer.class;
-            case 4:
-                return Boolean.class;
-            default:
-                throw new IndexOutOfBoundsException();
-        }
+        return switch (columnIndex) {
+            case 0 -> String.class;
+            case 1, 2 -> Calendar.class;
+            case 3 -> Integer.class;
+            case 4 -> Boolean.class;
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
 }
