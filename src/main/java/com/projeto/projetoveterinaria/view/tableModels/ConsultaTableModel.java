@@ -1,10 +1,7 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
-import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.model.Consulta;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -24,16 +24,11 @@ import javax.swing.table.TableModel;
  */
 public class Controller {
 
-    private final JTable tableAnimaisPertencentes;
     private static Component instancePanelAnimal;
     private static Component instancePanelConsulta;
     private static Component instancePanelExame;
     private static Component instancePanelTratamento;
     private static Component instancePanelVeterinario;
-
-    public Controller(JTable tableAnimaisPertencentes) {
-        this.tableAnimaisPertencentes = tableAnimaisPertencentes;
-    }
 
     public static Component getPanelAnimal() {
         if (instancePanelAnimal == null) {
@@ -87,7 +82,7 @@ public class Controller {
         return instancePanelVeterinario;
     }
 
-    public void setSelectedCliente(Cliente item) {
+    public static void setSelectedCliente(JTable tableAnimaisPertencentes, Cliente item) {
         tableAnimaisPertencentes.setModel(new AnimalTableModel(AnimalDAO.getInstance().retriveByOwnerID(item.getId())));
     }
 

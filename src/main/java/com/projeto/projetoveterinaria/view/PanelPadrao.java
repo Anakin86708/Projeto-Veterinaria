@@ -6,6 +6,7 @@
 package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -22,10 +23,15 @@ public class PanelPadrao extends javax.swing.JPanel {
         initComponents();
         this.nome = nome;
         setTableModel(model);
+        setComboboxModel(model);
     }
     
     private void setTableModel(GenericTableModel model) {
         tableConteudo.setModel(model);
+    }
+    
+    private void setComboboxModel(GenericTableModel model) {
+        cmbFiltro.setModel(new DefaultComboBoxModel<>(model.getColunas()));
     }
 
     /**
@@ -42,7 +48,7 @@ public class PanelPadrao extends javax.swing.JPanel {
         btnEditar3 = new javax.swing.JButton();
         btnRemover3 = new javax.swing.JButton();
         txtBusca3 = new javax.swing.JTextField();
-        cmbFiltro3 = new javax.swing.JComboBox<>();
+        cmbFiltro = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableConteudo = new javax.swing.JTable();
 
@@ -52,7 +58,7 @@ public class PanelPadrao extends javax.swing.JPanel {
 
         btnRemover3.setText("Remover");
 
-        cmbFiltro3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
         panelTop3.setLayout(panelTop3Layout);
@@ -68,7 +74,7 @@ public class PanelPadrao extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addComponent(txtBusca3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbFiltro3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelTop3Layout.setVerticalGroup(
@@ -80,7 +86,7 @@ public class PanelPadrao extends javax.swing.JPanel {
                     .addComponent(btnEditar3)
                     .addComponent(btnRemover3)
                     .addComponent(txtBusca3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbFiltro3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -124,7 +130,7 @@ public class PanelPadrao extends javax.swing.JPanel {
     private javax.swing.JButton btnEditar3;
     private javax.swing.JButton btnNovo3;
     private javax.swing.JButton btnRemover3;
-    private javax.swing.JComboBox<String> cmbFiltro3;
+    private javax.swing.JComboBox<String> cmbFiltro;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelTop3;
     private javax.swing.JTable tableConteudo;

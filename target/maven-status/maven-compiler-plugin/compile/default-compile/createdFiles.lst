@@ -11,14 +11,18 @@ com\projeto\projetoveterinaria\model\Consulta.class
 com\projeto\projetoveterinaria\model\DAO\VeterinarioDAO.class
 com\projeto\projetoveterinaria\view\tableModels\GenericTableModel.class
 com\projeto\projetoveterinaria\model\DAO\EspecieDAO.class
+com\projeto\projetoveterinaria\view\tableModels\VeterinarioTableModel.class
 com\projeto\projetoveterinaria\view\FormExame$2.class
 com\projeto\projetoveterinaria\view\FormTratamento$1.class
+com\projeto\projetoveterinaria\view\tableModels\ExameTableModel.class
 com\projeto\projetoveterinaria\view\FormTratamento.class
+com\projeto\projetoveterinaria\view\tableModels\ConsultaTableModel.class
 com\projeto\projetoveterinaria\model\Animal.class
 com\projeto\projetoveterinaria\view\FormAnimal$3.class
 com\projeto\projetoveterinaria\model\DAO\DAO.class
 com\projeto\projetoveterinaria\view\FormVeterinario$2.class
 com\projeto\projetoveterinaria\view\FormConsulta$3.class
+com\projeto\projetoveterinaria\view\FormMain$2.class
 com\projeto\projetoveterinaria\view\FormAnimal.class
 com\projeto\projetoveterinaria\view\FormCliente$4.class
 com\projeto\projetoveterinaria\view\FormMain.class
@@ -30,6 +34,7 @@ com\projeto\projetoveterinaria\model\DAO\ConsultaDAO.class
 com\projeto\projetoveterinaria\controller\Controller.class
 com\projeto\projetoveterinaria\view\FormAnimal$2.class
 com\projeto\projetoveterinaria\view\tableModels\ClienteTableModel.class
+com\projeto\projetoveterinaria\view\tableModels\TratamentoTableModel.class
 com\projeto\projetoveterinaria\view\FormConsulta$5.class
 com\projeto\projetoveterinaria\view\FormCliente.class
 com\projeto\projetoveterinaria\view\FormConsulta$4.class

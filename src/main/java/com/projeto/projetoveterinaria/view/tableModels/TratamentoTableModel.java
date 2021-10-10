@@ -1,12 +1,8 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
-import com.projeto.projetoveterinaria.model.Animal;
-import com.projeto.projetoveterinaria.model.Sexo;
 import com.projeto.projetoveterinaria.model.Tratamento;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class TratamentoTableModel extends GenericTableModel<Tratamento> {

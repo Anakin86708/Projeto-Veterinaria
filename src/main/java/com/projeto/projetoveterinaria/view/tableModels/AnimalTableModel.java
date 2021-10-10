@@ -1,7 +1,6 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
 import com.projeto.projetoveterinaria.model.Animal;
-import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.model.Sexo;
 
 import java.util.ArrayList;
@@ -13,14 +12,14 @@ import java.util.List;
  */
 public class AnimalTableModel extends GenericTableModel<Animal> {
 
-    private static final String[] colunas = {"Nome", "Ano de nascimento", "Sexo", "ID Espécie", "ID Cliente"};
+    private static final String[] nomeColunas = {"Nome", "Ano de nascimento", "Sexo", "ID Espécie", "ID Cliente"};
 
     public AnimalTableModel(List<Animal> dados) {
-        super(dados, colunas);
+        super(dados, nomeColunas);
     }
 
     public AnimalTableModel() {
-        super(new ArrayList<>(), colunas);
+        super(new ArrayList<>(), nomeColunas);
     }
     
     

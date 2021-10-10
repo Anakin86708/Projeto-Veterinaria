@@ -6,8 +6,10 @@
 package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
+import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -15,14 +17,11 @@ import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
  */
 public class FormMain extends javax.swing.JFrame {
     
-    private final Controller controller;
-    
     /**
      * Creates new form FormMain
      */
     public FormMain() {
         initComponents();
-        controller = new Controller(tableAnimaisPertencentes);
         
         initPanels();
         setModels();
@@ -37,10 +36,14 @@ public class FormMain extends javax.swing.JFrame {
     }
     
     private void setModels() {
+        // Table models
         tableProximasConsultas.setModel(Controller.getModelProximasConsultas());
         tableHistorico.setModel(Controller.getModelHistoricoConsultas());
         tableCliente.setModel(Controller.getModelCliente());
         tableAnimaisPertencentes.setModel(Controller.getDefaultModelAnimais());
+        
+        // Combobox models
+        cmbFiltroCliente.setModel(new DefaultComboBoxModel<>(((GenericTableModel)tableCliente.getModel()).getColunas()));
     }
     
     public void setAnimaisCliente(GenericTableModel model){
@@ -71,7 +74,7 @@ public class FormMain extends javax.swing.JFrame {
         btnEditar3 = new javax.swing.JButton();
         btnRemover3 = new javax.swing.JButton();
         txtBusca3 = new javax.swing.JTextField();
-        cmbFiltro3 = new javax.swing.JComboBox<>();
+        cmbFiltroCliente = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCliente = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
@@ -176,7 +179,7 @@ public class FormMain extends javax.swing.JFrame {
 
         btnRemover3.setText("Remover");
 
-        cmbFiltro3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltroCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
         panelTop3.setLayout(panelTop3Layout);
@@ -192,7 +195,7 @@ public class FormMain extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
                 .addComponent(txtBusca3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbFiltro3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbFiltroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelTop3Layout.setVerticalGroup(
@@ -204,7 +207,7 @@ public class FormMain extends javax.swing.JFrame {
                     .addComponent(btnEditar3)
                     .addComponent(btnRemover3)
                     .addComponent(txtBusca3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbFiltro3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbFiltroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -334,7 +337,8 @@ public class FormMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClienteMousePressed
-        controller.setSelectedCliente(((ClienteTableModel)tableCliente. getModel()).getItem(tableCliente.getSelectedRow()));
+        final Cliente item = ((ClienteTableModel)tableCliente.getModel()).getItem(tableCliente.getSelectedRow());
+        Controller.setSelectedCliente(tableAnimaisPertencentes, item);
     }//GEN-LAST:event_tableClienteMousePressed
 
     /**
@@ -376,7 +380,7 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar3;
     private javax.swing.JButton btnNovo3;
     private javax.swing.JButton btnRemover3;
-    private javax.swing.JComboBox<String> cmbFiltro3;
+    private javax.swing.JComboBox<String> cmbFiltroCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

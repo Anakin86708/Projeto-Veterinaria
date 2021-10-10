@@ -37,7 +37,10 @@ public abstract class GenericTableModel<T> extends AbstractTableModel{
         return colunas[columnIndex];
     }
 
-    
+    public String[] getColunas() {
+        return colunas;
+    }
+
     // Metodos auxiliares:
     public T getItem(int indiceLinha) {
         if (indiceLinha < 0) {
