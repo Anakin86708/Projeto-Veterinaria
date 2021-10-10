@@ -1,6 +1,9 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -70,4 +73,8 @@ public abstract class GenericTableModel<T> extends AbstractTableModel{
         return dados.isEmpty();
     }
 
+    protected String humanDateFormat(Calendar data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(new Date(data.getTimeInMillis()));
+    }
 }

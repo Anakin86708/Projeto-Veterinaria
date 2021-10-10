@@ -6,27 +6,37 @@
 package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
+import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
 
 /**
  *
  * @author ariel
  */
 public class FormMain extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form FormMain
      */
     public FormMain() {
         initComponents();
         initPanels();
+        setModels();
     }
     
     private void initPanels() {
         jTabbedPane1.add("Animais", Controller.getPanelAnimal());
-//        jTabbedPane1.add("Consultas", new PanelPadrao());
-//        jTabbedPane1.add("Exames", new PanelPadrao());
-//        jTabbedPane1.add("Tratamentos", new PanelPadrao());
-//        jTabbedPane1.add("Veterinarios", new PanelPadrao());
+        jTabbedPane1.add("Consultas", Controller.getPanelConsulta());
+        jTabbedPane1.add("Exames", Controller.getPanelExame());
+        jTabbedPane1.add("Tratamentos", Controller.getPanelTratamento());
+        jTabbedPane1.add("Veterinarios", Controller.getPanelVeterinario());
+    }
+    
+    private void setModels() {
+        tableCliente.setModel(Controller.getModelCliente());
+    }
+    
+    public void setAnimaisCliente(GenericTableModel model){
+        tableAnimaisPertencentes.setModel(model);
     }
 
     /**
@@ -55,12 +65,12 @@ public class FormMain extends javax.swing.JFrame {
         txtBusca3 = new javax.swing.JTextField();
         cmbFiltro3 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableCliente = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
         panelAnimais = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableAnimaisPertencentes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -190,7 +200,7 @@ public class FormMain extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -201,7 +211,9 @@ public class FormMain extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tableCliente);
 
         javax.swing.GroupLayout panelClientesLayout = new javax.swing.GroupLayout(panelClientes);
         panelClientes.setLayout(panelClientesLayout);
@@ -224,14 +236,14 @@ public class FormMain extends javax.swing.JFrame {
                     .addContainerGap()
                     .addComponent(panelTop3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(12, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Animais pertencentes");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableAnimaisPertencentes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -242,7 +254,7 @@ public class FormMain extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tableAnimaisPertencentes);
 
         javax.swing.GroupLayout panelAnimaisLayout = new javax.swing.GroupLayout(panelAnimais);
         panelAnimais.setLayout(panelAnimaisLayout);
@@ -355,8 +367,6 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JPanel panelAnimais;
     private javax.swing.JPanel panelClientes;
     private javax.swing.JPanel panelHistorico;
@@ -364,6 +374,8 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelTabCliente;
     private javax.swing.JPanel panelTabInicio;
     private javax.swing.JPanel panelTop3;
+    private javax.swing.JTable tableAnimaisPertencentes;
+    private javax.swing.JTable tableCliente;
     private javax.swing.JTable tableHistorico;
     private javax.swing.JTable tableProximasConsultas;
     private javax.swing.JTextField txtBusca3;

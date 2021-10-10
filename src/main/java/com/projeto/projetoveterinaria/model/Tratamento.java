@@ -59,7 +59,7 @@ public class Tratamento {
         this.idAnimal = idAnimal;
     }
 
-    public boolean isTerminou() {
+    public boolean getTerminou() {
         return terminou;
     }
 

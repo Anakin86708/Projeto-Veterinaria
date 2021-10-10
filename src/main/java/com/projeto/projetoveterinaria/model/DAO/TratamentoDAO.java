@@ -94,7 +94,7 @@ public class TratamentoDAO extends DAO<Tratamento> {
             stmt.setDate(2, new Date(tratamento.getDataEntrada().getTimeInMillis()));
             stmt.setDate(3, new Date(tratamento.getDataSaida().getTimeInMillis()));
             stmt.setInt(4, tratamento.getIdAnimal());
-            stmt.setBoolean(5, tratamento.isTerminou());
+            stmt.setBoolean(5, tratamento.getTerminou());
             stmt.setInt(6, tratamento.getId());
             executeUpdate(stmt);
         } catch (SQLException ex) {
