@@ -32,6 +32,8 @@ public class FormMain extends javax.swing.JFrame {
     }
     
     private void setModels() {
+        tableProximasConsultas.setModel(Controller.getModelProximasConsultas());
+        tableHistorico.setModel(Controller.getModelHistoricoConsultas());
         tableCliente.setModel(Controller.getModelCliente());
     }
     

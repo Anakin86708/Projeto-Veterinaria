@@ -68,6 +68,18 @@ public class ConsultaDAO extends DAO<Consulta> {
         return retrieve(quary);
     }
 
+    public List<Consulta> retrieveProximasConsultas() {
+        //language=SQL
+        String query = "SELECT * FROM consulta WHERE terminado == 0";
+        return retrieve(query);
+    }
+
+    public List<Consulta> retrieveHistoricoConsultas() {
+        //language=SQL
+        String query = "SELECT * FROM consulta WHERE terminado == 1";
+        return retrieve(query);
+    }
+
     public Consulta retrieveById(int id) {
         //language=SQL
         String quary = "SELECT * FROM consulta WHERE id = " + id;

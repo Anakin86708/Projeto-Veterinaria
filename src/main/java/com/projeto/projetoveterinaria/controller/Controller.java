@@ -13,15 +13,15 @@ import com.projeto.projetoveterinaria.view.tableModels.ConsultaTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.ExameTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.TratamentoTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.VeterinarioTableModel;
+
 import java.awt.Component;
 import javax.swing.table.TableModel;
 
 /**
- *
  * @author ariel
  */
 public class Controller {
-       
+
     private static Component instancePanelAnimal;
     private static Component instancePanelConsulta;
     private static Component instancePanelExame;
@@ -29,8 +29,9 @@ public class Controller {
     private static Component instancePanelVeterinario;
 
     public static Component getPanelAnimal() {
-        if (instancePanelAnimal == null)
+        if (instancePanelAnimal == null) {
             instancePanelAnimal = new PanelPadrao("Animais", new AnimalTableModel(AnimalDAO.getInstance().retrieveAll()));
+        }
         return instancePanelAnimal;
     }
 
@@ -38,11 +39,20 @@ public class Controller {
         return new ClienteTableModel(ClienteDAO.getInstance().retrieveAll());
     }
 
+    public static TableModel getModelProximasConsultas() {
+        return new ConsultaTableModel(ConsultaDAO.getInstance().retrieveProximasConsultas());
+    }
+
+    public static TableModel getModelHistoricoConsultas() {
+        return new ConsultaTableModel(ConsultaDAO.getInstance().retrieveHistoricoConsultas());
+    }
+
     public static Component getPanelConsulta() {
-        if (instancePanelConsulta == null)
+        if (instancePanelConsulta == null) {
             instancePanelConsulta = new PanelPadrao("Consultas", new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll()));
+        }
         return instancePanelConsulta;
-            
+
     }
 
     public static Component getPanelExame() {
