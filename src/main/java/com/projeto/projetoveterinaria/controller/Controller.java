@@ -1,5 +1,6 @@
 package com.projeto.projetoveterinaria.controller;
 
+import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
 import com.projeto.projetoveterinaria.model.DAO.ClienteDAO;
 import com.projeto.projetoveterinaria.model.DAO.ConsultaDAO;
@@ -15,6 +16,7 @@ import com.projeto.projetoveterinaria.view.tableModels.TratamentoTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.VeterinarioTableModel;
 
 import java.awt.Component;
+import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
 /**
@@ -22,11 +24,16 @@ import javax.swing.table.TableModel;
  */
 public class Controller {
 
+    private final JTable tableAnimaisPertencentes;
     private static Component instancePanelAnimal;
     private static Component instancePanelConsulta;
     private static Component instancePanelExame;
     private static Component instancePanelTratamento;
     private static Component instancePanelVeterinario;
+
+    public Controller(JTable tableAnimaisPertencentes) {
+        this.tableAnimaisPertencentes = tableAnimaisPertencentes;
+    }
 
     public static Component getPanelAnimal() {
         if (instancePanelAnimal == null) {
@@ -45,6 +52,10 @@ public class Controller {
 
     public static TableModel getModelHistoricoConsultas() {
         return new ConsultaTableModel(ConsultaDAO.getInstance().retrieveHistoricoConsultas());
+    }
+
+    public static TableModel getDefaultModelAnimais() {
+        return new AnimalTableModel();
     }
 
     public static Component getPanelConsulta() {
@@ -74,6 +85,10 @@ public class Controller {
             instancePanelVeterinario = new PanelPadrao("Veterinários", new VeterinarioTableModel(VeterinarioDAO.getInstance().retrieveAll()));
         }
         return instancePanelVeterinario;
+    }
+
+    public void setSelectedCliente(Cliente item) {
+        tableAnimaisPertencentes.setModel(new AnimalTableModel(AnimalDAO.getInstance().retriveByOwnerID(item.getId())));
     }
 
 }

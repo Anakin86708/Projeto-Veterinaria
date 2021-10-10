@@ -6,6 +6,7 @@
 package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
+import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
 
 /**
@@ -14,11 +15,15 @@ import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
  */
 public class FormMain extends javax.swing.JFrame {
     
+    private final Controller controller;
+    
     /**
      * Creates new form FormMain
      */
     public FormMain() {
         initComponents();
+        controller = new Controller(tableAnimaisPertencentes);
+        
         initPanels();
         setModels();
     }
@@ -35,6 +40,7 @@ public class FormMain extends javax.swing.JFrame {
         tableProximasConsultas.setModel(Controller.getModelProximasConsultas());
         tableHistorico.setModel(Controller.getModelHistoricoConsultas());
         tableCliente.setModel(Controller.getModelCliente());
+        tableAnimaisPertencentes.setModel(Controller.getDefaultModelAnimais());
     }
     
     public void setAnimaisCliente(GenericTableModel model){
@@ -215,6 +221,11 @@ public class FormMain extends javax.swing.JFrame {
         ));
         tableCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tableClienteMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableCliente);
 
         javax.swing.GroupLayout panelClientesLayout = new javax.swing.GroupLayout(panelClientes);
@@ -321,6 +332,10 @@ public class FormMain extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tableClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClienteMousePressed
+        controller.setSelectedCliente(((ClienteTableModel)tableCliente. getModel()).getItem(tableCliente.getSelectedRow()));
+    }//GEN-LAST:event_tableClienteMousePressed
 
     /**
      * @param args the command line arguments

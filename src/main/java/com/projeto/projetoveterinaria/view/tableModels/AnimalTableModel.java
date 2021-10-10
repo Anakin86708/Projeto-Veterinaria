@@ -3,6 +3,8 @@ package com.projeto.projetoveterinaria.view.tableModels;
 import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.model.Sexo;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,9 +13,17 @@ import java.util.List;
  */
 public class AnimalTableModel extends GenericTableModel<Animal> {
 
+    private static final String[] colunas = {"Nome", "Ano de nascimento", "Sexo", "ID Espécie", "ID Cliente"};
+
     public AnimalTableModel(List<Animal> dados) {
-        super(dados, new String[]{"Nome", "Ano de nascimento", "Sexo", "ID Espécie", "ID Cliente"});
+        super(dados, colunas);
     }
+
+    public AnimalTableModel() {
+        super(new ArrayList<>(), colunas);
+    }
+    
+    
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
