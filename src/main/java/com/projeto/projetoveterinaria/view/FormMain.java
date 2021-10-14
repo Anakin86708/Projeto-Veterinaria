@@ -7,9 +7,12 @@ package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.model.Cliente;
+import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 /**
  *
@@ -70,10 +73,10 @@ public class FormMain extends javax.swing.JFrame {
         panelTabCliente = new javax.swing.JPanel();
         panelClientes = new javax.swing.JPanel();
         panelTop3 = new javax.swing.JPanel();
-        btnNovo3 = new javax.swing.JButton();
-        btnEditar3 = new javax.swing.JButton();
-        btnRemover3 = new javax.swing.JButton();
-        txtBusca3 = new javax.swing.JTextField();
+        btnNovo = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+        txtBusca = new javax.swing.JTextField();
         cmbFiltroCliente = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCliente = new javax.swing.JTable();
@@ -173,11 +176,16 @@ public class FormMain extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Início", panelTabInicio);
 
-        btnNovo3.setText("Novo");
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
-        btnEditar3.setText("Editar");
+        btnEditar.setText("Editar");
 
-        btnRemover3.setText("Remover");
+        btnRemover.setText("Remover");
 
         cmbFiltroCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -187,13 +195,13 @@ public class FormMain extends javax.swing.JFrame {
             panelTop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTop3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnNovo3)
+                .addComponent(btnNovo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar3)
+                .addComponent(btnEditar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRemover3)
+                .addComponent(btnRemover)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
-                .addComponent(txtBusca3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbFiltroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -203,10 +211,10 @@ public class FormMain extends javax.swing.JFrame {
             .addGroup(panelTop3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNovo3)
-                    .addComponent(btnEditar3)
-                    .addComponent(btnRemover3)
-                    .addComponent(txtBusca3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNovo)
+                    .addComponent(btnEditar)
+                    .addComponent(btnRemover)
+                    .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbFiltroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -341,6 +349,11 @@ public class FormMain extends javax.swing.JFrame {
         Controller.setSelectedCliente(tableAnimaisPertencentes, item);
     }//GEN-LAST:event_tableClienteMousePressed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        JDialog frame = new ModalCliente(this, true);
+        frame.setVisible(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -377,9 +390,9 @@ public class FormMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditar3;
-    private javax.swing.JButton btnNovo3;
-    private javax.swing.JButton btnRemover3;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JComboBox<String> cmbFiltroCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -399,6 +412,6 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JTable tableCliente;
     private javax.swing.JTable tableHistorico;
     private javax.swing.JTable tableProximasConsultas;
-    private javax.swing.JTextField txtBusca3;
+    private javax.swing.JTextField txtBusca;
     // End of variables declaration//GEN-END:variables
 }
