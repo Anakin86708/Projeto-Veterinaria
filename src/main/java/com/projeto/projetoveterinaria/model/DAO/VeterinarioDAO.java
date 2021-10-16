@@ -43,6 +43,13 @@ public class VeterinarioDAO extends DAO<Veterinario> {
         return retrieveLast();
     }
 
+
+    public List<Veterinario> retrieveAll() {
+        //language=SQL
+        String query = "SELECT * FROM vet";
+        return retrieve(query);
+    }
+
     public Veterinario retrieveLast() {
         //language=SQL
         String query = "SELECT * FROM vet WHERE id = (SELECT max(id) FROM vet)";

@@ -40,6 +40,13 @@ public class ExameDAO extends DAO<Exame> {
         }
         return retrieveLast();
     }
+    
+    
+    public List<Exame> retrieveAll() {
+        //language=SQL
+        String query = "SELECT * FROM exame";
+        return retrieve(query);
+    }
 
     public Exame retrieveLast() {
         //language=SQL

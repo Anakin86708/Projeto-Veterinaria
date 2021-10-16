@@ -17,6 +17,8 @@ public class Animal {
      * @param nome    nome
      * @param anoNasc ano de nascimento
      * @param sexo    sexo
+     * @param idEspecie
+     * @param idCliente
      */
     public Animal(int id, String nome, int anoNasc, Sexo sexo, int idEspecie, int idCliente) {
         this.id = id;
@@ -25,6 +27,12 @@ public class Animal {
         this.sexo = sexo;
         this.idEspecie = idEspecie;
         this.idCliente = idCliente;
+    }
+    
+    public Animal()
+    {
+        this.id = 0;
+        this.sexo = Sexo.MACHO;
     }
 
     public int getId() {
