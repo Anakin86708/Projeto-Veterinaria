@@ -12,13 +12,14 @@ import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 
 /**
  *
  * @author ariel
  */
 public class FormMain extends javax.swing.JFrame {
+
+    private final Controller controller;
     
     /**
      * Creates new form FormMain
@@ -26,16 +27,18 @@ public class FormMain extends javax.swing.JFrame {
     public FormMain() {
         initComponents();
         
+        this.controller = new Controller(this);
+        
         initPanels();
         setModels();
     }
     
     private void initPanels() {
-        jTabbedPane1.add("Animais", Controller.getPanelAnimal());
-        jTabbedPane1.add("Consultas", Controller.getPanelConsulta());
-        jTabbedPane1.add("Exames", Controller.getPanelExame());
-        jTabbedPane1.add("Tratamentos", Controller.getPanelTratamento());
-        jTabbedPane1.add("Veterinarios", Controller.getPanelVeterinario());
+        jTabbedPane1.add("Animais", controller.getPanelAnimal());
+        jTabbedPane1.add("Consultas", controller.getPanelConsulta());
+        jTabbedPane1.add("Exames", controller.getPanelExame());
+        jTabbedPane1.add("Tratamentos", controller.getPanelTratamento());
+        jTabbedPane1.add("Veterinarios", controller.getPanelVeterinario());
     }
     
     private void setModels() {
@@ -87,6 +90,7 @@ public class FormMain extends javax.swing.JFrame {
         tableAnimaisPertencentes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Projeto veterinária");
 
         panelProximasConsultas.setBorder(javax.swing.BorderFactory.createTitledBorder("Próximas consultas"));
         panelProximasConsultas.setPreferredSize(new java.awt.Dimension(838, 336));
@@ -210,12 +214,13 @@ public class FormMain extends javax.swing.JFrame {
             panelTop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTop3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelTop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNovo)
-                    .addComponent(btnEditar)
-                    .addComponent(btnRemover)
-                    .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbFiltroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelTop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTop3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEditar)
+                        .addComponent(btnRemover)
+                        .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbFiltroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

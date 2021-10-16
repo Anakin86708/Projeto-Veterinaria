@@ -46,13 +46,13 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnNovo3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnNovo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnEditar3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnEditar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnRemover3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnRemover" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="84" max="32767" attributes="0"/>
-                  <Component id="txtBusca3" min="-2" pref="220" max="-2" attributes="0"/>
+                  <Component id="txtBusca" min="-2" pref="220" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cmbFiltro" min="-2" pref="115" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -64,10 +64,10 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnNovo3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnEditar3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnRemover3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtBusca3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnNovo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnEditar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnRemover" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtBusca" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cmbFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -76,22 +76,25 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="btnNovo3">
+        <Component class="javax.swing.JButton" name="btnNovo">
           <Properties>
             <Property name="text" type="java.lang.String" value="Novo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNovoActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnEditar3">
+        <Component class="javax.swing.JButton" name="btnEditar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Editar"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btnRemover3">
+        <Component class="javax.swing.JButton" name="btnRemover">
           <Properties>
             <Property name="text" type="java.lang.String" value="Remover"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtBusca3">
+        <Component class="javax.swing.JTextField" name="txtBusca">
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbFiltro">
           <Properties>
