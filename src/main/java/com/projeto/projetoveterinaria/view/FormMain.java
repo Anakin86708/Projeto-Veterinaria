@@ -29,17 +29,10 @@ public class FormMain extends javax.swing.JFrame {
         
         this.controller = new Controller(this);
         
-        initPanels();
+        controller.initPanels(jTabbedPane1);
         setModels();
     }
     
-    private void initPanels() {
-        jTabbedPane1.add("Animais", controller.getPanelAnimal());
-        jTabbedPane1.add("Consultas", controller.getPanelConsulta());
-        jTabbedPane1.add("Exames", controller.getPanelExame());
-        jTabbedPane1.add("Tratamentos", controller.getPanelTratamento());
-        jTabbedPane1.add("Veterinarios", controller.getPanelVeterinario());
-    }
     
     private void setModels() {
         // Table models

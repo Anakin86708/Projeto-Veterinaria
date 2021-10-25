@@ -7,6 +7,7 @@ import com.projeto.projetoveterinaria.model.DAO.ConsultaDAO;
 import com.projeto.projetoveterinaria.model.DAO.ExameDAO;
 import com.projeto.projetoveterinaria.model.DAO.TratamentoDAO;
 import com.projeto.projetoveterinaria.model.DAO.VeterinarioDAO;
+import com.projeto.projetoveterinaria.view.FormMain;
 import com.projeto.projetoveterinaria.view.PanelPadrao;
 import com.projeto.projetoveterinaria.view.modals.ModalAnimal;
 import com.projeto.projetoveterinaria.view.modals.ModalConsulta;
@@ -22,6 +23,7 @@ import com.projeto.projetoveterinaria.view.tableModels.VeterinarioTableModel;
 
 import java.awt.Component;
 import java.awt.Frame;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
@@ -105,6 +107,14 @@ public class Controller {
 
     public static void setSelectedCliente(JTable tableAnimaisPertencentes, Cliente item) {
         tableAnimaisPertencentes.setModel(new AnimalTableModel(AnimalDAO.getInstance().retriveByOwnerID(item.getId())));
+    }
+
+    public void initPanels(JTabbedPane tabbedPanedPane1) {
+        tabbedPanedPane1.add("Animais", this.getPanelAnimal());
+        tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
+        tabbedPanedPane1.add("Exames", this.getPanelExame());
+        tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
+        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
     }
 
 }
