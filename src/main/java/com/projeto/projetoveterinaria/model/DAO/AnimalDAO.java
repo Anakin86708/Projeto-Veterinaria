@@ -13,8 +13,11 @@ import java.util.List;
 public class AnimalDAO extends DAO<Animal> {
 
     private static AnimalDAO instance;
+    public final static String COLUMN_NAME = "animal";
+
 
     private AnimalDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }

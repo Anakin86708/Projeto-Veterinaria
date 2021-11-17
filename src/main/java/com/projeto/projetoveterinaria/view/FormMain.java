@@ -7,6 +7,7 @@ package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.model.Cliente;
+import com.projeto.projetoveterinaria.view.comboModels.GenericComboBoxModel;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
@@ -184,6 +185,12 @@ public class FormMain extends javax.swing.JFrame {
 
         btnRemover.setText("Remover");
 
+        txtBusca.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtBuscaCaretUpdate(evt);
+            }
+        });
+
         cmbFiltroCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
@@ -351,6 +358,10 @@ public class FormMain extends javax.swing.JFrame {
         JDialog frame = new ModalCliente(this, true);
         frame.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
+        Controller.buscarCliente(txtBusca, tableCliente);
+    }//GEN-LAST:event_txtBuscaCaretUpdate
 
     /**
      * @param args the command line arguments

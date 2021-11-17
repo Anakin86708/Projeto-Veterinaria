@@ -13,8 +13,11 @@ import java.util.List;
 public class ClienteDAO extends DAO<Cliente> {
 
     private static ClienteDAO instance;
+    public final static String COLUMN_NAME = "cliente";
+
 
     private ClienteDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }

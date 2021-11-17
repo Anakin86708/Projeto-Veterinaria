@@ -10,8 +10,11 @@ import java.util.List;
 public class ExameDAO extends DAO<Exame> {
 
     private static ExameDAO instance;
+    public final static String COLUMN_NAME = "exame";
+
 
     private ExameDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }

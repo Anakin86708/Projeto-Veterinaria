@@ -13,8 +13,11 @@ import java.util.List;
 public class TratamentoDAO extends DAO<Tratamento> {
 
     private static TratamentoDAO instance;
+    public final static String COLUMN_NAME = "tratamento";
+
 
     private TratamentoDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }

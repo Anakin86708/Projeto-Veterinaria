@@ -23,8 +23,10 @@ import com.projeto.projetoveterinaria.view.tableModels.VeterinarioTableModel;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.util.List;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 /**
@@ -115,6 +117,12 @@ public class Controller {
         tabbedPanedPane1.add("Exames", this.getPanelExame());
         tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
         tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
+    }
+    
+    public static void buscarCliente(JTextField textField, JTable table) {
+        String textoBuscdo = textField.getText();
+        List<Cliente> dados = ClienteDAO.getInstance().retrieveBySimilarName(textoBuscdo);
+        table.setModel(new ClienteTableModel(dados));
     }
 
 }

@@ -4,6 +4,8 @@ package com.projeto.projetoveterinaria.model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementação DAO para acesso ao SQLite
@@ -13,7 +15,12 @@ import java.util.List;
 public abstract class DAO<T> {
 
     public final static String DBURL = "jdbc:sqlite:vet2021.db";
+    public final String columnName;
     private static Connection connection;
+
+    protected DAO(String columnName) {
+        this.columnName = columnName;
+    }
 
     public static Connection getConnection() {
         if (DAO.connection == null) {
@@ -35,6 +42,26 @@ public abstract class DAO<T> {
         }
     }
 
+    public String[] getColumnsNames() {
+        PreparedStatement stmt;
+        ArrayList<String> columns = new ArrayList<>();
+        try {
+            stmt = connection.prepareStatement("SELECT * FROM ? LIMIT 1");
+            stmt.setString(1, columnName);
+            ResultSet resultSet = stmt.executeQuery();
+            ResultSetMetaData metadata = resultSet.getMetaData();
+
+            int columnCount = metadata.getColumnCount();
+            for (int i = 1; i < columnCount; i++) {
+                String columnName = metadata.getColumnName(i);
+                columns.add(columnName);
+            }
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+        }
+        return  columns.toArray(new String[0]);
+    }
+
     protected int lastId(String tableName, String primaryKey) {
         Statement s;
         int lastId = -1;
@@ -49,7 +76,7 @@ public abstract class DAO<T> {
         }
         return lastId;
     }
-    
+
 
     // Create table SQLite
     protected final boolean createTable() {
