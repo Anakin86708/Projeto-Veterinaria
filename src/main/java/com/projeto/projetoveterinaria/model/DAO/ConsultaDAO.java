@@ -12,8 +12,11 @@ import java.util.List;
 public class ConsultaDAO extends DAO<Consulta> {
 
     private static ConsultaDAO instance;
+    public final static String COLUMN_NAME = "consulta";
+
 
     private ConsultaDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }

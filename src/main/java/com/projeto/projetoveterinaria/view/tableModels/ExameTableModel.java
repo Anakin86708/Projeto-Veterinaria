@@ -9,8 +9,12 @@ import java.util.List;
  */
 public class ExameTableModel extends GenericTableModel<Exame> {
 
+    private static final String[] nomeColunas = {"Consulta", "Descrição exame"};
+    private static final String nomeTabelaSQL = "exame";
+
+
     public ExameTableModel(List<Exame> dados) {
-        super(dados, new String[]{"Consulta", "Descrição exame"});
+        super(dados, nomeColunas, nomeTabelaSQL);
     }
 
     @Override

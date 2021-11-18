@@ -10,8 +10,11 @@ import java.util.List;
 public class VeterinarioDAO extends DAO<Veterinario> {
 
     private static VeterinarioDAO instance;
+    public final static String COLUMN_NAME = "vet";
+
 
     private VeterinarioDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }

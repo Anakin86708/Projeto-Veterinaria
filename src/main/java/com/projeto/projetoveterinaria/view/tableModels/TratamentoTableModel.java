@@ -6,8 +6,12 @@ import java.util.Calendar;
 import java.util.List;
 
 public class TratamentoTableModel extends GenericTableModel<Tratamento> {
+
+    private static final String[] nomeColunas = {"Nome", "Data entrada", "Data saída", "Animal", "Terminou"};
+    private static final String nomeTabelaSQL = "tratamento";
+
     public TratamentoTableModel(List<Tratamento> dados) {
-        super(dados, new String[] {"Nome", "Data entrada", "Data saída", "Animal", "Terminou"});
+        super(dados, nomeColunas, nomeTabelaSQL);
     }
 
     @Override

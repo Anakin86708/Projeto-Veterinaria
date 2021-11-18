@@ -15,13 +15,18 @@ import javax.swing.table.AbstractTableModel;
 public abstract class GenericTableModel<T> extends AbstractTableModel{
     protected final ArrayList<T> dados;
     protected final String[] colunas;
+    protected final String nomeTabelaSQL;
 
-    public GenericTableModel(List<T> dados, String[] colunas) {
+    public GenericTableModel(List<T> dados, String[] colunas, String tabela) {
         this.dados = new ArrayList<>(dados);
         this.colunas = colunas;
+        this.nomeTabelaSQL = tabela;
     }
-    
-    
+
+    public String getNomeTabelaSQL() {
+        return nomeTabelaSQL;
+    }
+
     @Override
     public int getRowCount() {
         return dados.size();

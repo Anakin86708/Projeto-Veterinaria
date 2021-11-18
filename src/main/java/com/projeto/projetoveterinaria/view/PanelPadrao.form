@@ -95,6 +95,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtBusca">
+          <Events>
+            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="txtBuscaCaretUpdate"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbFiltro">
           <Properties>
@@ -107,6 +110,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cmbFiltroItemStateChanged"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>

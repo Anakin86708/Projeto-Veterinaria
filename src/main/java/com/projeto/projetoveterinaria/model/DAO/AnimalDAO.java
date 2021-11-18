@@ -13,8 +13,11 @@ import java.util.List;
 public class AnimalDAO extends DAO<Animal> {
 
     private static AnimalDAO instance;
+    public final static String COLUMN_NAME = "animal";
+
 
     private AnimalDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }
@@ -50,12 +53,6 @@ public class AnimalDAO extends DAO<Animal> {
             throw new RuntimeException("Nenhum animal encontrado com id " + id);
         }
         return client.get(0);
-    }
-
-    public List<Animal> retrieveBySimilarName(String nome) {
-        //language=SQL
-        String query = "SELECT * FROM animal WHERE nome LIKE '%" + nome + "%'";
-        return retrieve(query);
     }
 
     public List<Animal> retriveByOwnerID(int id_cliente) {

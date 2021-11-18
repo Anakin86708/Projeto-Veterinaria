@@ -184,7 +184,18 @@ public class FormMain extends javax.swing.JFrame {
 
         btnRemover.setText("Remover");
 
+        txtBusca.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtBuscaCaretUpdate(evt);
+            }
+        });
+
         cmbFiltroCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltroCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbFiltroClienteItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
         panelTop3.setLayout(panelTop3Layout);
@@ -352,6 +363,17 @@ public class FormMain extends javax.swing.JFrame {
         frame.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
+        search();
+    }//GEN-LAST:event_txtBuscaCaretUpdate
+
+    private void cmbFiltroClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFiltroClienteItemStateChanged
+        search();
+    }//GEN-LAST:event_cmbFiltroClienteItemStateChanged
+
+    private void search() {
+        Controller.searchFor(txtBusca, cmbFiltroCliente,tableCliente);
+    }
     /**
      * @param args the command line arguments
      */
