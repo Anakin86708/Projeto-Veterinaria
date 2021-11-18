@@ -55,12 +55,6 @@ public class AnimalDAO extends DAO<Animal> {
         return client.get(0);
     }
 
-    public List<Animal> retrieveBySimilarName(String nome) {
-        //language=SQL
-        String query = "SELECT * FROM animal WHERE nome LIKE '%" + nome + "%'";
-        return retrieve(query);
-    }
-
     public List<Animal> retriveByOwnerID(int id_cliente) {
         //language=SQL
         String query = "SELECT * FROM animal WHERE id_cliente = " + id_cliente;

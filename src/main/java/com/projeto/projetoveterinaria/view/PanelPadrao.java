@@ -5,6 +5,7 @@
  */
 package com.projeto.projetoveterinaria.view;
 
+import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
 import javax.swing.DefaultComboBoxModel;
@@ -67,7 +68,18 @@ public class PanelPadrao extends javax.swing.JPanel {
 
         btnRemover.setText("Remover");
 
+        txtBusca.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtBuscaCaretUpdate(evt);
+            }
+        });
+
         cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltro.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbFiltroItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
         panelTop3.setLayout(panelTop3Layout);
@@ -138,6 +150,17 @@ public class PanelPadrao extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
+        search();
+    }//GEN-LAST:event_txtBuscaCaretUpdate
+
+    private void cmbFiltroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFiltroItemStateChanged
+        search();
+    }//GEN-LAST:event_cmbFiltroItemStateChanged
+
+    private void search() {
+        Controller.searchFor(txtBusca, cmbFiltro, tableConteudo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;

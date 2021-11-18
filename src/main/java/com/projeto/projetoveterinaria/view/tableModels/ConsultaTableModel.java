@@ -10,8 +10,12 @@ import java.util.List;
  */
 public class ConsultaTableModel extends GenericTableModel<Consulta> {
 
+    private static final String[] nomeColunas = {"Data", "Hora", "Comentários", "Animal", "Tratamento", "Veterinário", "Terminou"};
+    private static final String nomeTabelaSQL = "consulta";
+
+
     public ConsultaTableModel(List<Consulta> dados) {
-        super(dados, new String[]{"Data", "Hora", "Comentários", "Animal", "Tratamento", "Veterinário", "Terminou"});
+        super(dados, nomeColunas, nomeTabelaSQL);
     }
 
     @Override

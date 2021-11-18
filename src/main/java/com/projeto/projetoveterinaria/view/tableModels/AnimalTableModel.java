@@ -13,13 +13,14 @@ import java.util.List;
 public class AnimalTableModel extends GenericTableModel<Animal> {
 
     private static final String[] nomeColunas = {"Nome", "Ano de nascimento", "Sexo", "ID Espécie", "ID Cliente"};
+    private static final String nomeTabelaSQL = "animal";
 
     public AnimalTableModel(List<Animal> dados) {
-        super(dados, nomeColunas);
+        super(dados, nomeColunas, nomeTabelaSQL);
     }
 
     public AnimalTableModel() {
-        super(new ArrayList<>(), nomeColunas);
+        super(new ArrayList<>(), nomeColunas, nomeTabelaSQL);
     }
     
     

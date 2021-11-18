@@ -13,16 +13,10 @@ import com.projeto.projetoveterinaria.view.modals.ModalConsulta;
 import com.projeto.projetoveterinaria.view.modals.ModalExame;
 import com.projeto.projetoveterinaria.view.modals.ModalTratamento;
 import com.projeto.projetoveterinaria.view.modals.ModalVeterinario;
-import com.projeto.projetoveterinaria.view.tableModels.AnimalTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.ConsultaTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.ExameTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.TratamentoTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.VeterinarioTableModel;
+import com.projeto.projetoveterinaria.view.tableModels.*;
 
 import java.awt.Component;
 import java.awt.Frame;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 
@@ -62,7 +56,8 @@ public class Controller {
         if (instancePanelAnimal == null) {
             final AnimalTableModel animalTableModel = new AnimalTableModel(AnimalDAO.getInstance().retrieveAll());
             final ModalAnimal modalAnimal = new ModalAnimal(frameAssociado, true);
-            instancePanelAnimal = new PanelPadrao("Animais", animalTableModel, modalAnimal);;
+            instancePanelAnimal = new PanelPadrao("Animais", animalTableModel, modalAnimal);
+            ;
         }
         return instancePanelAnimal;
     }
@@ -116,28 +111,108 @@ public class Controller {
         tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
     }
 
-    /**
-     * Realiza a busca por um cliente, em qualquer coluna estabelecida pelo combobox.
-     *
-     * @param textField Caixa de texto onde contém o texto a ser buscado.
-     * @param cmbFiltroCliente Combobox que determina a coluna a ser buscada.
-     * @param table Tabela onde são exibidos os resultados.
-     */
-    public static void buscarCliente(JTextField textField, JComboBox<String> cmbFiltroCliente, JTable table) {
-        String textoBuscado = textField.getText();
-        // Deve encontrar o nome da coluna SQL de acordo com o texto selecionado da combobox
-        String valorCmb = (String) cmbFiltroCliente.getSelectedItem();
+    public static void searchFor(JTextField txtBusca, JComboBox<String> cmbFiltro, JTable tableConteudo) {
+        String textoBuscado = txtBusca.getText();
+        String valorCmb = (String) cmbFiltro.getSelectedItem();
+        String nomeTabela = ((GenericTableModel) tableConteudo.getModel()).getNomeTabelaSQL();
         String nomeColunaSQL;
-        switch (valorCmb) {
-            case "Nome" -> nomeColunaSQL = "nome";
-            case "Endereço" -> nomeColunaSQL = "end";
-            case "Telefone" -> nomeColunaSQL = "telefone";
-            case "cep" -> nomeColunaSQL = "cep";
-            case "Email" -> nomeColunaSQL = "email";
-            default -> nomeColunaSQL = "nome";
+
+        switch (nomeTabela) {
+            case "animal" -> {
+                nomeColunaSQL = getSelectedColAnimal(valorCmb);
+                tableConteudo.setModel(new AnimalTableModel(
+                        AnimalDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "cliente" -> {
+                nomeColunaSQL = getSelectedColCliente(valorCmb);
+                tableConteudo.setModel(new ClienteTableModel(
+                        ClienteDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "vet" -> {
+                nomeColunaSQL = getSelectedColVet(valorCmb);
+                tableConteudo.setModel(new VeterinarioTableModel(
+                        VeterinarioDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "tratamento" -> {
+                nomeColunaSQL = getSelectedColTratamento(valorCmb);
+                tableConteudo.setModel(new TratamentoTableModel(
+                        TratamentoDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "consulta" -> {
+                nomeColunaSQL = getSelectedColConsulte(valorCmb);
+                tableConteudo.setModel(new ConsultaTableModel(
+                        ConsultaDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "exame" -> {
+                nomeColunaSQL = getSelectedColExame(valorCmb);
+                tableConteudo.setModel(new ExameTableModel(
+                        ExameDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
         }
-        List<Cliente> dados = ClienteDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL);
-        table.setModel(new ClienteTableModel(dados));
     }
+
+    private static String getSelectedColExame(String valorCmb) {
+        return switch (valorCmb) {
+            case "Consulta" -> "id_consulta";
+            default -> "decricao_exame";
+        };
+    }
+
+    private static String getSelectedColConsulte(String valorCmb) {
+        return switch (valorCmb) {
+            case "Data" -> "data";
+            case "Hora" -> "horario";
+            case "Animal" -> "id_animal";
+            case "Tratamento" -> "id_tratamento";
+            case "Veterinário" -> "id_vet";
+            case "Terminou" -> "terminado";
+            default -> "comentario";
+        };
+    }
+
+    private static String getSelectedColTratamento(String valorCmb) {
+        return switch (valorCmb) {
+            case "Data entrada" -> "dataIni";
+            case "Data saída" -> "dataFim";
+            case "Animal" -> "id_animal";
+            case "Terminou" -> "terminado";
+            default -> "nome";
+        };
+    }
+
+    private static String getSelectedColVet(String valorCmb) {
+        return switch (valorCmb) {
+            case "Endereço" -> "endereco";
+            case "Telefone" -> "telefone";
+            default -> "nome";
+        };
+    }
+
+    private static String getSelectedColCliente(String valorCmb) {
+        return switch (valorCmb) {
+            case "Endereço" -> "end";
+            case "Telefone" -> "telefone";
+            case "cep" -> "cep";
+            case "Email" -> "email";
+            default -> "nome";
+        };
+    }
+
+    private static String getSelectedColAnimal(String valorCmb) {
+        return switch (valorCmb) {
+            case "Ano de nascimento" -> "anoNasc";
+            case "Sexo" -> "sexo";
+            case "ID Espécie" -> "id_especie";
+            case "ID Cliente" -> "id_cliente";
+            default -> "nome";
+        };
+    }
+
 
 }

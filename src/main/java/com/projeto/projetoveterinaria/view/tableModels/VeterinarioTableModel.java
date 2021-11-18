@@ -5,8 +5,13 @@ import com.projeto.projetoveterinaria.model.Veterinario;
 import java.util.List;
 
 public class VeterinarioTableModel extends GenericTableModel<Veterinario> {
+
+    private static final String[] nomeColunas = {"Nome", "Endereço", "Telefone"};
+    private static final String nomeTabelaSQL = "vet";
+
+
     public VeterinarioTableModel(List<Veterinario> dados) {
-        super(dados, new String[]{"Nome", "Endereço", "Telefone"});
+        super(dados, nomeColunas, nomeTabelaSQL);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
 
+import com.projeto.projetoveterinaria.model.Animal;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +145,12 @@ public abstract class DAO<T> {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
         return false;
+    }
+
+    public List<T> retrieveBySimilarValueOnColumn(String value, String column) {
+        //language=SQL
+        String query = "SELECT * FROM " + columnName +" WHERE " + column + " LIKE '%" + value + "%'";
+        return retrieve(query);
     }
 
     protected abstract T buildObject(ResultSet rs) throws SQLException;

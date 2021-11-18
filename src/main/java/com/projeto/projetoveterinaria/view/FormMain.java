@@ -372,7 +372,7 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbFiltroClienteItemStateChanged
 
     private void search() {
-        Controller.buscarCliente(txtBusca, cmbFiltroCliente,tableCliente);
+        Controller.searchFor(txtBusca, cmbFiltroCliente,tableCliente);
     }
     /**
      * @param args the command line arguments
