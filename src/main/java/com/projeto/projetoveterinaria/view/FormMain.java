@@ -7,7 +7,6 @@ package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.model.Cliente;
-import com.projeto.projetoveterinaria.view.comboModels.GenericComboBoxModel;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
@@ -192,6 +191,11 @@ public class FormMain extends javax.swing.JFrame {
         });
 
         cmbFiltroCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltroCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbFiltroClienteItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
         panelTop3.setLayout(panelTop3Layout);
@@ -360,9 +364,16 @@ public class FormMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
-        Controller.buscarCliente(txtBusca, tableCliente);
+        search();
     }//GEN-LAST:event_txtBuscaCaretUpdate
 
+    private void cmbFiltroClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFiltroClienteItemStateChanged
+        search();
+    }//GEN-LAST:event_cmbFiltroClienteItemStateChanged
+
+    private void search() {
+        Controller.buscarCliente(txtBusca, cmbFiltroCliente,tableCliente);
+    }
     /**
      * @param args the command line arguments
      */

@@ -7,7 +7,6 @@ import com.projeto.projetoveterinaria.model.DAO.ConsultaDAO;
 import com.projeto.projetoveterinaria.model.DAO.ExameDAO;
 import com.projeto.projetoveterinaria.model.DAO.TratamentoDAO;
 import com.projeto.projetoveterinaria.model.DAO.VeterinarioDAO;
-import com.projeto.projetoveterinaria.view.FormMain;
 import com.projeto.projetoveterinaria.view.PanelPadrao;
 import com.projeto.projetoveterinaria.view.modals.ModalAnimal;
 import com.projeto.projetoveterinaria.view.modals.ModalConsulta;
@@ -24,9 +23,7 @@ import com.projeto.projetoveterinaria.view.tableModels.VeterinarioTableModel;
 import java.awt.Component;
 import java.awt.Frame;
 import java.util.List;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.TableModel;
 
 /**
@@ -118,10 +115,28 @@ public class Controller {
         tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
         tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
     }
-    
-    public static void buscarCliente(JTextField textField, JTable table) {
-        String textoBuscdo = textField.getText();
-        List<Cliente> dados = ClienteDAO.getInstance().retrieveBySimilarName(textoBuscdo);
+
+    /**
+     * Realiza a busca por um cliente, em qualquer coluna estabelecida pelo combobox.
+     *
+     * @param textField Caixa de texto onde contém o texto a ser buscado.
+     * @param cmbFiltroCliente Combobox que determina a coluna a ser buscada.
+     * @param table Tabela onde são exibidos os resultados.
+     */
+    public static void buscarCliente(JTextField textField, JComboBox<String> cmbFiltroCliente, JTable table) {
+        String textoBuscado = textField.getText();
+        // Deve encontrar o nome da coluna SQL de acordo com o texto selecionado da combobox
+        String valorCmb = (String) cmbFiltroCliente.getSelectedItem();
+        String nomeColunaSQL;
+        switch (valorCmb) {
+            case "Nome" -> nomeColunaSQL = "nome";
+            case "Endereço" -> nomeColunaSQL = "end";
+            case "Telefone" -> nomeColunaSQL = "telefone";
+            case "cep" -> nomeColunaSQL = "cep";
+            case "Email" -> nomeColunaSQL = "email";
+            default -> nomeColunaSQL = "nome";
+        }
+        List<Cliente> dados = ClienteDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL);
         table.setModel(new ClienteTableModel(dados));
     }
 

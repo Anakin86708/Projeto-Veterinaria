@@ -66,9 +66,9 @@ public class ClienteDAO extends DAO<Cliente> {
         return client.get(0);
     }
 
-    public List<Cliente> retrieveBySimilarName(String nome) {
+    public List<Cliente> retrieveBySimilarValueOnColumn(String value, String column) {
         //language=SQL
-        String query = "SELECT * FROM cliente WHERE nome LIKE '%" + nome + "%'";
+        String query = "SELECT * FROM cliente WHERE " + column + " LIKE '%" + value + "%'";
         return retrieve(query);
     }
 

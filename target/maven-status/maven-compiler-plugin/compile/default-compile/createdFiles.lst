@@ -21,7 +21,6 @@ com\projeto\projetoveterinaria\view\FormMain$3.class
 com\projeto\projetoveterinaria\model\Consulta.class
 com\projeto\projetoveterinaria\model\Exame.class
 com\projeto\projetoveterinaria\model\DAO\VeterinarioDAO.class
-com\projeto\projetoveterinaria\view\comboModels\GenericComboBoxModel.class
 com\projeto\projetoveterinaria\view\tableModels\GenericTableModel.class
 com\projeto\projetoveterinaria\model\DAO\ClienteDAO.class
 com\projeto\projetoveterinaria\model\DAO\EspecieDAO.class
