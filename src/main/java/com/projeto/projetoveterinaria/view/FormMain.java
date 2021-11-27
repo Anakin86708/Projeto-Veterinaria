@@ -188,6 +188,11 @@ public class FormMain extends javax.swing.JFrame {
         });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         txtBusca.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
@@ -386,6 +391,16 @@ public class FormMain extends javax.swing.JFrame {
         }
         setModels();
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        int selected = tableCliente.getSelectedRow();
+        try {
+            Controller.removeSelectedClient(this, selected, tableCliente);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        setModels();
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void search() {
         Controller.searchFor(txtBusca, cmbFiltroCliente,tableCliente);

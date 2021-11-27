@@ -43,12 +43,26 @@ public class Controller {
     }
 
     public static void editSelectedClient(JFrame parent, int selected, JTable tableCliente) throws IllegalArgumentException {
-        if (selected == -1){
-            throw new IllegalArgumentException("Selecione um item válido.");
-        }
+        validateSelect(selected);
         Cliente item = ((ClienteTableModel) tableCliente.getModel()).getItem(selected);
         JDialog frame = new ModalCliente(parent, true, item);
         frame.setVisible(true);
+    }
+
+    public static void removeSelectedClient(JFrame parent, int selected, JTable tableCliente) throws IllegalArgumentException{
+        validateSelect(selected);
+        Cliente item = ((ClienteTableModel) tableCliente.getModel()).getItem(selected);
+
+        int confirmação = JOptionPane.showConfirmDialog(parent, "Deseja remover (" + item.getId() + ") " + item.getNome() + " permanentemente?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirmação == JOptionPane.YES_OPTION) {
+            ClienteDAO.getInstance().delete(item);
+        }
+    }
+
+    private static void validateSelect(int selected) throws IllegalArgumentException{
+        if (selected == -1) {
+            throw new IllegalArgumentException("Selecione um item válido.");
+        }
     }
 
     public Component getPanelAnimal() {
