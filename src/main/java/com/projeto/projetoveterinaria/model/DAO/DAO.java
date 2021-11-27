@@ -1,13 +1,9 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
 
-import com.projeto.projetoveterinaria.model.Animal;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Implementação DAO para acesso ao SQLite
@@ -77,6 +73,10 @@ public abstract class DAO<T> {
             System.err.println("Exception: " + e.getMessage());
         }
         return lastId;
+    }
+
+    protected int nextId(String tableName) {
+        return lastId(tableName, "ROWID") + 1;
     }
 
 

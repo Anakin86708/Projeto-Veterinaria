@@ -5,6 +5,11 @@
  */
 package com.projeto.projetoveterinaria.view.modals;
 
+import com.projeto.projetoveterinaria.controller.ModalController;
+import com.projeto.projetoveterinaria.model.Cliente;
+
+import java.awt.event.WindowEvent;
+
 /**
  *
  * @author ariel
@@ -12,11 +17,59 @@ package com.projeto.projetoveterinaria.view.modals;
 public class ModalCliente extends javax.swing.JDialog {
 
     /**
-     * Creates new form ModalCliente1
+     * Construtor para modo de adição
+     *
+     * @param parent Frame ao qual o model está associado.
+     * @param modal Se a janela deve se comportar como modal.
      */
     public ModalCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        createNewID();
+    }
+
+    private void createNewID() {
+        int id = ModalController.getNewIDCliente();
+        txtID.setText(String.valueOf(id));
+    }
+
+    /**
+     * Construtor para modo de edição.
+     *
+     * @param parent Frame ao qual o model está associado.
+     * @param modal Se a janela deve se comportar como modal.
+     * @param data Dados anteriores para serem editados.
+     */
+    public ModalCliente(java.awt.Frame parent, boolean modal, Cliente data) {
+        super(parent, modal);
+        initComponents();
+
+        setupData(data);
+    }
+
+    /**
+     * Prepara os compos com os dados atuais para serem editados.
+     *
+     * @param data Representação atual dos dados.
+     */
+    private void setupData(Cliente data) {
+        txtID.setText(String.valueOf(data.getId()));
+        txtNome.setText(data.getNome());
+        txtEndereco.setText(data.getEndereco());
+        txtCEP.setText(data.getCep());
+        txtEmail.setText(data.getEmail());
+        txtTelefone.setText(data.getTelefone());
+    }
+
+    private Cliente getData() {
+        int id = Integer.parseInt(txtID.getText());
+        String nome = txtNome.getText();
+        String endereco = txtEndereco.getText();
+        String cep = txtCEP.getText();
+        String email = txtEmail.getText();
+        String telefone = txtTelefone.getText();
+        return new Cliente(id, nome, endereco, telefone, cep, email);
     }
 
     /**
@@ -125,8 +178,18 @@ public class ModalCliente extends javax.swing.JDialog {
         );
 
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -171,6 +234,23 @@ public class ModalCliente extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        exit();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        Cliente data = getData();
+        ModalController.sendData(data);
+    }//GEN-LAST:event_btnOKActionPerformed
+
+
+
+    private void exit() {
+        this.setVisible(false);
+        this.dispatchEvent(new WindowEvent(
+                this, WindowEvent.WINDOW_CLOSING));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
