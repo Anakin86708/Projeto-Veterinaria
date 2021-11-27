@@ -1,6 +1,7 @@
 com\projeto\projetoveterinaria\model\Especie.class
 com\projeto\projetoveterinaria\view\PanelPadrao.class
 com\projeto\projetoveterinaria\model\Cliente.class
+com\projeto\projetoveterinaria\controller\ModalController.class
 com\projeto\projetoveterinaria\view\FormMain$4.class
 com\projeto\projetoveterinaria\model\Tratamento.class
 com\projeto\projetoveterinaria\view\modals\ModalExame.class
@@ -28,10 +29,12 @@ com\projeto\projetoveterinaria\view\FormMain$5.class
 com\projeto\projetoveterinaria\model\DAO\EspecieDAO.class
 com\projeto\projetoveterinaria\view\tableModels\VeterinarioTableModel.class
 com\projeto\projetoveterinaria\view\tableModels\AnimalTableModel.class
+com\projeto\projetoveterinaria\view\modals\ModalCliente$2.class
 com\projeto\projetoveterinaria\view\tableModels\ExameTableModel.class
 com\projeto\projetoveterinaria\view\tableModels\ConsultaTableModel.class
 com\projeto\projetoveterinaria\view\PanelPadrao$2.class
 com\projeto\projetoveterinaria\view\modals\ModalAnimal.class
+com\projeto\projetoveterinaria\view\modals\ModalCliente$1.class
 com\projeto\projetoveterinaria\model\Animal.class
 com\projeto\projetoveterinaria\model\DAO\DAO.class
 com\projeto\projetoveterinaria\view\modals\ModalCliente.class

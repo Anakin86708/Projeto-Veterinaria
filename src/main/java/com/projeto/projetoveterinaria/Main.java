@@ -3,6 +3,7 @@ package com.projeto.projetoveterinaria;
 import com.projeto.projetoveterinaria.model.*;
 import com.projeto.projetoveterinaria.model.DAO.*;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 
 /**
@@ -13,21 +14,29 @@ public class Main {
     public static void main(String[] args) {
 
         // Cadastrando clientes
-        Cliente eu = ClienteDAO.getInstance().create(
-                "Ariel",
-                "Rua 123",
-                "13280000",
-                "a231602@dac.unicamp.br",
-                "9888023"
-        );
+        Cliente eu = null;
+        Cliente charles = null;
+        try {
+            eu = ClienteDAO.getInstance().create(
+                    "Ariel",
+                    "Rua 123",
+                    "13280000",
+                    "a231602@dac.unicamp.br",
+                    "9888023"
+            );
 
-        Cliente charles = ClienteDAO.getInstance().create(
-                "Charles",
-                "Rua 1",
-                "13089000",
-                "charles@icloud.com",
-                "1233210"
-        );
+            charles = ClienteDAO.getInstance().create(
+                    "Charles",
+                    "Rua 1",
+                    "13089000",
+                    "charles@icloud.com",
+                    "1233210"
+            );
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            System.exit(1);
+        }
+
 
         // Criando espécies
         Especie gato = EspecieDAO.getInstance().create("Gato");

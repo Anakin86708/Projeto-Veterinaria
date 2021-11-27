@@ -6,6 +6,7 @@ import com.projeto.projetoveterinaria.model.DAO.EspecieDAO;
 import com.projeto.projetoveterinaria.model.Especie;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class ModalController {
 
@@ -14,7 +15,7 @@ public class ModalController {
         comboBox.setModel(new DefaultComboBoxModel<>(model));
     }
 
-    public static void sendData(Cliente data) {
+    public static void sendData(Cliente data) throws SQLException {
         // Decidir se vai ser um insert ou update
         if (data.getId() == getNewIDCliente()) {
             // Insert

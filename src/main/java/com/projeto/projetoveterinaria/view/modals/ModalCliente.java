@@ -8,7 +8,9 @@ package com.projeto.projetoveterinaria.view.modals;
 import com.projeto.projetoveterinaria.controller.ModalController;
 import com.projeto.projetoveterinaria.model.Cliente;
 
+import javax.swing.*;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 /**
  *
@@ -241,9 +243,21 @@ public class ModalCliente extends javax.swing.JDialog {
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         Cliente data = getData();
-        ModalController.sendData(data);
+        try {
+            ModalController.sendData(data);
+            feedback("Cliente criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o cliente!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        finally {
+            exit();
+        }
     }//GEN-LAST:event_btnOKActionPerformed
 
+    private void feedback(String msg, String title, int type) {
+        JOptionPane.showMessageDialog(this, msg, title, type);
+    }
 
 
     private void exit() {

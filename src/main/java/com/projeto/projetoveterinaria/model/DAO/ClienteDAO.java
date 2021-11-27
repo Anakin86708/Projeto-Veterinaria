@@ -28,18 +28,15 @@ public class ClienteDAO extends DAO<Cliente> {
 
 
     // CRUD
-    public Cliente create(String nome, String endereco, String cep, String email, String telefone) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO cliente (nome, end, cep, email, telefone) VALUES (?,?,?,?,?)");
-            stmt.setString(1, nome);
-            stmt.setString(2, endereco);
-            stmt.setString(3, cep);
-            stmt.setString(4, email);
-            stmt.setString(5, telefone);
-            this.executeUpdate(stmt);
-        } catch (Exception ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public Cliente create(String nome, String endereco, String cep, String email, String telefone) throws SQLException {
+
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO cliente (nome, end, cep, email, telefone) VALUES (?,?,?,?,?)");
+        stmt.setString(1, nome);
+        stmt.setString(2, endereco);
+        stmt.setString(3, cep);
+        stmt.setString(4, email);
+        stmt.setString(5, telefone);
+        this.executeUpdate(stmt);
         return retrieveLast();
     }
 
