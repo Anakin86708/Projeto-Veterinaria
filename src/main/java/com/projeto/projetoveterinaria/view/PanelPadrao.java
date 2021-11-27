@@ -6,16 +6,12 @@
 package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
-import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
-import java.util.ArrayList;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * @author ariel
