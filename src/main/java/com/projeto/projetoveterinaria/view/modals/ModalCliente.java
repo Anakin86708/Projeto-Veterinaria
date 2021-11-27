@@ -28,6 +28,7 @@ public class ModalCliente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        setTitle("Novo cliente");
         createNewID();
     }
 
@@ -47,6 +48,7 @@ public class ModalCliente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        setTitle("Editr cliente");
         setupData(data);
     }
 
@@ -107,6 +109,7 @@ public class ModalCliente extends javax.swing.JDialog {
 
         txtID.setEditable(false);
         txtID.setText("0");
+        txtID.setEnabled(false);
 
         jLabel2.setText("Nome");
 
@@ -244,8 +247,8 @@ public class ModalCliente extends javax.swing.JDialog {
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         Cliente data = getData();
         try {
-            ModalController.sendData(data);
-            feedback("Cliente criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            String msg = ModalController.sendData(data);
+            feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             System.err.println("EXCEPTION: " + e.getMessage());
             feedback("Não foi possível inserir o cliente!", "Erro", JOptionPane.ERROR_MESSAGE);

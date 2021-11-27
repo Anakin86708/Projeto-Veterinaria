@@ -15,14 +15,16 @@ public class ModalController {
         comboBox.setModel(new DefaultComboBoxModel<>(model));
     }
 
-    public static void sendData(Cliente data) throws SQLException {
+    public static String sendData(Cliente data) throws SQLException {
         // Decidir se vai ser um insert ou update
         if (data.getId() == getNewIDCliente()) {
             // Insert
             ClienteDAO.getInstance().create(data.getNome(), data.getEndereco(), data.getCep(), data.getEmail(), data.getTelefone());
+            return "Cliente criado com sucesso!";
         } else {
             // Update
             ClienteDAO.getInstance().update(data);
+            return "Cliente atualizado com sucesso!";
         }
     }
 

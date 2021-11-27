@@ -10,8 +10,8 @@ import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
+
+import javax.swing.*;
 
 /**
  *
@@ -181,6 +181,11 @@ public class FormMain extends javax.swing.JFrame {
         });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnRemover.setText("Remover");
 
@@ -361,6 +366,7 @@ public class FormMain extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         JDialog frame = new ModalCliente(this, true);
         frame.setVisible(true);
+        setModels();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
@@ -370,6 +376,16 @@ public class FormMain extends javax.swing.JFrame {
     private void cmbFiltroClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFiltroClienteItemStateChanged
         search();
     }//GEN-LAST:event_cmbFiltroClienteItemStateChanged
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int selected = tableCliente.getSelectedRow();
+        try {
+            Controller.editSelectedClient(this, selected, tableCliente);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        setModels();
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     private void search() {
         Controller.searchFor(txtBusca, cmbFiltroCliente,tableCliente);

@@ -1,24 +1,14 @@
 package com.projeto.projetoveterinaria.controller;
 
 import com.projeto.projetoveterinaria.model.Cliente;
-import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
-import com.projeto.projetoveterinaria.model.DAO.ClienteDAO;
-import com.projeto.projetoveterinaria.model.DAO.ConsultaDAO;
-import com.projeto.projetoveterinaria.model.DAO.ExameDAO;
-import com.projeto.projetoveterinaria.model.DAO.TratamentoDAO;
-import com.projeto.projetoveterinaria.model.DAO.VeterinarioDAO;
+import com.projeto.projetoveterinaria.model.DAO.*;
 import com.projeto.projetoveterinaria.view.PanelPadrao;
-import com.projeto.projetoveterinaria.view.modals.ModalAnimal;
-import com.projeto.projetoveterinaria.view.modals.ModalConsulta;
-import com.projeto.projetoveterinaria.view.modals.ModalExame;
-import com.projeto.projetoveterinaria.view.modals.ModalTratamento;
-import com.projeto.projetoveterinaria.view.modals.ModalVeterinario;
+import com.projeto.projetoveterinaria.view.modals.*;
 import com.projeto.projetoveterinaria.view.tableModels.*;
 
-import java.awt.Component;
-import java.awt.Frame;
 import javax.swing.*;
 import javax.swing.table.TableModel;
+import java.awt.*;
 
 /**
  * @author ariel
@@ -52,12 +42,20 @@ public class Controller {
         return new AnimalTableModel();
     }
 
+    public static void editSelectedClient(JFrame parent, int selected, JTable tableCliente) throws IllegalArgumentException {
+        if (selected == -1){
+            throw new IllegalArgumentException("Selecione um item válido.");
+        }
+        Cliente item = ((ClienteTableModel) tableCliente.getModel()).getItem(selected);
+        JDialog frame = new ModalCliente(parent, true, item);
+        frame.setVisible(true);
+    }
+
     public Component getPanelAnimal() {
         if (instancePanelAnimal == null) {
             final AnimalTableModel animalTableModel = new AnimalTableModel(AnimalDAO.getInstance().retrieveAll());
             final ModalAnimal modalAnimal = new ModalAnimal(frameAssociado, true);
             instancePanelAnimal = new PanelPadrao("Animais", animalTableModel, modalAnimal);
-            ;
         }
         return instancePanelAnimal;
     }
