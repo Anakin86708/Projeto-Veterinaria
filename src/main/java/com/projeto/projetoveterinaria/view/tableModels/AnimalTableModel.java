@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author ariel
  */
 public class AnimalTableModel extends GenericTableModel<Animal> {
@@ -22,8 +21,7 @@ public class AnimalTableModel extends GenericTableModel<Animal> {
     public AnimalTableModel() {
         super(new ArrayList<>(), nomeColunas, nomeTabelaSQL);
     }
-    
-    
+
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {

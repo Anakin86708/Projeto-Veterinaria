@@ -39,7 +39,6 @@ public class ModalAnimal extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         loadEspecieModel();
-
         setupData(data);
     }
 
@@ -48,7 +47,7 @@ public class ModalAnimal extends javax.swing.JDialog {
     }
 
 
-    private void setupData(Animal data) {
+    protected void setupData(Animal data) {
         txtID.setText(String.valueOf(data.getId()));
         txtNome.setText(data.getNome());
         txtAnoNasc.setText(String.valueOf(data.getAnoNasc()));

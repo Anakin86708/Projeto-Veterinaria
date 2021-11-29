@@ -1,9 +1,12 @@
 package com.projeto.projetoveterinaria.controller;
 
+import com.projeto.projetoveterinaria.controller.modal.IModalController;
+import com.projeto.projetoveterinaria.controller.modal.ModalControllerAnimal;
+import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.model.DAO.*;
 import com.projeto.projetoveterinaria.view.PanelPadrao;
-import com.projeto.projetoveterinaria.view.modals.*;
+import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.*;
 
 import javax.swing.*;
@@ -53,8 +56,8 @@ public class Controller {
         validateSelect(selected);
         Cliente item = ((ClienteTableModel) tableCliente.getModel()).getItem(selected);
 
-        int confirmação = JOptionPane.showConfirmDialog(parent, "Deseja remover (" + item.getId() + ") " + item.getNome() + " permanentemente?", "Confirmação", JOptionPane.YES_NO_OPTION);
-        if (confirmação == JOptionPane.YES_OPTION) {
+        int confirmDialog = JOptionPane.showConfirmDialog(parent, "Deseja remover (" + item.getId() + ") " + item.getNome() + " permanentemente?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirmDialog == JOptionPane.YES_OPTION) {
             ClienteDAO.getInstance().delete(item);
         }
     }
@@ -65,62 +68,62 @@ public class Controller {
         }
     }
 
-    public Component getPanelAnimal() {
+    public Component getPanelAnimal(Frame frameAssociado) {
         if (instancePanelAnimal == null) {
             final AnimalTableModel animalTableModel = new AnimalTableModel(AnimalDAO.getInstance().retrieveAll());
-            final ModalAnimal modalAnimal = new ModalAnimal(frameAssociado, true);
-            instancePanelAnimal = new PanelPadrao("Animais", animalTableModel, modalAnimal);
+            final IModalController controller = new ModalControllerAnimal(frameAssociado);
+            instancePanelAnimal = new PanelPadrao<Animal>("Animais", animalTableModel, controller);
         }
         return instancePanelAnimal;
     }
 
-    public Component getPanelConsulta() {
-        if (instancePanelConsulta == null) {
-            final ConsultaTableModel consultaTableModel = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll());
-            final ModalConsulta modalConsulta = new ModalConsulta(frameAssociado, true);
-            instancePanelConsulta = new PanelPadrao("Consultas", consultaTableModel, modalConsulta);
-        }
-        return instancePanelConsulta;
-
-    }
-
-    public Component getPanelExame() {
-        if (instancePanelExame == null) {
-            final ExameTableModel exameTableModel = new ExameTableModel(ExameDAO.getInstance().retrieveAll());
-            final ModalExame modalExame = new ModalExame(frameAssociado, true);
-            instancePanelExame = new PanelPadrao("Exames", exameTableModel, modalExame);
-        }
-        return instancePanelExame;
-    }
-
-    public Component getPanelTratamento() {
-        if (instancePanelTratamento == null) {
-            final TratamentoTableModel tratamentoTableModel = new TratamentoTableModel(TratamentoDAO.getInstance().retrieveAll());
-            final ModalTratamento modalTratamento = new ModalTratamento(frameAssociado, true);
-            instancePanelTratamento = new PanelPadrao("Tratamentos", tratamentoTableModel, modalTratamento);
-        }
-        return instancePanelTratamento;
-    }
-
-    public Component getPanelVeterinario() {
-        if (instancePanelVeterinario == null) {
-            final VeterinarioTableModel veterinarioTableModel = new VeterinarioTableModel(VeterinarioDAO.getInstance().retrieveAll());
-            final ModalVeterinario modalVeterinario = new ModalVeterinario(frameAssociado, true);
-            instancePanelVeterinario = new PanelPadrao("Veterinários", veterinarioTableModel, modalVeterinario);
-        }
-        return instancePanelVeterinario;
-    }
+//    public Component getPanelConsulta() {
+//        if (instancePanelConsulta == null) {
+//            final ConsultaTableModel consultaTableModel = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll());
+//            final ModalConsulta modalConsulta = new ModalConsulta(frameAssociado, true);
+//            instancePanelConsulta = new PanelPadrao<Consulta>("Consultas", consultaTableModel, modalConsulta);
+//        }
+//        return instancePanelConsulta;
+//
+//    }
+//
+//    public Component getPanelExame() {
+//        if (instancePanelExame == null) {
+//            final ExameTableModel exameTableModel = new ExameTableModel(ExameDAO.getInstance().retrieveAll());
+//            final ModalExame modalExame = new ModalExame(frameAssociado, true);
+//            instancePanelExame = new PanelPadrao<Exame>("Exames", exameTableModel, modalExame);
+//        }
+//        return instancePanelExame;
+//    }
+//
+//    public Component getPanelTratamento() {
+//        if (instancePanelTratamento == null) {
+//            final TratamentoTableModel tratamentoTableModel = new TratamentoTableModel(TratamentoDAO.getInstance().retrieveAll());
+//            final ModalTratamento modalTratamento = new ModalTratamento(frameAssociado, true);
+//            instancePanelTratamento = new PanelPadrao<Tratamento>("Tratamentos", tratamentoTableModel, modalTratamento);
+//        }
+//        return instancePanelTratamento;
+//    }
+//
+//    public Component getPanelVeterinario() {
+//        if (instancePanelVeterinario == null) {
+//            final VeterinarioTableModel veterinarioTableModel = new VeterinarioTableModel(VeterinarioDAO.getInstance().retrieveAll());
+//            final ModalVeterinario modalVeterinario = new ModalVeterinario(frameAssociado, true);
+//            instancePanelVeterinario = new PanelPadrao<Veterinario>("Veterinários", veterinarioTableModel, modalVeterinario);
+//        }
+//        return instancePanelVeterinario;
+//    }
 
     public static void setSelectedCliente(JTable tableAnimaisPertencentes, Cliente item) {
         tableAnimaisPertencentes.setModel(new AnimalTableModel(AnimalDAO.getInstance().retriveByOwnerID(item.getId())));
     }
 
     public void initPanels(JTabbedPane tabbedPanedPane1) {
-        tabbedPanedPane1.add("Animais", this.getPanelAnimal());
-        tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
-        tabbedPanedPane1.add("Exames", this.getPanelExame());
-        tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
-        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
+        tabbedPanedPane1.add("Animais", this.getPanelAnimal(frameAssociado));
+//        tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
+//        tabbedPanedPane1.add("Exames", this.getPanelExame());
+//        tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
+//        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
     }
 
     public static void searchFor(JTextField txtBusca, JComboBox<String> cmbFiltro, JTable tableConteudo) {
