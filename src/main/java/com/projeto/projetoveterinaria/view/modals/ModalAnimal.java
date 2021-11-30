@@ -5,10 +5,13 @@
  */
 package com.projeto.projetoveterinaria.view.modals;
 
+import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.controller.ModalController;
 import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.Especie;
 import com.projeto.projetoveterinaria.model.Sexo;
+
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -26,6 +29,7 @@ public class ModalAnimal extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         loadEspecieModel();
+        loadClientesModel();
     }
 
     /**
@@ -39,7 +43,16 @@ public class ModalAnimal extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         loadEspecieModel();
+        loadClientesModel();
         setupData(data);
+    }
+
+    /**
+     * Permite carregar o modelo com os clientes na tabela.
+     */
+    private void loadClientesModel() {
+        TableModel model = Controller.getModelCliente();
+        tableCliente.setModel(model);
     }
 
     private void loadEspecieModel() {
@@ -151,6 +164,7 @@ public class ModalAnimal extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tableCliente);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
