@@ -1,6 +1,8 @@
 package com.projeto.projetoveterinaria.controller;
 
+import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.Cliente;
+import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
 import com.projeto.projetoveterinaria.model.DAO.ClienteDAO;
 import com.projeto.projetoveterinaria.model.DAO.EspecieDAO;
 import com.projeto.projetoveterinaria.model.Especie;
@@ -28,7 +30,21 @@ public class ModalController {
         }
     }
 
+    public static String sendData(Animal data) throws SQLException {
+        if (data.getId() == getNewIDAnimal()) {
+            AnimalDAO.getInstance().create(data.getNome(), data.getAnoNasc(), data.getSexo(), data.getIdEspecie(), data.getIdCliente());
+            return "Animal criado com sucesso!";
+        } else {
+            AnimalDAO.getInstance().update(data);
+            return "Animal atualizado com sucesso!";
+        }
+    }
+
     public static int getNewIDCliente() {
         return ClienteDAO.getInstance().getNextId();
+    }
+
+    public static int getNewIDAnimal() {
+        return AnimalDAO.getInstance().getNextId();
     }
 }

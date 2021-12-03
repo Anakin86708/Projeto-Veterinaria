@@ -72,7 +72,7 @@ public class Controller {
         if (instancePanelAnimal == null) {
             final AnimalTableModel animalTableModel = new AnimalTableModel(AnimalDAO.getInstance().retrieveAll());
             final IModalController controller = new ModalControllerAnimal(frameAssociado);
-            instancePanelAnimal = new PanelPadrao<Animal>("Animais", animalTableModel, controller);
+            instancePanelAnimal = new PanelPadrao<Animal>("Animais", controller);
         }
         return instancePanelAnimal;
     }

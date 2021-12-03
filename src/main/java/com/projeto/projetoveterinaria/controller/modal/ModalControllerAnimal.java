@@ -6,6 +6,7 @@ import com.projeto.projetoveterinaria.view.modals.ModalAnimal;
 import com.projeto.projetoveterinaria.view.tableModels.AnimalTableModel;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 import java.awt.*;
 
 public class ModalControllerAnimal implements IModalController {
@@ -17,9 +18,10 @@ public class ModalControllerAnimal implements IModalController {
     }
 
     @Override
-    public void adicionar() {
+    public void adicionar(JTable table) {
         JDialog dialog = new ModalAnimal(parent, true);
         dialog.setVisible(true);
+        setTableModel(table);
     }
 
     @Override
@@ -30,6 +32,7 @@ public class ModalControllerAnimal implements IModalController {
         Animal data = ((AnimalTableModel) table.getModel()).getItem(selected);
         JDialog dialog = new ModalAnimal(parent, true, data);
         dialog.setVisible(true);
+        setTableModel(table);
     }
 
     private void validateSelect(int selected) {
@@ -47,5 +50,12 @@ public class ModalControllerAnimal implements IModalController {
         if (confirmDialog == JOptionPane.YES_OPTION) {
             AnimalDAO.getInstance().delete(item);
         }
+        setTableModel(table);
+    }
+
+    @Override
+    public void setTableModel(JTable table) {
+        TableModel model = new AnimalTableModel(AnimalDAO.getInstance().retrieveAll());
+        table.setModel(model);
     }
 }

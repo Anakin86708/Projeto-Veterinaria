@@ -9,14 +9,13 @@ import com.projeto.projetoveterinaria.controller.ModalController;
 import com.projeto.projetoveterinaria.model.Cliente;
 
 import javax.swing.*;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 /**
  *
  * @author ariel
  */
-public class ModalCliente extends javax.swing.JDialog {
+public class ModalCliente extends ModalGeneric {
 
     /**
      * Construtor para modo de adição
@@ -32,7 +31,7 @@ public class ModalCliente extends javax.swing.JDialog {
         createNewID();
     }
 
-    private void createNewID() {
+    protected void createNewID() {
         int id = ModalController.getNewIDCliente();
         txtID.setText(String.valueOf(id));
     }
@@ -48,7 +47,7 @@ public class ModalCliente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        setTitle("Editr cliente");
+        setTitle("Editar cliente");
         setupData(data);
     }
 
@@ -258,16 +257,6 @@ public class ModalCliente extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
-    private void feedback(String msg, String title, int type) {
-        JOptionPane.showMessageDialog(this, msg, title, type);
-    }
-
-
-    private void exit() {
-        this.setVisible(false);
-        this.dispatchEvent(new WindowEvent(
-                this, WindowEvent.WINDOW_CLOSING));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

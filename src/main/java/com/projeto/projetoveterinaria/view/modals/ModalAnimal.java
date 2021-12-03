@@ -8,16 +8,20 @@ package com.projeto.projetoveterinaria.view.modals;
 import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.controller.ModalController;
 import com.projeto.projetoveterinaria.model.Animal;
+import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.model.Especie;
 import com.projeto.projetoveterinaria.model.Sexo;
+import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 
+import javax.swing.*;
 import javax.swing.table.TableModel;
+import java.sql.SQLException;
 
 /**
  *
  * @author ariel
  */
-public class ModalAnimal extends javax.swing.JDialog {
+public class ModalAnimal extends ModalGeneric {
 
     /**
      * Construtor para modo de adição
@@ -30,6 +34,14 @@ public class ModalAnimal extends javax.swing.JDialog {
         initComponents();
         loadEspecieModel();
         loadClientesModel();
+
+        createNewID();
+    }
+
+    @Override
+    protected void createNewID() {
+        int id = ModalController.getNewIDAnimal();
+        txtID.setText(String.valueOf(id));
     }
 
     /**
@@ -60,7 +72,7 @@ public class ModalAnimal extends javax.swing.JDialog {
     }
 
 
-    protected void setupData(Animal data) {
+    private void setupData(@org.jetbrains.annotations.NotNull Animal data) {
         txtID.setText(String.valueOf(data.getId()));
         txtNome.setText(data.getNome());
         txtAnoNasc.setText(String.valueOf(data.getAnoNasc()));
@@ -68,6 +80,17 @@ public class ModalAnimal extends javax.swing.JDialog {
         radioMacho.setSelected(sexo == Sexo.MACHO);
         radioFemea.setSelected(sexo == Sexo.FEMEA);
 
+    }
+
+    private Animal getData() {
+        int id = Integer.parseInt(txtID.getText());
+        String nome = txtNome.getText();
+        int anoNasc = Integer.parseInt(txtAnoNasc.getText());
+        Sexo sexo = radioFemea.isSelected() ? Sexo.FEMEA : Sexo.MACHO;
+        Especie especie = (Especie) comboEspecie.getSelectedItem();
+        Cliente cliente = ((ClienteTableModel) tableCliente.getModel()).getItem(tableCliente.getSelectedRow());
+
+        return new Animal(id, nome, anoNasc, sexo, especie.getId(), cliente.getId());
     }
 
     /**
@@ -102,8 +125,18 @@ public class ModalAnimal extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -130,6 +163,7 @@ public class ModalAnimal extends javax.swing.JDialog {
 
         txtID.setEditable(false);
         txtID.setText("0");
+        txtID.setEnabled(false);
 
         jLabel2.setText("Nome");
 
@@ -254,6 +288,24 @@ public class ModalAnimal extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        Animal data = getData();
+        try {
+            String msg = ModalController.sendData(data);
+            feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o animal!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        finally {
+            exit();
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        exit();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

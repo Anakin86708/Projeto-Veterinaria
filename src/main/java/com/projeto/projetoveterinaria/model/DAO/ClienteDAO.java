@@ -13,11 +13,11 @@ import java.util.List;
 public class ClienteDAO extends DAO<Cliente> {
 
     private static ClienteDAO instance;
-    public final static String COLUMN_NAME = "cliente";
+    public final static String TABLE_NAME = "cliente";
 
 
     private ClienteDAO() {
-        super(COLUMN_NAME);
+        super(TABLE_NAME);
         getConnection();
         createTable();
     }
@@ -61,10 +61,6 @@ public class ClienteDAO extends DAO<Cliente> {
         String query = "SELECT * FROM cliente WHERE id = (SELECT max(id) FROM cliente)";
         List<Cliente> client = retrieve(query);
         return client.get(0);
-    }
-
-    public int getNextId() {
-        return this.nextId(COLUMN_NAME);
     }
 
     public List<Cliente> retrieveBySimilarValueOnColumn(String value, String column) {
@@ -111,4 +107,7 @@ public class ClienteDAO extends DAO<Cliente> {
         }
     }
 
+    public int getNextId() {
+        return nextId(TABLE_NAME);
+    }
 }

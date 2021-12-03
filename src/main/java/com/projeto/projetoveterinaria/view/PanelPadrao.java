@@ -25,22 +25,19 @@ public class PanelPadrao<T> extends javax.swing.JPanel {
     /**
      * Creates new form PanelPadrao
      */
-    public PanelPadrao(String nome, GenericTableModel<T> model, IModalController controller) {
+    public PanelPadrao(String nome, IModalController controller) {
         initComponents();
         this.nome = nome;
         this.controller = controller;
 
-        setTableModel(model);
-        setComboboxModel(model);
+        controller.setTableModel(tableConteudo);
+        setComboboxModel();
     }
 
-    private void setTableModel(GenericTableModel<T> model) {
-        tableConteudo.setModel(model);
-    }
-
-    private void setComboboxModel(GenericTableModel<T> model) {
+    private void setComboboxModel() {
+        GenericTableModel<T> model = (GenericTableModel<T>) tableConteudo.getModel();
         String[] colunas = model.getColunas();
-        List<String> listColunas = new LinkedList<String>(Arrays.asList(colunas));
+        List<String> listColunas = new LinkedList<>(Arrays.asList(colunas));
         listColunas.removeAll(List.of(new String[]{"Terminou", "Data entrada", "Data saída", "Data"}));
         cmbFiltro.setModel(new DefaultComboBoxModel<>(listColunas.toArray(String[]::new)));
     }
@@ -163,7 +160,7 @@ public class PanelPadrao<T> extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        controller.adicionar();
+        controller.adicionar(tableConteudo);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
