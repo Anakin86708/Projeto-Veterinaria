@@ -9,7 +9,6 @@ import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
 
 import javax.swing.*;
 
@@ -36,17 +35,13 @@ public class FormMain extends javax.swing.JFrame {
     
     private void setModels() {
         // Table models
-        tableProximasConsultas.setModel(Controller.getModelProximasConsultas());
-        tableHistorico.setModel(Controller.getModelHistoricoConsultas());
-        tableCliente.setModel(Controller.getModelCliente());
-        tableAnimaisPertencentes.setModel(Controller.getDefaultModelAnimais());
+        Controller.setTableModelProximasConsultas(tableProximasConsultas);
+        Controller.setTableModelHistoricoConsultas(tableHistorico);
+        Controller.setTableModelCliente(tableCliente);
+        Controller.setTableDefaultModelAnimais(tableAnimaisPertencentes);
         
         // Combobox models
-        cmbFiltroCliente.setModel(new DefaultComboBoxModel<>(((GenericTableModel)tableCliente.getModel()).getColunas()));
-    }
-    
-    public void setAnimaisCliente(GenericTableModel model){
-        tableAnimaisPertencentes.setModel(model);
+        Controller.setComboModelFiltroCliente(cmbFiltroCliente);
     }
 
     /**

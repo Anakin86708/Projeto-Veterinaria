@@ -1,5 +1,6 @@
 package com.projeto.projetoveterinaria.controller.modal;
 
+import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
 import com.projeto.projetoveterinaria.view.modals.ModalAnimal;
@@ -27,7 +28,7 @@ public class ModalControllerAnimal implements IModalController {
     @Override
     public void editar(JTable table) {
         int selected = table.getSelectedRow();
-        validateSelect(selected);
+        Controller.validateSelect(selected);
 
         Animal data = ((AnimalTableModel) table.getModel()).getItem(selected);
         JDialog dialog = new ModalAnimal(parent, true, data);
@@ -35,15 +36,11 @@ public class ModalControllerAnimal implements IModalController {
         setTableModel(table);
     }
 
-    private void validateSelect(int selected) {
-        if (selected == -1)
-            throw new IllegalArgumentException("Selecione um item válido.");
-    }
 
     @Override
     public void remover(JTable table) {
         int selected = table.getSelectedRow();
-        validateSelect(selected);
+        Controller.validateSelect(selected);
 
         Animal item = ((AnimalTableModel) table.getModel()).getItem(selected);
         int confirmDialog = JOptionPane.showConfirmDialog(parent, "Deseja remover (" + item.getId() + ") " + item.getNome() + " permanentemente?", "Confirmação", JOptionPane.YES_NO_OPTION);

@@ -12,7 +12,6 @@ import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.*;
 
 import javax.swing.*;
-import javax.swing.table.TableModel;
 import java.awt.*;
 
 /**
@@ -31,20 +30,24 @@ public class Controller {
         this.frameAssociado = frameAssociado;
     }
 
-    public static TableModel getModelCliente() {
-        return new ClienteTableModel(ClienteDAO.getInstance().retrieveAll());
+    public static void setTableModelCliente(JTable table) {
+        ClienteTableModel model = new ClienteTableModel(ClienteDAO.getInstance().retrieveAll());
+        table.setModel(model);
     }
 
-    public static TableModel getModelProximasConsultas() {
-        return new ConsultaTableModel(ConsultaDAO.getInstance().retrieveProximasConsultas());
+    public static void setTableModelProximasConsultas(JTable table) {
+        ConsultaTableModel model = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveProximasConsultas());
+        table.setModel(model);
     }
 
-    public static TableModel getModelHistoricoConsultas() {
-        return new ConsultaTableModel(ConsultaDAO.getInstance().retrieveHistoricoConsultas());
+    public static void setTableModelHistoricoConsultas(JTable table) {
+        ConsultaTableModel model = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveHistoricoConsultas());
+        table.setModel(model);
     }
 
-    public static TableModel getDefaultModelAnimais() {
-        return new AnimalTableModel();
+    public static void setTableDefaultModelAnimais(JTable table) {
+        AnimalTableModel model = new AnimalTableModel();
+        table.setModel(model);
     }
 
     public static void editSelectedClient(JFrame parent, int selected, JTable tableCliente) throws IllegalArgumentException {
@@ -64,10 +67,15 @@ public class Controller {
         }
     }
 
-    private static void validateSelect(int selected) throws IllegalArgumentException{
+    public static void validateSelect(int selected) throws IllegalArgumentException{
         if (selected == -1) {
             throw new IllegalArgumentException("Selecione um item válido.");
         }
+    }
+
+    public static void setComboModelFiltroCliente(JComboBox<String> cmbFiltroCliente) {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(ClienteTableModel.nomeColunas);
+        cmbFiltroCliente.setModel(model);
     }
 
     public Component getPanelAnimal() {

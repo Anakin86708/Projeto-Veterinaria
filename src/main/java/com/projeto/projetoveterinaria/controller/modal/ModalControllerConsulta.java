@@ -1,5 +1,6 @@
 package com.projeto.projetoveterinaria.controller.modal;
 
+import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.model.Consulta;
 import com.projeto.projetoveterinaria.model.DAO.ConsultaDAO;
 import com.projeto.projetoveterinaria.view.modals.ModalConsulta;
@@ -27,7 +28,7 @@ public class ModalControllerConsulta implements IModalController{
     @Override
     public void editar(JTable table) {
         int selected = table.getSelectedRow();
-        validateSelect(selected);
+        Controller.validateSelect(selected);
 
         Consulta data = ((ConsultaTableModel) table.getModel()).getItem(selected);
         JDialog dialog = new ModalConsulta(parent, true, data);
@@ -35,15 +36,10 @@ public class ModalControllerConsulta implements IModalController{
         setTableModel(table);
     }
 
-    private void validateSelect(int selected) {
-        if (selected == -1)
-            throw new IllegalArgumentException("Selecione um item válido.");
-    }
-
     @Override
     public void remover(JTable table) {
         int selected = table.getSelectedRow();
-        validateSelect(selected);
+        Controller.validateSelect(selected);
 
         Consulta item = ((ConsultaTableModel) table.getModel()).getItem(selected);
         int confirmDialog = JOptionPane.showConfirmDialog(parent, "Deseja remover (" + item.getId() + ") permanentemente?", "Confirmação", JOptionPane.YES_NO_OPTION);

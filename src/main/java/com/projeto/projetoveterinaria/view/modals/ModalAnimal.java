@@ -14,7 +14,6 @@ import com.projeto.projetoveterinaria.model.Sexo;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
 
 import javax.swing.*;
-import javax.swing.table.TableModel;
 import java.sql.SQLException;
 
 /**
@@ -63,8 +62,7 @@ public class ModalAnimal extends ModalGeneric {
      * Permite carregar o modelo com os clientes na tabela.
      */
     private void loadClientesModel() {
-        TableModel model = Controller.getModelCliente();
-        tableCliente.setModel(model);
+        Controller.setTableModelCliente(tableCliente);
     }
 
     private void loadEspecieModel() {
