@@ -7,6 +7,7 @@ package com.projeto.projetoveterinaria.view;
 
 import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.controller.modal.IModalController;
+import com.projeto.projetoveterinaria.model.HasID;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * @author ariel
  */
-public class PanelPadrao<T> extends javax.swing.JPanel {
+public class PanelPadrao<T extends HasID> extends javax.swing.JPanel {
 
     public final String nome;
     private final IModalController controller;

@@ -79,10 +79,15 @@ public class ModalAnimal extends ModalGeneric {
         Sexo sexo = data.getSexo();
         radioMacho.setSelected(sexo == Sexo.MACHO);
         radioFemea.setSelected(sexo == Sexo.FEMEA);
-
+        try {
+            int indexRow = ((ClienteTableModel) tableCliente.getModel()).getRowIndexForItem(data.getIdCliente());
+            tableCliente.setRowSelectionInterval(indexRow,indexRow);
+        } catch (NullPointerException e) {
+            feedback("Não há um cliente para esse animal!", "Animal sem cliente", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    private Animal getData() {
+    private Animal getData() throws RuntimeException {
         int id = Integer.parseInt(txtID.getText());
         String nome = txtNome.getText();
         int anoNasc = Integer.parseInt(txtAnoNasc.getText());
@@ -90,6 +95,8 @@ public class ModalAnimal extends ModalGeneric {
         Especie especie = (Especie) comboEspecie.getSelectedItem();
         Cliente cliente = ((ClienteTableModel) tableCliente.getModel()).getItem(tableCliente.getSelectedRow());
 
+        if (especie == null) throw new RuntimeException("Uma espécie deve ser selecionada!");
+        if (cliente == null) throw new RuntimeException("Um cliente deve ser selecionado!");
         return new Animal(id, nome, anoNasc, sexo, especie.getId(), cliente.getId());
     }
 
@@ -290,13 +297,16 @@ public class ModalAnimal extends ModalGeneric {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        Animal data = getData();
         try {
+            Animal data = getData();
             String msg = ModalController.sendData(data);
             feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             System.err.println("EXCEPTION: " + e.getMessage());
             feedback("Não foi possível inserir o animal!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o animal!\n"+ e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
         finally {
             exit();

@@ -6,7 +6,7 @@ import java.util.Calendar;
  *
  * @author ariel
  */
-public class Consulta {
+public class Consulta implements HasID {
 
     private final int id;
     private Calendar data;

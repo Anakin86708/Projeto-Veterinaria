@@ -91,6 +91,7 @@ public class AnimalDAO extends DAO<Animal> {
             stmt.setString(3, animal.getSexo().toString());
             stmt.setInt(4, animal.getIdEspecie());
             stmt.setInt(5, animal.getIdCliente());
+            stmt.setInt(6, animal.getId());
             this.executeUpdate(stmt);
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());

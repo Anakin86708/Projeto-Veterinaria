@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * @author ariel
  */
-public class Tratamento {
+public class Tratamento implements HasID {
 
     private final int id;
     private String nome;

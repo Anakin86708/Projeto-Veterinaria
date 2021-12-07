@@ -3,7 +3,7 @@ package com.projeto.projetoveterinaria.model;
 /**
  * @author ariel
  */
-public class Especie {
+public class Especie implements HasID{
 
     private final int id;
     private String nomeEspecie;

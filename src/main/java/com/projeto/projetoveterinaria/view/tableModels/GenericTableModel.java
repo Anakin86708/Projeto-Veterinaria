@@ -1,26 +1,44 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import com.projeto.projetoveterinaria.model.HasID;
+
 import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
  * @author ariel
  * @param <T>
  */
-public abstract class GenericTableModel<T> extends AbstractTableModel{
+public abstract class GenericTableModel<T extends HasID> extends AbstractTableModel{
     protected final ArrayList<T> dados;
     protected final String[] colunas;
     protected final String nomeTabelaSQL;
+    private final HashMap<Integer, Integer> idToPosition;
 
     public GenericTableModel(List<T> dados, String[] colunas, String tabela) {
         this.dados = new ArrayList<>(dados);
         this.colunas = colunas;
         this.nomeTabelaSQL = tabela;
+        idToPosition = prepareHashMap();
+    }
+
+    /**
+     * Itera por todos os dados, salvando o id e a posição correspondente.
+     *
+     * @return Mapa para facilitar a busca de index por id.
+     */
+    private HashMap<Integer, Integer> prepareHashMap() {
+        final HashMap<Integer, Integer> idToPosition;
+        idToPosition = new HashMap<>();
+
+        ListIterator<T> iterator = dados.listIterator();
+        while (iterator.hasNext()) {
+            int i = iterator.nextIndex();
+            idToPosition.put(iterator.next().getId(), i);
+        }
+        return idToPosition;
     }
 
     public String getNomeTabelaSQL() {
@@ -52,6 +70,10 @@ public abstract class GenericTableModel<T> extends AbstractTableModel{
             return null;
         }
         return dados.get(indiceLinha);
+    }
+
+    public int getRowIndexForItem(int expectedID) throws NullPointerException{
+        return idToPosition.get(expectedID);
     }
 
     public void addItem(T obj) {
