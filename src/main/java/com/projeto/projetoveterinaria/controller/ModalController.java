@@ -1,21 +1,17 @@
 package com.projeto.projetoveterinaria.controller;
 
-import com.projeto.projetoveterinaria.model.Animal;
-import com.projeto.projetoveterinaria.model.Cliente;
-import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
-import com.projeto.projetoveterinaria.model.DAO.ClienteDAO;
-import com.projeto.projetoveterinaria.model.DAO.EspecieDAO;
-import com.projeto.projetoveterinaria.model.Especie;
+import com.projeto.projetoveterinaria.model.*;
+import com.projeto.projetoveterinaria.model.DAO.*;
+import com.projeto.projetoveterinaria.view.comboBoxModels.TratamentoComboBoxModel;
+import com.projeto.projetoveterinaria.view.comboBoxModels.VeterinarioComboBoxModel;
+import com.projeto.projetoveterinaria.view.tableModels.AnimalTableModel;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ModalController {
-
-    public static void setModelComboEspecie(JComboBox<Especie> comboBox) {
-        Especie[] model = EspecieDAO.getInstance().retrieveAll().toArray(Especie[]::new);
-        comboBox.setModel(new DefaultComboBoxModel<>(model));
-    }
 
     public static String sendData(Cliente data) throws SQLException {
         // Decidir se vai ser um insert ou update
@@ -40,11 +36,56 @@ public class ModalController {
         }
     }
 
+    public static String sendData(Consulta data) throws SQLException{
+        if (data.getId() == getNewIDConsulta()) {
+            ConsultaDAO.getInstance().create(data.getData(), data.getHora(), data.getComentarios(), data.getIdAnimal(), data.getIdTratamento(), data.getIdVeterinario(), data.getTerminou());
+            return "Consulta criada com sucesso!";
+        } else {
+            ConsultaDAO.getInstance().update(data);
+            return "Consulta atualizada com sucesso!";
+        }
+    }
+
     public static int getNewIDCliente() {
         return ClienteDAO.getInstance().getNextId();
     }
 
     public static int getNewIDAnimal() {
         return AnimalDAO.getInstance().getNextId();
+    }
+
+    public static int getNewIDConsulta() {
+        return ConsultaDAO.getInstance().getNextId();
+    }
+
+    /**
+     * Usado para popular uma tabela com todos os animais no BD.
+     *
+     * @param tableAnimal tabela a ser populada.
+     */
+    public static void setModelAnimais(JTable tableAnimal) {
+        List<Animal> animalList = AnimalDAO.getInstance().retrieveAll();
+        AnimalTableModel model = new AnimalTableModel(animalList);
+        tableAnimal.setModel(model);
+    }
+
+    public static void setModelCmbEspecie(JComboBox<Especie> comboBox) {
+        Especie[] model = EspecieDAO.getInstance().retrieveAll().toArray(Especie[]::new);
+        comboBox.setModel(new DefaultComboBoxModel<>(model));
+    }
+
+    public static void setModelCmbVeterinario(JComboBox<String> cmbVeterinario) {
+        Veterinario[] dados = VeterinarioDAO.getInstance().retrieveAll().toArray(new Veterinario[0]);
+        cmbVeterinario.setModel(new VeterinarioComboBoxModel(dados));
+    }
+
+    public static void setModelCmbTratamento(JComboBox<String> cmbTratamento) {
+        Tratamento[] dados = TratamentoDAO.getInstance().retrieveAll().toArray(new Tratamento[0]);
+        cmbTratamento.setModel(new TratamentoComboBoxModel(dados));
+    }
+
+    public static void setModelCmbHorario(JComboBox<String> cmbHorario) {
+        String[] strings = Arrays.stream(Horarios.values()).map(Horarios::toString).toArray(String[]::new);
+        cmbHorario.setModel(new DefaultComboBoxModel<>(strings));
     }
 }

@@ -72,6 +72,13 @@ public abstract class GenericTableModel<T extends HasID> extends AbstractTableMo
         return dados.get(indiceLinha);
     }
 
+    /**
+     * Retorna o índice que expectedID se encontra na tabela.
+     *
+     * @param expectedID Índice do objeto buscado.
+     * @return Índice para o valor desejado.
+     * @throws NullPointerException Caso não exista o expectedID nos dados.
+     */
     public int getRowIndexForItem(int expectedID) throws NullPointerException{
         return idToPosition.get(expectedID);
     }

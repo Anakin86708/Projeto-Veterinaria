@@ -1,6 +1,8 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
 import com.projeto.projetoveterinaria.model.Consulta;
+import com.projeto.projetoveterinaria.model.Horarios;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
             case 0:
                 item.setData((Calendar) aValue);
             case 1:
-                item.setHora((int) aValue);
+                item.setHora(Horarios.valueOf((String) aValue));  // TODO: Verificar se funciona
             case 2:
                 item.setComentarios((String) aValue);
             case 3:
@@ -64,8 +66,8 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
-            case 0,2 -> String.class;
-            case 1,3,4,5 -> Integer.class;
+            case 0,1,2 -> String.class;
+            case 3,4,5 -> Integer.class;
             case 6 -> Boolean.class;
             default -> throw new IndexOutOfBoundsException();
         };

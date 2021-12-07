@@ -36,7 +36,7 @@ public class PanelPadrao<T extends HasID> extends javax.swing.JPanel {
     }
 
     private void setComboboxModel() {
-        GenericTableModel<T> model = (GenericTableModel<T>) tableConteudo.getModel();
+        GenericTableModel model = (GenericTableModel) tableConteudo.getModel();
         String[] colunas = model.getColunas();
         List<String> listColunas = new LinkedList<>(Arrays.asList(colunas));
         listColunas.removeAll(List.of(new String[]{"Terminou", "Data entrada", "Data saída", "Data"}));

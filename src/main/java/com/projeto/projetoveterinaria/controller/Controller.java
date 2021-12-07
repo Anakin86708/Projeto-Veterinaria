@@ -2,8 +2,10 @@ package com.projeto.projetoveterinaria.controller;
 
 import com.projeto.projetoveterinaria.controller.modal.IModalController;
 import com.projeto.projetoveterinaria.controller.modal.ModalControllerAnimal;
+import com.projeto.projetoveterinaria.controller.modal.ModalControllerConsulta;
 import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.Cliente;
+import com.projeto.projetoveterinaria.model.Consulta;
 import com.projeto.projetoveterinaria.model.DAO.*;
 import com.projeto.projetoveterinaria.view.PanelPadrao;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
@@ -68,7 +70,7 @@ public class Controller {
         }
     }
 
-    public Component getPanelAnimal(Frame frameAssociado) {
+    public Component getPanelAnimal() {
         if (instancePanelAnimal == null) {
             final AnimalTableModel animalTableModel = new AnimalTableModel(AnimalDAO.getInstance().retrieveAll());
             final IModalController controller = new ModalControllerAnimal(frameAssociado);
@@ -77,15 +79,15 @@ public class Controller {
         return instancePanelAnimal;
     }
 
-//    public Component getPanelConsulta() {
-//        if (instancePanelConsulta == null) {
-//            final ConsultaTableModel consultaTableModel = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll());
-//            final ModalConsulta modalConsulta = new ModalConsulta(frameAssociado, true);
-//            instancePanelConsulta = new PanelPadrao<Consulta>("Consultas", consultaTableModel, modalConsulta);
-//        }
-//        return instancePanelConsulta;
-//
-//    }
+    public Component getPanelConsulta() {
+        if (instancePanelConsulta == null) {
+            final ConsultaTableModel consultaTableModel = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll());
+            final IModalController controller = new ModalControllerConsulta(frameAssociado);
+            instancePanelConsulta = new PanelPadrao<Consulta>("Consultas", controller);
+        }
+        return instancePanelConsulta;
+
+    }
 //
 //    public Component getPanelExame() {
 //        if (instancePanelExame == null) {
@@ -119,8 +121,8 @@ public class Controller {
     }
 
     public void initPanels(JTabbedPane tabbedPanedPane1) {
-        tabbedPanedPane1.add("Animais", this.getPanelAnimal(frameAssociado));
-//        tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
+        tabbedPanedPane1.add("Animais", this.getPanelAnimal());
+        tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
 //        tabbedPanedPane1.add("Exames", this.getPanelExame());
 //        tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
 //        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());

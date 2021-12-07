@@ -62,7 +62,7 @@ public class VeterinarioDAO extends DAO<Veterinario> {
 
     public Veterinario retrieveById(int id) {
         //language=SQL
-        String query = "SELECT * FROM cliente WHERE id = " + id;
+        String query = "SELECT * FROM vet WHERE id = " + id;
         List<Veterinario> vet = retrieve(query);
         if (vet.isEmpty()) {
             throw new RuntimeException("Nenhum veterinário encontrado com id " + id);

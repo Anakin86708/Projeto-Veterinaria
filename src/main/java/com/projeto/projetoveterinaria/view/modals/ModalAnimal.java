@@ -68,7 +68,7 @@ public class ModalAnimal extends ModalGeneric {
     }
 
     private void loadEspecieModel() {
-        ModalController.setModelComboEspecie(comboEspecie);
+        ModalController.setModelCmbEspecie(comboEspecie);
     }
 
 
