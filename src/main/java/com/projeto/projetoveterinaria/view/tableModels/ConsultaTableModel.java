@@ -1,13 +1,15 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
 import com.projeto.projetoveterinaria.model.Consulta;
+import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
+import com.projeto.projetoveterinaria.model.DAO.TratamentoDAO;
+import com.projeto.projetoveterinaria.model.DAO.VeterinarioDAO;
 import com.projeto.projetoveterinaria.model.Horarios;
 
 import java.util.Calendar;
 import java.util.List;
 
 /**
- *
  * @author ariel
  */
 public class ConsultaTableModel extends GenericTableModel<Consulta> {
@@ -31,12 +33,36 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
             case 0 -> humanDateFormat(item.getData());
             case 1 -> item.getHora();
             case 2 -> item.getComentarios();
-            case 3 -> item.getIdAnimal();
-            case 4 -> item.getIdTratamento();
-            case 5 -> item.getIdVeterinario();
+            case 3 -> getNomeAnimal(item.getIdAnimal());
+            case 4 -> getNomeTratamento(item.getIdTratamento());
+            case 5 -> getNomeVeterinario(item.getIdVeterinario());
             case 6 -> item.getTerminou();
             default -> throw new IndexOutOfBoundsException();
         };
+    }
+
+    private String getNomeAnimal(int idAnimal) {
+        try {
+            return AnimalDAO.getInstance().retrieveById(idAnimal).getNome();
+        } catch (RuntimeException e) {
+            return "ANIMAL REMOVIDO";
+        }
+    }
+
+    private String getNomeTratamento(int idTratamento) {
+        try {
+            return TratamentoDAO.getInstance().retrieveById(idTratamento).getNome();
+        } catch (Exception e) {
+            return "TRATAMENTO REMOVIDO";
+        }
+    }
+
+    private String getNomeVeterinario(int idVeterinario) {
+        try {
+            return VeterinarioDAO.getInstance().retrieveById(idVeterinario).getNome();
+        } catch (Exception e) {
+            return "VETERINÁRIO REMOVIDO";
+        }
     }
 
     @Override
@@ -47,7 +73,7 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
             case 0:
                 item.setData((Calendar) aValue);
             case 1:
-                item.setHora(Horarios.valueOf((String) aValue));  // TODO: Verificar se funciona
+                item.setHora(Horarios.valueOf((String) aValue));
             case 2:
                 item.setComentarios((String) aValue);
             case 3:
@@ -66,8 +92,7 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
-            case 0,1,2 -> String.class;
-            case 3,4,5 -> Integer.class;
+            case 0, 1, 2, 3, 4, 5 -> String.class;
             case 6 -> Boolean.class;
             default -> throw new IndexOutOfBoundsException();
         };

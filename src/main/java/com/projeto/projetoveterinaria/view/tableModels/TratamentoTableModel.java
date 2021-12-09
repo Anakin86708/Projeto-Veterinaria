@@ -1,5 +1,6 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
+import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
 import com.projeto.projetoveterinaria.model.Tratamento;
 
 import java.util.Calendar;
@@ -26,10 +27,18 @@ public class TratamentoTableModel extends GenericTableModel<Tratamento> {
             case 0 -> item.getNome();
             case 1 -> humanDateFormat(item.getDataEntrada());
             case 2 -> humanDateFormat(item.getDataSaida());
-            case 3 -> item.getIdAnimal();
+            case 3 -> getNomeAnimal(item.getIdAnimal());
             case 4 -> item.getTerminou();
             default -> throw new IndexOutOfBoundsException();
         };
+    }
+
+    private String getNomeAnimal(int idAnimal) {
+        try {
+            return AnimalDAO.getInstance().retrieveById(idAnimal).getNome();
+        } catch (Exception e) {
+            return "ANIMAL REMOVIDO";
+        }
     }
 
     @Override
@@ -55,9 +64,8 @@ public class TratamentoTableModel extends GenericTableModel<Tratamento> {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> String.class;
+            case 0, 3 -> String.class;
             case 1, 2 -> Calendar.class;
-            case 3 -> Integer.class;
             case 4 -> Boolean.class;
             default -> throw new IndexOutOfBoundsException();
         };

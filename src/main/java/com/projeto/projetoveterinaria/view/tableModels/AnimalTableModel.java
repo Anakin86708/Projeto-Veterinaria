@@ -1,6 +1,8 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
 import com.projeto.projetoveterinaria.model.Animal;
+import com.projeto.projetoveterinaria.model.DAO.ClienteDAO;
+import com.projeto.projetoveterinaria.model.DAO.EspecieDAO;
 import com.projeto.projetoveterinaria.model.Sexo;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.List;
  */
 public class AnimalTableModel extends GenericTableModel<Animal> {
 
-    private static final String[] nomeColunas = {"Nome", "Ano de nascimento", "Sexo", "ID Espécie", "ID Cliente"};
+    private static final String[] nomeColunas = {"Nome", "Ano de nascimento", "Sexo", "Espécie", "Cliente"};
     private static final String nomeTabelaSQL = "animal";
 
     public AnimalTableModel(List<Animal> dados) {
@@ -34,10 +36,18 @@ public class AnimalTableModel extends GenericTableModel<Animal> {
             case 0 -> item.getNome();
             case 1 -> item.getAnoNasc();
             case 2 -> item.getSexo();
-            case 3 -> item.getIdEspecie();
-            case 4 -> item.getIdCliente();
+            case 3 -> getNomeEspecie(item.getIdEspecie());
+            case 4 -> getNomeCliente(item.getIdCliente());
             default -> throw new IndexOutOfBoundsException();
         };
+    }
+
+    private String getNomeEspecie(int idEspecie) {
+        return EspecieDAO.getInstance().retrieveById(idEspecie).getNomeEspecie();
+    }
+
+    private String getNomeCliente(int idCliente) {
+        return ClienteDAO.getInstance().retrieveById(idCliente).getNome();
     }
 
     @Override
@@ -63,8 +73,8 @@ public class AnimalTableModel extends GenericTableModel<Animal> {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> String.class;
-            case 1, 3, 4 -> Integer.class;
+            case 0, 3, 4 -> String.class;
+            case 1 -> Integer.class;
             case 2 -> Sexo.class;
             default -> throw new IndexOutOfBoundsException();
         };
