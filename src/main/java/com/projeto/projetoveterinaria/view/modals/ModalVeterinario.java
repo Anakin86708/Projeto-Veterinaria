@@ -5,11 +5,17 @@
  */
 package com.projeto.projetoveterinaria.view.modals;
 
+import com.projeto.projetoveterinaria.controller.ModalController;
+import com.projeto.projetoveterinaria.model.Veterinario;
+
+import javax.swing.*;
+import java.sql.SQLException;
+
 /**
  *
  * @author ariel
  */
-public class ModalVeterinario extends javax.swing.JDialog {
+public class ModalVeterinario extends ModalGeneric {
 
     /**
      * Creates new form ModalVeterinario1
@@ -17,6 +23,36 @@ public class ModalVeterinario extends javax.swing.JDialog {
     public ModalVeterinario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        createNewID();
+    }
+
+    protected void createNewID(){
+        int id = ModalController.getNewIDVeterinario();
+        txtID.setText(String.valueOf(id));
+    }
+
+    public ModalVeterinario(java.awt.Frame parent, boolean modal, Veterinario data) {
+        super(parent, modal);
+        initComponents();
+
+        setupData(data);
+    }
+
+    private void setupData(Veterinario data) {
+        txtID.setText(String.valueOf(data.getId()));
+        txtNome.setText(data.getNome());
+        txtEndereco.setText(data.getEndereco());
+        txtTelefone.setText(data.getTelefone());
+    }
+
+    private Veterinario getData() {
+        int id = Integer.parseInt(txtID.getText());
+        String nome = txtNome.getText();
+        String endereco = txtEndereco.getText();
+        String telefone = txtTelefone.getText();
+
+        return new Veterinario(id, nome, endereco, telefone);
     }
 
     /**
@@ -45,8 +81,18 @@ public class ModalVeterinario extends javax.swing.JDialog {
         setResizable(false);
 
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -71,6 +117,7 @@ public class ModalVeterinario extends javax.swing.JDialog {
 
         txtID.setEditable(false);
         txtID.setText("0");
+        txtID.setEnabled(false);
 
         jLabel1.setText("ID");
 
@@ -149,6 +196,27 @@ public class ModalVeterinario extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        try {
+            Veterinario data = getData();
+            String msg = ModalController.sendData(data);
+            feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o veterinário!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o veterinário!\n"+ e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        finally {
+            exit();
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        exit();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

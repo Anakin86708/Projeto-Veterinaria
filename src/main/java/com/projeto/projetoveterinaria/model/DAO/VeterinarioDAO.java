@@ -10,11 +10,11 @@ import java.util.List;
 public class VeterinarioDAO extends DAO<Veterinario> {
 
     private static VeterinarioDAO instance;
-    public final static String COLUMN_NAME = "vet";
+    public final static String TABLE_NAME = "vet";
 
 
     private VeterinarioDAO() {
-        super(COLUMN_NAME);
+        super(TABLE_NAME);
         getConnection();
         createTable();
     }
@@ -33,16 +33,12 @@ public class VeterinarioDAO extends DAO<Veterinario> {
         );
     }
 
-    public Veterinario create(String nome, String endereco, String telefone) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO vet (nome, endereco, telefone) VALUES (?,?,?)");
-            stmt.setString(1, nome);
-            stmt.setString(2, endereco);
-            stmt.setString(3, telefone);
-            executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public Veterinario create(String nome, String endereco, String telefone) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO vet (nome, endereco, telefone) VALUES (?,?,?)");
+        stmt.setString(1, nome);
+        stmt.setString(2, endereco);
+        stmt.setString(3, telefone);
+        executeUpdate(stmt);
         return retrieveLast();
     }
 
@@ -76,17 +72,13 @@ public class VeterinarioDAO extends DAO<Veterinario> {
         return retrieve(query);
     }
 
-    public void update(Veterinario vet) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE vet SET nome=?, endereco=?, telefone=? WHERE id=?");
-            stmt.setString(1, vet.getNome());
-            stmt.setString(2, vet.getEndereco());
-            stmt.setString(3, vet.getTelefone());
-            stmt.setInt(4, vet.getId());
-            executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public void update(Veterinario vet) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE vet SET nome=?, endereco=?, telefone=? WHERE id=?");
+        stmt.setString(1, vet.getNome());
+        stmt.setString(2, vet.getEndereco());
+        stmt.setString(3, vet.getTelefone());
+        stmt.setInt(4, vet.getId());
+        executeUpdate(stmt);
     }
 
     public void delete(Veterinario vet) {
@@ -97,5 +89,9 @@ public class VeterinarioDAO extends DAO<Veterinario> {
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
+    }
+
+    public int getNextId() {
+        return nextId(TABLE_NAME);
     }
 }

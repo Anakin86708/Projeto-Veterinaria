@@ -110,15 +110,15 @@ public class Controller {
         }
         return instancePanelTratamento;
     }
-//
-//    public Component getPanelVeterinario() {
-//        if (instancePanelVeterinario == null) {
-//            final VeterinarioTableModel veterinarioTableModel = new VeterinarioTableModel(VeterinarioDAO.getInstance().retrieveAll());
-//            final ModalVeterinario modalVeterinario = new ModalVeterinario(frameAssociado, true);
-//            instancePanelVeterinario = new PanelPadrao<Veterinario>("Veterinários", veterinarioTableModel, modalVeterinario);
-//        }
-//        return instancePanelVeterinario;
-//    }
+
+    public Component getPanelVeterinario() {
+        if (instancePanelVeterinario == null) {
+            final VeterinarioTableModel veterinarioTableModel = new VeterinarioTableModel(VeterinarioDAO.getInstance().retrieveAll());
+            final IModalController controller = new ModalControllerVeterinario(frameAssociado);
+            instancePanelVeterinario = new PanelPadrao<Veterinario>("Veterinários", controller);
+        }
+        return instancePanelVeterinario;
+    }
 
     public static void setSelectedCliente(JTable tableAnimaisPertencentes, Cliente item) {
         tableAnimaisPertencentes.setModel(new AnimalTableModel(AnimalDAO.getInstance().retriveByOwnerID(item.getId())));
@@ -129,7 +129,7 @@ public class Controller {
         tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
         tabbedPanedPane1.add("Exames", this.getPanelExame());
         tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
-//        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
+        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
     }
 
     public static void searchFor(JTextField txtBusca, JComboBox<String> cmbFiltro, JTable tableConteudo) {

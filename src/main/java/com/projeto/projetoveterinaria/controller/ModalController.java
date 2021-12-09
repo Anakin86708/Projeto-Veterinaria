@@ -67,6 +67,16 @@ public class ModalController {
         }
     }
 
+    public static String sendData(Veterinario data) throws SQLException {
+        if (data.getId() == getNewIDVeterinario()) {
+            VeterinarioDAO.getInstance().create(data.getNome(), data.getEndereco(), data.getTelefone());
+            return "Veterinário criado com sucesso!";
+        } else {
+            VeterinarioDAO.getInstance().update(data);
+            return "Veterinário atualizado com sucesso!";
+        }
+    }
+
     public static int getNewIDCliente() {
         return ClienteDAO.getInstance().getNextId();
     }
@@ -85,6 +95,10 @@ public class ModalController {
 
     public static int getNewIDTratamento() {
         return TratamentoDAO.getInstance().getNextId();
+    }
+
+    public static int getNewIDVeterinario() {
+        return VeterinarioDAO.getInstance().getNextId();
     }
 
     /**
