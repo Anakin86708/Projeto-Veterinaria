@@ -36,10 +36,15 @@ public class PanelPadrao<T extends HasID> extends javax.swing.JPanel {
     }
 
     private void setComboboxModel() {
-        GenericTableModel model = (GenericTableModel) tableConteudo.getModel();
-        String[] colunas = model.getColunas();
-        List<String> listColunas = new LinkedList<>(Arrays.asList(colunas));
-        listColunas.removeAll(List.of(new String[]{"Terminou", "Data entrada", "Data saída", "Data"}));
+        List<String> listColunas;
+        try {
+            GenericTableModel model = (GenericTableModel) tableConteudo.getModel();
+            String[] colunas = model.getColunas();
+            listColunas = new LinkedList<>(Arrays.asList(colunas));
+            listColunas.removeAll(List.of(new String[]{"Terminou", "Data entrada", "Data saída", "Data"}));
+        } catch (Exception e) {
+            listColunas = List.of(new String[] {});
+        }
         cmbFiltro.setModel(new DefaultComboBoxModel<>(listColunas.toArray(String[]::new)));
     }
 

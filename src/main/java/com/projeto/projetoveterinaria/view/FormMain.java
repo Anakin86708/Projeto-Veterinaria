@@ -35,13 +35,17 @@ public class FormMain extends javax.swing.JFrame {
     
     private void setModels() {
         // Table models
-        Controller.setTableModelProximasConsultas(tableProximasConsultas);
-        Controller.setTableModelHistoricoConsultas(tableHistorico);
+        setModelsInicio();
         Controller.setTableModelCliente(tableCliente);
         Controller.setTableDefaultModelAnimais(tableAnimaisPertencentes);
         
         // Combobox models
         Controller.setComboModelFiltroCliente(cmbFiltroCliente);
+    }
+
+    private void setModelsInicio() {
+        Controller.setTableModelProximasConsultas(tableProximasConsultas);
+        Controller.setTableModelHistoricoConsultas(tableHistorico);
     }
 
     /**

@@ -10,11 +10,11 @@ import java.util.List;
 public class ExameDAO extends DAO<Exame> {
 
     private static ExameDAO instance;
-    public final static String COLUMN_NAME = "exame";
+    public final static String TABLE_NAME = "exame";
 
 
     private ExameDAO() {
-        super(COLUMN_NAME);
+        super(TABLE_NAME);
         getConnection();
         createTable();
     }
@@ -32,19 +32,16 @@ public class ExameDAO extends DAO<Exame> {
         );
     }
 
-    public Exame create(int idConsulta, String descricaoExame) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO exame (id_consulta,decricao_exame) VALUES (?,?)");
-            stmt.setInt(1, idConsulta);
-            stmt.setString(2, descricaoExame);
-            executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public Exame create(int idConsulta, String descricaoExame) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO exame (id_consulta,decricao_exame) VALUES (?,?)");
+        stmt.setInt(1, idConsulta);
+        stmt.setString(2, descricaoExame);
+        executeUpdate(stmt);
+
         return retrieveLast();
     }
-    
-    
+
+
     public List<Exame> retrieveAll() {
         //language=SQL
         String query = "SELECT * FROM exame";
@@ -71,16 +68,12 @@ public class ExameDAO extends DAO<Exame> {
         return retrieve(query);
     }
 
-    public void update(Exame exame) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE exame SET id_consulta=?, decricao_exame=? WHERE id=?");
-            stmt.setInt(1, exame.getIdConsulta());
-            stmt.setString(2, exame.getDescricaoExame());
-            stmt.setInt(3, exame.getId());
-            executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public void update(Exame exame) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE exame SET id_consulta=?, decricao_exame=? WHERE id=?");
+        stmt.setInt(1, exame.getIdConsulta());
+        stmt.setString(2, exame.getDescricaoExame());
+        stmt.setInt(3, exame.getId());
+        executeUpdate(stmt);
     }
 
     public void delete(Exame exame) {
@@ -92,5 +85,9 @@ public class ExameDAO extends DAO<Exame> {
             System.err.println("EXCEPTION: " + ex.getMessage());
 
         }
+    }
+
+    public int getNextId() {
+        return nextId(TABLE_NAME);
     }
 }

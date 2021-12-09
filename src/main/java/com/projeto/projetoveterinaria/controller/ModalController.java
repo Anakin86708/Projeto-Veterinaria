@@ -5,6 +5,7 @@ import com.projeto.projetoveterinaria.model.DAO.*;
 import com.projeto.projetoveterinaria.view.comboBoxModels.TratamentoComboBoxModel;
 import com.projeto.projetoveterinaria.view.comboBoxModels.VeterinarioComboBoxModel;
 import com.projeto.projetoveterinaria.view.tableModels.AnimalTableModel;
+import com.projeto.projetoveterinaria.view.tableModels.ConsultaTableModel;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -46,6 +47,16 @@ public class ModalController {
         }
     }
 
+    public static String sendData(Exame data) throws SQLException {
+        if (data.getId() == getNewIDExame()) {
+            ExameDAO.getInstance().create(data.getIdConsulta(), data.getDescricaoExame());
+            return "Exame criado com sucesso!";
+        } else {
+            ExameDAO.getInstance().update(data);
+            return "Exame atualizado com sucesso!";
+        }
+    }
+
     public static int getNewIDCliente() {
         return ClienteDAO.getInstance().getNextId();
     }
@@ -58,6 +69,10 @@ public class ModalController {
         return ConsultaDAO.getInstance().getNextId();
     }
 
+    public static int getNewIDExame() {
+        return ExameDAO.getInstance().getNextId();
+    }
+
     /**
      * Usado para popular uma tabela com todos os animais no BD.
      *
@@ -67,6 +82,12 @@ public class ModalController {
         List<Animal> animalList = AnimalDAO.getInstance().retrieveAll();
         AnimalTableModel model = new AnimalTableModel(animalList);
         tableAnimal.setModel(model);
+    }
+
+    public static void setTableModelConsultas(JTable tableConsulta) {
+        List<Consulta> consultaList = ConsultaDAO.getInstance().retrieveAll();
+        ConsultaTableModel model = new ConsultaTableModel(consultaList);
+        tableConsulta.setModel(model);
     }
 
     public static void setModelCmbEspecie(JComboBox<Especie> comboBox) {

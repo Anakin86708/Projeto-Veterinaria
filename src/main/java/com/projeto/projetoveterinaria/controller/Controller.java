@@ -3,10 +3,12 @@ package com.projeto.projetoveterinaria.controller;
 import com.projeto.projetoveterinaria.controller.modal.IModalController;
 import com.projeto.projetoveterinaria.controller.modal.ModalControllerAnimal;
 import com.projeto.projetoveterinaria.controller.modal.ModalControllerConsulta;
+import com.projeto.projetoveterinaria.controller.modal.ModalControllerExame;
 import com.projeto.projetoveterinaria.model.Animal;
 import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.model.Consulta;
 import com.projeto.projetoveterinaria.model.DAO.*;
+import com.projeto.projetoveterinaria.model.Exame;
 import com.projeto.projetoveterinaria.view.PanelPadrao;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.*;
@@ -96,15 +98,15 @@ public class Controller {
         return instancePanelConsulta;
 
     }
-//
-//    public Component getPanelExame() {
-//        if (instancePanelExame == null) {
-//            final ExameTableModel exameTableModel = new ExameTableModel(ExameDAO.getInstance().retrieveAll());
-//            final ModalExame modalExame = new ModalExame(frameAssociado, true);
-//            instancePanelExame = new PanelPadrao<Exame>("Exames", exameTableModel, modalExame);
-//        }
-//        return instancePanelExame;
-//    }
+
+    public Component getPanelExame() {
+        if (instancePanelExame == null) {
+            final ExameTableModel exameTableModel = new ExameTableModel(ExameDAO.getInstance().retrieveAll());
+            final IModalController controller = new ModalControllerExame(frameAssociado);
+            instancePanelExame = new PanelPadrao<Exame>("Exames", controller);
+        }
+        return instancePanelExame;
+    }
 //
 //    public Component getPanelTratamento() {
 //        if (instancePanelTratamento == null) {
@@ -131,7 +133,7 @@ public class Controller {
     public void initPanels(JTabbedPane tabbedPanedPane1) {
         tabbedPanedPane1.add("Animais", this.getPanelAnimal());
         tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
-//        tabbedPanedPane1.add("Exames", this.getPanelExame());
+        tabbedPanedPane1.add("Exames", this.getPanelExame());
 //        tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
 //        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
     }

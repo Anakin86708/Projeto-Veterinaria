@@ -5,11 +5,19 @@
  */
 package com.projeto.projetoveterinaria.view.modals;
 
+import com.projeto.projetoveterinaria.controller.ModalController;
+import com.projeto.projetoveterinaria.model.Consulta;
+import com.projeto.projetoveterinaria.model.Exame;
+import com.projeto.projetoveterinaria.view.tableModels.ConsultaTableModel;
+
+import javax.swing.*;
+import java.sql.SQLException;
+
 /**
  *
  * @author ariel
  */
-public class ModalExame extends javax.swing.JDialog {
+public class ModalExame extends ModalGeneric {
 
     /**
      * Creates new form ModalExame1
@@ -17,6 +25,46 @@ public class ModalExame extends javax.swing.JDialog {
     public ModalExame(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        loadConsultasModel();
+
+        createNewID();
+    }
+
+    protected void createNewID() {
+        int id = ModalController.getNewIDExame();
+        txtID.setText(String.valueOf(id));
+    }
+
+    public ModalExame(java.awt.Frame parent, boolean modal, Exame data) {
+        super(parent, modal);
+        initComponents();
+        loadConsultasModel();
+
+        setupData(data);
+    }
+
+    private void loadConsultasModel() {
+        ModalController.setTableModelConsultas(tableConsulta);
+    }
+
+    private void setupData(Exame data) {
+        txtID.setText(String.valueOf(data.getId()));
+        txtDescricao.setText(data.getDescricaoExame());
+
+        try {
+            int indexRow = ((ConsultaTableModel) tableConsulta.getModel()).getRowIndexForItem(data.getIdConsulta());
+            tableConsulta.setRowSelectionInterval(indexRow, indexRow);
+        } catch (NullPointerException e) {
+            feedback("Não há uma consulta para esse exame!", "Exame sem consulta", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private Exame getData() throws RuntimeException {
+        int id = Integer.parseInt(txtID.getText());
+        Consulta consulta = ((ConsultaTableModel) tableConsulta.getModel()).getItem(tableConsulta.getSelectedRow());
+        String descricao = txtDescricao.getText();
+
+        return new Exame(id, consulta.getId(), descricao);
     }
 
     /**
@@ -44,8 +92,18 @@ public class ModalExame extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -70,6 +128,7 @@ public class ModalExame extends javax.swing.JDialog {
 
         txtID.setEditable(false);
         txtID.setText("0");
+        txtID.setEnabled(false);
 
         jLabel1.setText("ID");
 
@@ -152,6 +211,26 @@ public class ModalExame extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        try {
+            Exame data = getData();
+            String msg = ModalController.sendData(data);
+            feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o exame!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o exame!\n"+ e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            exit();
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        exit();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
