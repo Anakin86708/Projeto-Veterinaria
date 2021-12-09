@@ -83,20 +83,15 @@ public class AnimalDAO extends DAO<Animal> {
         );
     }
 
-    public void update(Animal animal) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE animal SET nome=?, anoNasc=?, sexo=?, id_especie=?, id_cliente=? WHERE id=?");
-            stmt.setString(1, animal.getNome());
-            stmt.setInt(2, animal.getAnoNasc());
-            stmt.setString(3, animal.getSexo().toString());
-            stmt.setInt(4, animal.getIdEspecie());
-            stmt.setInt(5, animal.getIdCliente());
-            stmt.setInt(6, animal.getId());
-            this.executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
-
+    public void update(Animal animal) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE animal SET nome=?, anoNasc=?, sexo=?, id_especie=?, id_cliente=? WHERE id=?");
+        stmt.setString(1, animal.getNome());
+        stmt.setInt(2, animal.getAnoNasc());
+        stmt.setString(3, animal.getSexo().toString());
+        stmt.setInt(4, animal.getIdEspecie());
+        stmt.setInt(5, animal.getIdCliente());
+        stmt.setInt(6, animal.getId());
+        this.executeUpdate(stmt);
     }
 
     public void delete(Animal animal) {

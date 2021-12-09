@@ -81,20 +81,15 @@ public class ClienteDAO extends DAO<Cliente> {
         );
     }
 
-    public void update(Cliente client) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE cliente SET nome=?, end=?, cep=?, email=?, telefone=? WHERE id=?");
-            stmt.setString(1, client.getNome());
-            stmt.setString(2, client.getEndereco());
-            stmt.setString(3, client.getCep());
-            stmt.setString(4, client.getEmail());
-            stmt.setString(5, client.getTelefone());
-            stmt.setInt(6, client.getId());
-            this.executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
-
+    public void update(Cliente client) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE cliente SET nome=?, end=?, cep=?, email=?, telefone=? WHERE id=?");
+        stmt.setString(1, client.getNome());
+        stmt.setString(2, client.getEndereco());
+        stmt.setString(3, client.getCep());
+        stmt.setString(4, client.getEmail());
+        stmt.setString(5, client.getTelefone());
+        stmt.setInt(6, client.getId());
+        this.executeUpdate(stmt);
     }
 
     public void delete(Cliente client) {

@@ -107,21 +107,17 @@ public class ConsultaDAO extends DAO<Consulta> {
         return retrieve(quary);
     }
 
-    public void update(Consulta consulta) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE consulta SET data=?, horario=?, comentario=?, id_animal=?, id_tratamento=?, id_vet=?, terminado=? WHERE id=?");
-            stmt.setDate(1, new Date(consulta.getData().getTimeInMillis()));
-            stmt.setString(2, consulta.getHora().toString());
-            stmt.setString(3, consulta.getComentarios());
-            stmt.setInt(4, consulta.getIdAnimal());
-            stmt.setInt(5, consulta.getIdTratamento());
-            stmt.setInt(6, consulta.getIdVeterinario());
-            stmt.setBoolean(7, consulta.getTerminou());
-            stmt.setInt(8, consulta.getId());
-            executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public void update(Consulta consulta) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE consulta SET data=?, horario=?, comentario=?, id_animal=?, id_tratamento=?, id_vet=?, terminado=? WHERE id=?");
+        stmt.setDate(1, new Date(consulta.getData().getTimeInMillis()));
+        stmt.setString(2, consulta.getHora().toString());
+        stmt.setString(3, consulta.getComentarios());
+        stmt.setInt(4, consulta.getIdAnimal());
+        stmt.setInt(5, consulta.getIdTratamento());
+        stmt.setInt(6, consulta.getIdVeterinario());
+        stmt.setBoolean(7, consulta.getTerminou());
+        stmt.setInt(8, consulta.getId());
+        executeUpdate(stmt);
     }
 
     public void delete(Consulta consulta) {
