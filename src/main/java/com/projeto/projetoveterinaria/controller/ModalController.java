@@ -57,6 +57,16 @@ public class ModalController {
         }
     }
 
+    public static String sendData(Tratamento data) throws SQLException {
+        if (data.getId() == getNewIDTratamento()) {
+            TratamentoDAO.getInstance().create(data.getNome(), data.getDataEntrada(), data.getDataSaida(), data.getIdAnimal(), data.getTerminou());
+            return "Tratamento criado com sucesso!";
+        } else {
+            TratamentoDAO.getInstance().update(data);
+            return "Tratamento atualizado com sucesso!";
+        }
+    }
+
     public static int getNewIDCliente() {
         return ClienteDAO.getInstance().getNextId();
     }
@@ -71,6 +81,10 @@ public class ModalController {
 
     public static int getNewIDExame() {
         return ExameDAO.getInstance().getNextId();
+    }
+
+    public static int getNewIDTratamento() {
+        return TratamentoDAO.getInstance().getNextId();
     }
 
     /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
@@ -78,11 +78,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="OK"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOKActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancelar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -99,10 +105,12 @@
                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="txtNome" alignment="0" min="-2" pref="219" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtDataEntrada" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtDataSaida" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="checkTerminou" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="dataChooseSaida" alignment="0" pref="181" max="32767" attributes="0"/>
+                          <Component id="dateChooseEntrada" alignment="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jSeparator1" min="-2" pref="3" max="-2" attributes="0"/>
@@ -140,13 +148,13 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtDataEntrada" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="dateChooseEntrada" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtDataSaida" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dataChooseSaida" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Component id="checkTerminou" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="42" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -160,6 +168,7 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="text" type="java.lang.String" value="0"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
@@ -179,26 +188,12 @@
             <Property name="text" type="java.lang.String" value="Data entrada"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="txtDataEntrada">
-          <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-              <Format format="d/M/yy" subtype="-1" type="1"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="text" type="java.lang.String" value="Data sa&#xed;da"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="txtDataSaida">
-          <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-              <Format format="d/M/yy" subtype="-1" type="1"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+        <Component class="javax.swing.JCheckBox" name="checkTerminou">
           <Properties>
             <Property name="text" type="java.lang.String" value="Terminou"/>
           </Properties>
@@ -234,6 +229,10 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="com.toedter.calendar.JDateChooser" name="dateChooseEntrada">
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="dataChooseSaida">
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

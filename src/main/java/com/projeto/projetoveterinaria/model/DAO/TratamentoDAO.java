@@ -13,11 +13,11 @@ import java.util.List;
 public class TratamentoDAO extends DAO<Tratamento> {
 
     private static TratamentoDAO instance;
-    public final static String COLUMN_NAME = "tratamento";
+    public final static String TABLE_NAME = "tratamento";
 
 
     private TratamentoDAO() {
-        super(COLUMN_NAME);
+        super(TABLE_NAME);
         getConnection();
         createTable();
     }
@@ -43,18 +43,14 @@ public class TratamentoDAO extends DAO<Tratamento> {
         );
     }
 
-    public Tratamento create(String nome, Calendar dataEntrada, Calendar dataSaida, int idAnimal, boolean terminou) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO tratamento (nome, dataIni, dataFim, id_animal, terminado) VALUES  (?,?,?,?,?)");
-            stmt.setString(1, nome);
-            stmt.setLong(2, dataEntrada.getTimeInMillis());
-            stmt.setLong(3, dataSaida.getTimeInMillis());
-            stmt.setInt(4, idAnimal);
-            stmt.setBoolean(5, terminou);
-            executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public Tratamento create(String nome, Calendar dataEntrada, Calendar dataSaida, int idAnimal, boolean terminou) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO tratamento (nome, dataIni, dataFim, id_animal, terminado) VALUES  (?,?,?,?,?)");
+        stmt.setString(1, nome);
+        stmt.setLong(2, dataEntrada.getTimeInMillis());
+        stmt.setLong(3, dataSaida.getTimeInMillis());
+        stmt.setInt(4, idAnimal);
+        stmt.setBoolean(5, terminou);
+        executeUpdate(stmt);
         return retrieveLast();
     }
 
@@ -90,19 +86,15 @@ public class TratamentoDAO extends DAO<Tratamento> {
         return retrieve(query);
     }
 
-    public void update(Tratamento tratamento) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE tratamento SET nome=?, dataIni=?, dataFim=?,id_animal=?, terminado=? WHERE id=?");
-            stmt.setString(1, tratamento.getNome());
-            stmt.setDate(2, new Date(tratamento.getDataEntrada().getTimeInMillis()));
-            stmt.setDate(3, new Date(tratamento.getDataSaida().getTimeInMillis()));
-            stmt.setInt(4, tratamento.getIdAnimal());
-            stmt.setBoolean(5, tratamento.getTerminou());
-            stmt.setInt(6, tratamento.getId());
-            executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public void update(Tratamento tratamento) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE tratamento SET nome=?, dataIni=?, dataFim=?,id_animal=?, terminado=? WHERE id=?");
+        stmt.setString(1, tratamento.getNome());
+        stmt.setDate(2, new Date(tratamento.getDataEntrada().getTimeInMillis()));
+        stmt.setDate(3, new Date(tratamento.getDataSaida().getTimeInMillis()));
+        stmt.setInt(4, tratamento.getIdAnimal());
+        stmt.setBoolean(5, tratamento.getTerminou());
+        stmt.setInt(6, tratamento.getId());
+        executeUpdate(stmt);
     }
 
     public void delete(Tratamento tratamento) {
@@ -115,4 +107,7 @@ public class TratamentoDAO extends DAO<Tratamento> {
         }
     }
 
+    public int getNextId() {
+        return nextId(TABLE_NAME);
+    }
 }
