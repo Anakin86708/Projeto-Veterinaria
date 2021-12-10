@@ -4,6 +4,7 @@ package com.projeto.projetoveterinaria.model.DAO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Implementação DAO para acesso ao SQLite
@@ -13,11 +14,11 @@ import java.util.List;
 public abstract class DAO<T> {
 
     public final static String DBURL = "jdbc:sqlite:vet2021.db";
-    public final String columnName;
+    public final String tableName;
     private static Connection connection;
 
     protected DAO(String columnName) {
-        this.columnName = columnName;
+        this.tableName = columnName;
     }
 
     public static Connection getConnection() {
@@ -45,7 +46,7 @@ public abstract class DAO<T> {
         ArrayList<String> columns = new ArrayList<>();
         try {
             stmt = connection.prepareStatement("SELECT * FROM ? LIMIT 1");
-            stmt.setString(1, columnName);
+            stmt.setString(1, tableName);
             ResultSet resultSet = stmt.executeQuery();
             ResultSetMetaData metadata = resultSet.getMetaData();
 
@@ -57,7 +58,7 @@ public abstract class DAO<T> {
         } catch (SQLException e) {
             System.err.println("EXCEPTION: " + e.getMessage());
         }
-        return  columns.toArray(new String[0]);
+        return columns.toArray(new String[0]);
     }
 
     protected int lastId(String tableName, String primaryKey) {
@@ -140,6 +141,8 @@ public abstract class DAO<T> {
                     + "decricao_exame VARCHAR, \n"
                     + "id_consulta INTEGER); \n");
             executeUpdate(stmt);
+
+            createViews();
             return true;
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
@@ -147,10 +150,39 @@ public abstract class DAO<T> {
         return false;
     }
 
+    private void createViews() {
+        PreparedStatement stmt;
+        try {
+            stmt = DAO.getConnection().prepareStatement(
+                    "CREATE VIEW IF NOT EXISTS view_consulta AS SELECT c.id, c.data, c.horario, c.comentario, " +
+                    "a.id as 'id_animal', a.nome as 'animal', v.id as 'id_vet', v.nome as 'vet', t.id as 'id_tratamento', " +
+                    "t.nome as 'tratamento', c.terminado " +
+                    "FROM consulta AS c LEFT JOIN tratamento t on c.id_tratamento = t.id " +
+                    "LEFT JOIN animal a ON c.id_animal = a.id " +
+                    "LEFT JOIN vet v ON c.id_vet = v.id"
+            );
+            executeUpdate(stmt);
+        } catch (SQLException ex) {
+            System.err.println("EXCEPTION: " + ex.getMessage());
+        }
+    }
+
     public List<T> retrieveBySimilarValueOnColumn(String value, String column) {
-        //language=SQL
-        String query = "SELECT * FROM " + columnName +" WHERE " + column + " LIKE '%" + value + "%'";
+        String query;
+        Pattern pattern = Pattern.compile("id_.*");
+        if (pattern.matcher(column).matches()) {
+            column = column.replace("id_","");
+            query = createQueryWithFK(value, column);
+        } else {
+            //language=SQL
+            query = "SELECT * FROM " + tableName + " WHERE " + column + " LIKE '%" + value + "%'";
+        }
         return retrieve(query);
+    }
+
+    private String createQueryWithFK(String value, String column) {
+        //language=SQL
+        return "SELECT * FROM view_consulta WHERE " + column + " LIKE '%" + value + "%'";
     }
 
     protected abstract T buildObject(ResultSet rs) throws SQLException;
