@@ -5,37 +5,47 @@
  */
 package com.projeto.projetoveterinaria.view;
 
-import com.projeto.projetoveterinaria.view.modals.ModalCliente;
+import com.projeto.projetoveterinaria.controller.Controller;
+import com.projeto.projetoveterinaria.controller.modal.IModalController;
+import com.projeto.projetoveterinaria.model.HasID;
 import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
+
+import javax.swing.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- *
  * @author ariel
  */
-public class PanelPadrao extends javax.swing.JPanel {
-    
+public class PanelPadrao<T extends HasID> extends javax.swing.JPanel {
+
     public final String nome;
-    private final JDialog dialog;
+    private final IModalController controller;
+
     /**
      * Creates new form PanelPadrao
      */
-    public PanelPadrao(String nome, GenericTableModel model, JDialog dialog) {
+    public PanelPadrao(String nome, IModalController controller) {
         initComponents();
         this.nome = nome;
-        this.dialog = dialog;
-        
-        setTableModel(model);
-        setComboboxModel(model);
+        this.controller = controller;
+
+        controller.setTableModel(tableConteudo);
+        setComboboxModel();
     }
-    
-    private void setTableModel(GenericTableModel model) {
-        tableConteudo.setModel(model);
-    }
-    
-    private void setComboboxModel(GenericTableModel model) {
-        cmbFiltro.setModel(new DefaultComboBoxModel<>(model.getColunas()));
+
+    private void setComboboxModel() {
+        List<String> listColunas;
+        try {
+            GenericTableModel model = (GenericTableModel) tableConteudo.getModel();
+            String[] colunas = model.getColunas();
+            listColunas = new LinkedList<>(Arrays.asList(colunas));
+            listColunas.removeAll(List.of(new String[]{"Terminou", "Data entrada", "Data saída", "Data"}));
+        } catch (Exception e) {
+            listColunas = List.of(new String[] {});
+        }
+        cmbFiltro.setModel(new DefaultComboBoxModel<>(listColunas.toArray(String[]::new)));
     }
 
     /**
@@ -64,10 +74,31 @@ public class PanelPadrao extends javax.swing.JPanel {
         });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        txtBusca.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtBuscaCaretUpdate(evt);
+            }
+        });
 
         cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltro.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbFiltroItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
         panelTop3.setLayout(panelTop3Layout);
@@ -135,9 +166,28 @@ public class PanelPadrao extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        dialog.setVisible(true);
+        controller.adicionar(tableConteudo);
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
+        search();
+    }//GEN-LAST:event_txtBuscaCaretUpdate
+
+    private void cmbFiltroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFiltroItemStateChanged
+        search();
+    }//GEN-LAST:event_cmbFiltroItemStateChanged
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        controller.editar(tableConteudo);
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        controller.remover(tableConteudo);
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void search() {
+        Controller.searchFor(txtBusca, cmbFiltro, tableConteudo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;

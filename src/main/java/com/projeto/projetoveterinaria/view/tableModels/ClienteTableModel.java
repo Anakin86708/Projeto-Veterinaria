@@ -1,6 +1,7 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
 import com.projeto.projetoveterinaria.model.Cliente;
+
 import java.util.List;
 
 /**
@@ -9,8 +10,12 @@ import java.util.List;
  */
 public class ClienteTableModel extends GenericTableModel<Cliente>{
 
+    public static final String[] nomeColunas = {"Nome", "Endereço", "Telefone", "CEP", "Email"};
+    public static final String nomeTabelaSQL = "cliente";
+
+
     public ClienteTableModel(List<Cliente> dados) {
-        super(dados, new String[]{"Nome", "Endereço", "Telefone", "CEP", "Email"});
+        super(dados, nomeColunas, nomeTabelaSQL);
     }    
 
     @Override

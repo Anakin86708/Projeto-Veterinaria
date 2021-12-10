@@ -5,18 +5,97 @@
  */
 package com.projeto.projetoveterinaria.view.modals;
 
+import com.projeto.projetoveterinaria.controller.Controller;
+import com.projeto.projetoveterinaria.controller.ModalController;
+import com.projeto.projetoveterinaria.model.Animal;
+import com.projeto.projetoveterinaria.model.Cliente;
+import com.projeto.projetoveterinaria.model.Especie;
+import com.projeto.projetoveterinaria.model.Sexo;
+import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
+
+import javax.swing.*;
+import java.sql.SQLException;
+
 /**
  *
  * @author ariel
  */
-public class ModalAnimal extends javax.swing.JDialog {
+public class ModalAnimal extends ModalGeneric {
 
     /**
-     * Creates new form ModalAnimal1
+     * Construtor para modo de adição
+     *
+     * @param parent Frame ao qual o model está associado.
+     * @param modal Se a janela deve se comportar como modal.
      */
     public ModalAnimal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        loadEspecieModel();
+        loadClientesModel();
+
+        createNewID();
+    }
+
+    @Override
+    protected void createNewID() {
+        int id = ModalController.getNewIDAnimal();
+        txtID.setText(String.valueOf(id));
+    }
+
+    /**
+     * Construtor para o modo de edição.
+     *
+     * @param parent Frame ao qual o model está associado.
+     * @param modal Se a janela deve se comportar como modal.
+     * @param data Dados anteriores para serem editados.
+     */
+    public ModalAnimal(java.awt.Frame parent, boolean modal, Animal data) {
+        super(parent, modal);
+        initComponents();
+        loadEspecieModel();
+        loadClientesModel();
+        setupData(data);
+    }
+
+    /**
+     * Permite carregar o modelo com os clientes na tabela.
+     */
+    private void loadClientesModel() {
+        Controller.setTableModelCliente(tableCliente);
+    }
+
+    private void loadEspecieModel() {
+        ModalController.setModelCmbEspecie(comboEspecie);
+    }
+
+
+    private void setupData(@org.jetbrains.annotations.NotNull Animal data) {
+        txtID.setText(String.valueOf(data.getId()));
+        txtNome.setText(data.getNome());
+        txtAnoNasc.setText(String.valueOf(data.getAnoNasc()));
+        Sexo sexo = data.getSexo();
+        radioMacho.setSelected(sexo == Sexo.MACHO);
+        radioFemea.setSelected(sexo == Sexo.FEMEA);
+        try {
+            int indexRow = ((ClienteTableModel) tableCliente.getModel()).getRowIndexForItem(data.getIdCliente());
+            tableCliente.setRowSelectionInterval(indexRow,indexRow);
+        } catch (NullPointerException e) {
+            feedback("Não há um cliente para esse animal!", "Animal sem cliente", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private Animal getData() throws RuntimeException {
+        int id = Integer.parseInt(txtID.getText());
+        String nome = txtNome.getText();
+        int anoNasc = Integer.parseInt(txtAnoNasc.getText());
+        Sexo sexo = radioFemea.isSelected() ? Sexo.FEMEA : Sexo.MACHO;
+        Especie especie = (Especie) comboEspecie.getSelectedItem();
+        Cliente cliente = ((ClienteTableModel) tableCliente.getModel()).getItem(tableCliente.getSelectedRow());
+
+        if (especie == null) throw new RuntimeException("Uma espécie deve ser selecionada!");
+        if (cliente == null) throw new RuntimeException("Um cliente deve ser selecionado!");
+        return new Animal(id, nome, anoNasc, sexo, especie.getId(), cliente.getId());
     }
 
     /**
@@ -39,11 +118,11 @@ public class ModalAnimal extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         txtAnoNasc = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        radioFemea = new javax.swing.JRadioButton();
+        radioMacho = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboEspecie = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCliente = new javax.swing.JTable();
@@ -51,8 +130,18 @@ public class ModalAnimal extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -79,6 +168,7 @@ public class ModalAnimal extends javax.swing.JDialog {
 
         txtID.setEditable(false);
         txtID.setText("0");
+        txtID.setEnabled(false);
 
         jLabel2.setText("Nome");
 
@@ -92,15 +182,13 @@ public class ModalAnimal extends javax.swing.JDialog {
 
         jLabel4.setText("Sexo");
 
-        jRadioButton1.setText("Fêmea");
+        radioFemea.setText("Fêmea");
 
-        jRadioButton2.setText("Macho");
+        radioMacho.setText("Macho");
 
         jLabel5.setText("Espécie");
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Cliente pertencente");
 
@@ -115,6 +203,7 @@ public class ModalAnimal extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tableCliente);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -131,11 +220,11 @@ public class ModalAnimal extends javax.swing.JDialog {
                         .addComponent(txtAnoNasc, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel4)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
+                    .addComponent(radioFemea)
+                    .addComponent(radioMacho)
                     .addComponent(jLabel2)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -166,13 +255,13 @@ public class ModalAnimal extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton1)
+                        .addComponent(radioFemea)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
+                        .addComponent(radioMacho)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jSeparator1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -205,11 +294,32 @@ public class ModalAnimal extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        try {
+            Animal data = getData();
+            String msg = ModalController.sendData(data);
+            feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o animal!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o animal!\n"+ e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        finally {
+            exit();
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        exit();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnOK;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<Especie> comboEspecie;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -217,11 +327,11 @@ public class ModalAnimal extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel panelBottom;
+    private javax.swing.JRadioButton radioFemea;
+    private javax.swing.JRadioButton radioMacho;
     private javax.swing.JTable tableCliente;
     private javax.swing.JFormattedTextField txtAnoNasc;
     private javax.swing.JTextField txtID;

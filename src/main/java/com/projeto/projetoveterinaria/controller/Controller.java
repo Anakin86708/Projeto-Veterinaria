@@ -1,29 +1,14 @@
 package com.projeto.projetoveterinaria.controller;
 
-import com.projeto.projetoveterinaria.model.Cliente;
-import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
-import com.projeto.projetoveterinaria.model.DAO.ClienteDAO;
-import com.projeto.projetoveterinaria.model.DAO.ConsultaDAO;
-import com.projeto.projetoveterinaria.model.DAO.ExameDAO;
-import com.projeto.projetoveterinaria.model.DAO.TratamentoDAO;
-import com.projeto.projetoveterinaria.model.DAO.VeterinarioDAO;
+import com.projeto.projetoveterinaria.controller.modal.*;
+import com.projeto.projetoveterinaria.model.*;
+import com.projeto.projetoveterinaria.model.DAO.*;
 import com.projeto.projetoveterinaria.view.PanelPadrao;
-import com.projeto.projetoveterinaria.view.modals.ModalAnimal;
-import com.projeto.projetoveterinaria.view.modals.ModalConsulta;
-import com.projeto.projetoveterinaria.view.modals.ModalExame;
-import com.projeto.projetoveterinaria.view.modals.ModalTratamento;
-import com.projeto.projetoveterinaria.view.modals.ModalVeterinario;
-import com.projeto.projetoveterinaria.view.tableModels.AnimalTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.ConsultaTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.ExameTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.TratamentoTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.VeterinarioTableModel;
+import com.projeto.projetoveterinaria.view.modals.ModalCliente;
+import com.projeto.projetoveterinaria.view.tableModels.*;
 
-import java.awt.Component;
-import java.awt.Frame;
-import javax.swing.JTable;
-import javax.swing.table.TableModel;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author ariel
@@ -41,27 +26,59 @@ public class Controller {
         this.frameAssociado = frameAssociado;
     }
 
-    public static TableModel getModelCliente() {
-        return new ClienteTableModel(ClienteDAO.getInstance().retrieveAll());
+    public static void setTableModelCliente(JTable table) {
+        ClienteTableModel model = new ClienteTableModel(ClienteDAO.getInstance().retrieveAll());
+        table.setModel(model);
     }
 
-    public static TableModel getModelProximasConsultas() {
-        return new ConsultaTableModel(ConsultaDAO.getInstance().retrieveProximasConsultas());
+    public static void setTableModelProximasConsultas(JTable table) {
+        ConsultaTableModel model = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveProximasConsultas());
+        table.setModel(model);
     }
 
-    public static TableModel getModelHistoricoConsultas() {
-        return new ConsultaTableModel(ConsultaDAO.getInstance().retrieveHistoricoConsultas());
+    public static void setTableModelHistoricoConsultas(JTable table) {
+        ConsultaTableModel model = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveHistoricoConsultas());
+        table.setModel(model);
     }
 
-    public static TableModel getDefaultModelAnimais() {
-        return new AnimalTableModel();
+    public static void setTableDefaultModelAnimais(JTable table) {
+        AnimalTableModel model = new AnimalTableModel();
+        table.setModel(model);
+    }
+
+    public static void editSelectedClient(JFrame parent, int selected, JTable tableCliente) throws IllegalArgumentException {
+        validateSelect(selected);
+        Cliente item = ((ClienteTableModel) tableCliente.getModel()).getItem(selected);
+        JDialog frame = new ModalCliente(parent, true, item);
+        frame.setVisible(true);
+    }
+
+    public static void removeSelectedClient(JFrame parent, int selected, JTable tableCliente) throws IllegalArgumentException{
+        validateSelect(selected);
+        Cliente item = ((ClienteTableModel) tableCliente.getModel()).getItem(selected);
+
+        int confirmDialog = JOptionPane.showConfirmDialog(parent, "Deseja remover (" + item.getId() + ") " + item.getNome() + " permanentemente?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirmDialog == JOptionPane.YES_OPTION) {
+            ClienteDAO.getInstance().delete(item);
+        }
+    }
+
+    public static void validateSelect(int selected) throws IllegalArgumentException{
+        if (selected == -1) {
+            throw new IllegalArgumentException("Selecione um item válido.");
+        }
+    }
+
+    public static void setComboModelFiltroCliente(JComboBox<String> cmbFiltroCliente) {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(ClienteTableModel.nomeColunas);
+        cmbFiltroCliente.setModel(model);
     }
 
     public Component getPanelAnimal() {
         if (instancePanelAnimal == null) {
             final AnimalTableModel animalTableModel = new AnimalTableModel(AnimalDAO.getInstance().retrieveAll());
-            final ModalAnimal modalAnimal = new ModalAnimal(frameAssociado, true);
-            instancePanelAnimal = new PanelPadrao("Animais", animalTableModel, modalAnimal);;
+            final IModalController controller = new ModalControllerAnimal(frameAssociado);
+            instancePanelAnimal = new PanelPadrao<Animal>("Animais", controller);
         }
         return instancePanelAnimal;
     }
@@ -69,8 +86,8 @@ public class Controller {
     public Component getPanelConsulta() {
         if (instancePanelConsulta == null) {
             final ConsultaTableModel consultaTableModel = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll());
-            final ModalConsulta modalConsulta = new ModalConsulta(frameAssociado, true);
-            instancePanelConsulta = new PanelPadrao("Consultas", consultaTableModel, modalConsulta);
+            final IModalController controller = new ModalControllerConsulta(frameAssociado);
+            instancePanelConsulta = new PanelPadrao<Consulta>("Consultas", controller);
         }
         return instancePanelConsulta;
 
@@ -79,8 +96,8 @@ public class Controller {
     public Component getPanelExame() {
         if (instancePanelExame == null) {
             final ExameTableModel exameTableModel = new ExameTableModel(ExameDAO.getInstance().retrieveAll());
-            final ModalExame modalExame = new ModalExame(frameAssociado, true);
-            instancePanelExame = new PanelPadrao("Exames", exameTableModel, modalExame);
+            final IModalController controller = new ModalControllerExame(frameAssociado);
+            instancePanelExame = new PanelPadrao<Exame>("Exames", controller);
         }
         return instancePanelExame;
     }
@@ -88,8 +105,8 @@ public class Controller {
     public Component getPanelTratamento() {
         if (instancePanelTratamento == null) {
             final TratamentoTableModel tratamentoTableModel = new TratamentoTableModel(TratamentoDAO.getInstance().retrieveAll());
-            final ModalTratamento modalTratamento = new ModalTratamento(frameAssociado, true);
-            instancePanelTratamento = new PanelPadrao("Tratamentos", tratamentoTableModel, modalTratamento);
+            final IModalController controller = new ModalControllerTratamento(frameAssociado);
+            instancePanelTratamento = new PanelPadrao<Tratamento>("Tratamentos", controller);
         }
         return instancePanelTratamento;
     }
@@ -97,8 +114,8 @@ public class Controller {
     public Component getPanelVeterinario() {
         if (instancePanelVeterinario == null) {
             final VeterinarioTableModel veterinarioTableModel = new VeterinarioTableModel(VeterinarioDAO.getInstance().retrieveAll());
-            final ModalVeterinario modalVeterinario = new ModalVeterinario(frameAssociado, true);
-            instancePanelVeterinario = new PanelPadrao("Veterinários", veterinarioTableModel, modalVeterinario);
+            final IModalController controller = new ModalControllerVeterinario(frameAssociado);
+            instancePanelVeterinario = new PanelPadrao<Veterinario>("Veterinários", controller);
         }
         return instancePanelVeterinario;
     }
@@ -106,5 +123,117 @@ public class Controller {
     public static void setSelectedCliente(JTable tableAnimaisPertencentes, Cliente item) {
         tableAnimaisPertencentes.setModel(new AnimalTableModel(AnimalDAO.getInstance().retriveByOwnerID(item.getId())));
     }
+
+    public void initPanels(JTabbedPane tabbedPanedPane1) {
+        tabbedPanedPane1.add("Animais", this.getPanelAnimal());
+        tabbedPanedPane1.add("Consultas", this.getPanelConsulta());
+        tabbedPanedPane1.add("Exames", this.getPanelExame());
+        tabbedPanedPane1.add("Tratamentos", this.getPanelTratamento());
+        tabbedPanedPane1.add("Veterinarios", this.getPanelVeterinario());
+    }
+
+    public static void searchFor(JTextField txtBusca, JComboBox<String> cmbFiltro, JTable tableConteudo) {
+        String textoBuscado = txtBusca.getText();
+        String valorCmb = (String) cmbFiltro.getSelectedItem();
+        String nomeTabela = ((GenericTableModel) tableConteudo.getModel()).getNomeTabelaSQL();
+        String nomeColunaSQL;
+
+        switch (nomeTabela) {
+            case "animal" -> {
+                nomeColunaSQL = getSelectedColAnimal(valorCmb);
+                tableConteudo.setModel(new AnimalTableModel(
+                        AnimalDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "cliente" -> {
+                nomeColunaSQL = getSelectedColCliente(valorCmb);
+                tableConteudo.setModel(new ClienteTableModel(
+                        ClienteDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "vet" -> {
+                nomeColunaSQL = getSelectedColVet(valorCmb);
+                tableConteudo.setModel(new VeterinarioTableModel(
+                        VeterinarioDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "tratamento" -> {
+                nomeColunaSQL = getSelectedColTratamento(valorCmb);
+                tableConteudo.setModel(new TratamentoTableModel(
+                        TratamentoDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "consulta" -> {
+                nomeColunaSQL = getSelectedColConsulte(valorCmb);
+                tableConteudo.setModel(new ConsultaTableModel(
+                        ConsultaDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+            case "exame" -> {
+                nomeColunaSQL = getSelectedColExame(valorCmb);
+                tableConteudo.setModel(new ExameTableModel(
+                        ExameDAO.getInstance().retrieveBySimilarValueOnColumn(textoBuscado, nomeColunaSQL)
+                ));
+            }
+        }
+    }
+
+    private static String getSelectedColExame(String valorCmb) {
+        return switch (valorCmb) {
+            case "Consulta" -> "id_consulta";
+            default -> "decricao_exame";
+        };
+    }
+
+    private static String getSelectedColConsulte(String valorCmb) {
+        return switch (valorCmb) {
+            case "Data" -> "data";
+            case "Hora" -> "horario";
+            case "Animal" -> "id_animal";
+            case "Tratamento" -> "id_tratamento";
+            case "Veterinário" -> "id_vet";
+            case "Terminou" -> "terminado";
+            default -> "comentario";
+        };
+    }
+
+    private static String getSelectedColTratamento(String valorCmb) {
+        return switch (valorCmb) {
+            case "Data entrada" -> "dataIni";
+            case "Data saída" -> "dataFim";
+            case "Animal" -> "id_animal";
+            case "Terminou" -> "terminado";
+            default -> "nome";
+        };
+    }
+
+    private static String getSelectedColVet(String valorCmb) {
+        return switch (valorCmb) {
+            case "Endereço" -> "endereco";
+            case "Telefone" -> "telefone";
+            default -> "nome";
+        };
+    }
+
+    private static String getSelectedColCliente(String valorCmb) {
+        return switch (valorCmb) {
+            case "Endereço" -> "end";
+            case "Telefone" -> "telefone";
+            case "cep" -> "cep";
+            case "Email" -> "email";
+            default -> "nome";
+        };
+    }
+
+    private static String getSelectedColAnimal(String valorCmb) {
+        return switch (valorCmb) {
+            case "Ano de nascimento" -> "anoNasc";
+            case "Sexo" -> "sexo";
+            case "Espécie" -> "id_especie";
+            case "Cliente" -> "id_cliente";
+            default -> "nome";
+        };
+    }
+
 
 }

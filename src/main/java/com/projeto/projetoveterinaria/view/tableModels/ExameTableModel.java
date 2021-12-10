@@ -1,16 +1,21 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
+import com.projeto.projetoveterinaria.model.DAO.ConsultaDAO;
 import com.projeto.projetoveterinaria.model.Exame;
+
 import java.util.List;
 
 /**
- *
  * @author ariel
  */
 public class ExameTableModel extends GenericTableModel<Exame> {
 
+    private static final String[] nomeColunas = {"Consulta", "Descrição exame"};
+    private static final String nomeTabelaSQL = "exame";
+
+
     public ExameTableModel(List<Exame> dados) {
-        super(dados, new String[]{"Consulta", "Descrição exame"});
+        super(dados, nomeColunas, nomeTabelaSQL);
     }
 
     @Override
@@ -21,10 +26,18 @@ public class ExameTableModel extends GenericTableModel<Exame> {
             throw new NullPointerException();
 
         return switch (columnIndex) {
-            case 0 -> item.getIdConsulta();
+            case 0 -> getNomeConsulta(item.getIdConsulta());
             case 1 -> item.getDescricaoExame();
             default -> throw new IndexOutOfBoundsException();
         };
+    }
+
+    private String getNomeConsulta(int idConsulta) {
+        try {
+            return ConsultaDAO.getInstance().retrieveById(idConsulta).getComentarios();
+        } catch (Exception e) {
+            return "CONSULTA REMOVIDA";
+        }
     }
 
     @Override
@@ -44,8 +57,7 @@ public class ExameTableModel extends GenericTableModel<Exame> {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (columnIndex) {
-            case 0 -> Integer.class;
-            case 1 -> String.class;
+            case 0, 1 -> String.class;
             default -> throw new IndexOutOfBoundsException();
         };
     }

@@ -5,11 +5,21 @@
  */
 package com.projeto.projetoveterinaria.view.modals;
 
+import com.projeto.projetoveterinaria.controller.ModalController;
+import com.projeto.projetoveterinaria.model.Animal;
+import com.projeto.projetoveterinaria.model.Tratamento;
+import com.projeto.projetoveterinaria.view.tableModels.AnimalTableModel;
+
+import javax.swing.*;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author ariel
  */
-public class ModalTratamento extends javax.swing.JDialog {
+public class ModalTratamento extends ModalGeneric {
 
     /**
      * Creates new form ModalTratamento1
@@ -17,6 +27,60 @@ public class ModalTratamento extends javax.swing.JDialog {
     public ModalTratamento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        setCurrentDate();
+        loadAnimalModel();
+        createNewID();
+    }
+
+    private void setCurrentDate() {
+        final Date date = new Date();
+        dateChooseEntrada.setDate(date);
+        dataChooseSaida.setDate(date);
+    }
+
+    protected void createNewID() {
+        int id = ModalController.getNewIDTratamento();
+        txtID.setText(String.valueOf(id));
+    }
+
+
+    public ModalTratamento(java.awt.Frame parent, boolean modal, Tratamento data) {
+        super(parent, modal);
+        initComponents();
+
+        setCurrentDate();
+        loadAnimalModel();
+        setupData(data);
+    }
+
+    private void loadAnimalModel() {
+        ModalController.setModelAnimais(tableAnimal);
+    }
+
+    private void setupData(Tratamento data) {
+        txtID.setText(String.valueOf(data.getId()));
+        txtNome.setText(data.getNome());
+        dateChooseEntrada.setDate(data.getDataEntrada().getTime());
+        dataChooseSaida.setDate(data.getDataSaida().getTime());
+        try {
+            int indexRow = ((AnimalTableModel) tableAnimal.getModel()).getRowIndexForItem(data.getIdAnimal());
+            tableAnimal.setRowSelectionInterval(indexRow, indexRow);
+        } catch (NullPointerException e) {
+            feedback("Não há um animal para esse tratamento!", "Tratamento sem animal", JOptionPane.ERROR_MESSAGE);
+        }
+        checkTerminou.setSelected(data.getTerminou());
+    }
+
+    private Tratamento getData() {
+        int id = Integer.parseInt(txtID.getText());
+        String nome = txtNome.getText();
+        Calendar dataEntrada = dateChooseEntrada.getCalendar();
+        Calendar dataSaida = dataChooseSaida.getCalendar();
+        Animal animal = ((AnimalTableModel) tableAnimal.getModel()).getItem(tableAnimal.getSelectedRow());
+        boolean terminou = checkTerminou.isSelected();
+
+        return new Tratamento(id, nome, dataEntrada, dataSaida, animal.getId(),terminou);
     }
 
     /**
@@ -37,20 +101,30 @@ public class ModalTratamento extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtDataEntrada = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtDataSaida = new javax.swing.JFormattedTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        checkTerminou = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAnimal = new javax.swing.JTable();
+        dateChooseEntrada = new com.toedter.calendar.JDateChooser();
+        dataChooseSaida = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -75,6 +149,7 @@ public class ModalTratamento extends javax.swing.JDialog {
 
         txtID.setEditable(false);
         txtID.setText("0");
+        txtID.setEnabled(false);
 
         jLabel1.setText("ID");
 
@@ -82,13 +157,9 @@ public class ModalTratamento extends javax.swing.JDialog {
 
         jLabel3.setText("Data entrada");
 
-        txtDataEntrada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yy"))));
-
         jLabel4.setText("Data saída");
 
-        txtDataSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yy"))));
-
-        jCheckBox1.setText("Terminou");
+        checkTerminou.setText("Terminou");
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -119,10 +190,11 @@ public class ModalTratamento extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(txtDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
+                    .addComponent(checkTerminou)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(dataChooseSaida, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                        .addComponent(dateChooseEntrada, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -154,13 +226,13 @@ public class ModalTratamento extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dateChooseEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dataChooseSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jCheckBox1)
+                        .addComponent(checkTerminou)
                         .addGap(0, 42, Short.MAX_VALUE)))
                 .addGap(13, 13, 13))
         );
@@ -189,10 +261,33 @@ public class ModalTratamento extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        try {
+            Tratamento data = getData();
+            String msg = ModalController.sendData(data);
+            feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o tratamento!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o tratamento!\n"+ e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        finally {
+            exit();
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        exit();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnOK;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox checkTerminou;
+    private com.toedter.calendar.JDateChooser dataChooseSaida;
+    private com.toedter.calendar.JDateChooser dateChooseEntrada;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -203,8 +298,6 @@ public class ModalTratamento extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel panelBottom;
     private javax.swing.JTable tableAnimal;
-    private javax.swing.JFormattedTextField txtDataEntrada;
-    private javax.swing.JFormattedTextField txtDataSaida;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables

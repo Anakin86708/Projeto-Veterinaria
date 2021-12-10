@@ -9,9 +9,8 @@ import com.projeto.projetoveterinaria.controller.Controller;
 import com.projeto.projetoveterinaria.model.Cliente;
 import com.projeto.projetoveterinaria.view.modals.ModalCliente;
 import com.projeto.projetoveterinaria.view.tableModels.ClienteTableModel;
-import com.projeto.projetoveterinaria.view.tableModels.GenericTableModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
+
+import javax.swing.*;
 
 /**
  *
@@ -29,31 +28,32 @@ public class FormMain extends javax.swing.JFrame {
         
         this.controller = new Controller(this);
         
-        initPanels();
+        controller.initPanels(jTabbedPane1);
         setModels();
     }
-    
-    private void initPanels() {
-        jTabbedPane1.add("Animais", controller.getPanelAnimal());
-        jTabbedPane1.add("Consultas", controller.getPanelConsulta());
-        jTabbedPane1.add("Exames", controller.getPanelExame());
-        jTabbedPane1.add("Tratamentos", controller.getPanelTratamento());
-        jTabbedPane1.add("Veterinarios", controller.getPanelVeterinario());
+
+    public static JTable getTableHistorico() {
+        return tableHistorico;
     }
+
+    public static JTable getTableProximasConsultas() {
+        return tableProximasConsultas;
+    }
+    
     
     private void setModels() {
         // Table models
-        tableProximasConsultas.setModel(Controller.getModelProximasConsultas());
-        tableHistorico.setModel(Controller.getModelHistoricoConsultas());
-        tableCliente.setModel(Controller.getModelCliente());
-        tableAnimaisPertencentes.setModel(Controller.getDefaultModelAnimais());
+        setModelsInicio();
+        Controller.setTableModelCliente(tableCliente);
+        Controller.setTableDefaultModelAnimais(tableAnimaisPertencentes);
         
         // Combobox models
-        cmbFiltroCliente.setModel(new DefaultComboBoxModel<>(((GenericTableModel)tableCliente.getModel()).getColunas()));
+        Controller.setComboModelFiltroCliente(cmbFiltroCliente);
     }
-    
-    public void setAnimaisCliente(GenericTableModel model){
-        tableAnimaisPertencentes.setModel(model);
+
+    private void setModelsInicio() {
+        Controller.setTableModelProximasConsultas(tableProximasConsultas);
+        Controller.setTableModelHistoricoConsultas(tableHistorico);
     }
 
     /**
@@ -66,13 +66,10 @@ public class FormMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        panelTabInicio = new javax.swing.JPanel();
         panelProximasConsultas = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tableProximasConsultas = new javax.swing.JTable();
         panelHistorico = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tableHistorico = new javax.swing.JTable();
         panelTabCliente = new javax.swing.JPanel();
         panelClientes = new javax.swing.JPanel();
         panelTop3 = new javax.swing.JPanel();
@@ -188,10 +185,31 @@ public class FormMain extends javax.swing.JFrame {
         });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        txtBusca.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtBuscaCaretUpdate(evt);
+            }
+        });
 
         cmbFiltroCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltroCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbFiltroClienteItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTop3Layout = new javax.swing.GroupLayout(panelTop3);
         panelTop3.setLayout(panelTop3Layout);
@@ -357,8 +375,40 @@ public class FormMain extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         JDialog frame = new ModalCliente(this, true);
         frame.setVisible(true);
+        setModels();
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void txtBuscaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtBuscaCaretUpdate
+        search();
+    }//GEN-LAST:event_txtBuscaCaretUpdate
+
+    private void cmbFiltroClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFiltroClienteItemStateChanged
+        search();
+    }//GEN-LAST:event_cmbFiltroClienteItemStateChanged
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int selected = tableCliente.getSelectedRow();
+        try {
+            Controller.editSelectedClient(this, selected, tableCliente);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        setModels();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        int selected = tableCliente.getSelectedRow();
+        try {
+            Controller.removeSelectedClient(this, selected, tableCliente);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        setModels();
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void search() {
+        Controller.searchFor(txtBusca, cmbFiltroCliente,tableCliente);
+    }
     /**
      * @param args the command line arguments
      */
@@ -411,12 +461,12 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelHistorico;
     private javax.swing.JPanel panelProximasConsultas;
     private javax.swing.JPanel panelTabCliente;
-    private javax.swing.JPanel panelTabInicio;
+    private static final javax.swing.JPanel panelTabInicio = new javax.swing.JPanel();
     private javax.swing.JPanel panelTop3;
     private javax.swing.JTable tableAnimaisPertencentes;
     private javax.swing.JTable tableCliente;
-    private javax.swing.JTable tableHistorico;
-    private javax.swing.JTable tableProximasConsultas;
+    private static final javax.swing.JTable tableHistorico = new javax.swing.JTable();
+    private static final javax.swing.JTable tableProximasConsultas = new javax.swing.JTable();
     private javax.swing.JTextField txtBusca;
     // End of variables declaration//GEN-END:variables
 }

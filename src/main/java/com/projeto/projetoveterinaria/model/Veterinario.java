@@ -3,7 +3,7 @@ package com.projeto.projetoveterinaria.model;
 /**
  * @author ariel
  */
-public class Veterinario {
+public class Veterinario implements HasID{
 
     private final int id;
     private String nome;

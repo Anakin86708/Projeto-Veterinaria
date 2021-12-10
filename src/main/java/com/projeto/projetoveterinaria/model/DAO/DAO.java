@@ -1,9 +1,12 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Implementação DAO para acesso ao SQLite
@@ -13,7 +16,12 @@ import java.util.List;
 public abstract class DAO<T> {
 
     public final static String DBURL = "jdbc:sqlite:vet2021.db";
+    public final String tableName;
     private static Connection connection;
+
+    protected DAO(String columnName) {
+        this.tableName = columnName;
+    }
 
     public static Connection getConnection() {
         if (DAO.connection == null) {
@@ -35,6 +43,26 @@ public abstract class DAO<T> {
         }
     }
 
+    public String[] getColumnsNames() {
+        PreparedStatement stmt;
+        ArrayList<String> columns = new ArrayList<>();
+        try {
+            stmt = connection.prepareStatement("SELECT * FROM ? LIMIT 1");
+            stmt.setString(1, tableName);
+            ResultSet resultSet = stmt.executeQuery();
+            ResultSetMetaData metadata = resultSet.getMetaData();
+
+            int columnCount = metadata.getColumnCount();
+            for (int i = 1; i < columnCount; i++) {
+                String columnName = metadata.getColumnName(i);
+                columns.add(columnName);
+            }
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+        }
+        return columns.toArray(new String[0]);
+    }
+
     protected int lastId(String tableName, String primaryKey) {
         Statement s;
         int lastId = -1;
@@ -49,7 +77,11 @@ public abstract class DAO<T> {
         }
         return lastId;
     }
-    
+
+    protected int nextId(String tableName) {
+        return lastId(tableName, "ROWID") + 1;
+    }
+
 
     // Create table SQLite
     protected final boolean createTable() {
@@ -98,7 +130,7 @@ public abstract class DAO<T> {
             stmt = DAO.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS consulta( \n"
                     + "id INTEGER PRIMARY KEY, \n"
                     + "data INTEGER, \n"
-                    + "horario INTEGER, \n"
+                    + "horario VARCHAR, \n"
                     + "comentario VARCHAR, \n"
                     + "id_animal INTEGER, \n"
                     + "id_vet INTEGER, \n"
@@ -111,12 +143,66 @@ public abstract class DAO<T> {
                     + "decricao_exame VARCHAR, \n"
                     + "id_consulta INTEGER); \n");
             executeUpdate(stmt);
+
+            createViews();
             return true;
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
         return false;
     }
+
+    private void createViews() {
+        PreparedStatement stmt;
+        try {
+            stmt = DAO.getConnection().prepareStatement(
+                    "CREATE VIEW IF NOT EXISTS view_consulta AS SELECT c.id, c.data, c.horario, c.comentario, " +
+                    "a.id as 'id_animal', a.nome as 'animal', v.id as 'id_vet', v.nome as 'vet', t.id as 'id_tratamento', " +
+                    "t.nome as 'tratamento', c.terminado " +
+                    "FROM consulta AS c LEFT JOIN tratamento t on c.id_tratamento = t.id " +
+                    "LEFT JOIN animal a ON c.id_animal = a.id " +
+                    "LEFT JOIN vet v ON c.id_vet = v.id"
+            );
+            executeUpdate(stmt);
+
+            stmt = DAO.getConnection().prepareStatement(
+                    "CREATE VIEW IF NOT EXISTS view_animal AS SELECT a.id, a.nome, a.anoNasc, a.id_especie, a.sexo, " +
+                        "a.id_cliente as 'id_cliente', c.nome as 'cliente' FROM animal a " +
+                        "LEFT JOIN cliente c on a.id_cliente = c.id;"
+            );
+            executeUpdate(stmt);
+
+            stmt = DAO.getConnection().prepareStatement(
+                    "CREATE VIEW IF NOT EXISTS view_tratamento AS SELECT t.id, t.id_animal as 'id_animal', a.nome " +
+                            "as 'animal',t.nome, t.dataIni, t.dataFim, t.terminado FROM tratamento t " +
+                            "LEFT JOIN animal a ON t.id_animal = a.id"
+            );
+            executeUpdate(stmt);
+        } catch (SQLException ex) {
+            System.err.println("EXCEPTION: " + ex.getMessage());
+        }
+    }
+
+    public List<T> retrieveBySimilarValueOnColumn(String value, String column) {
+        String query;
+        Pattern pattern = Pattern.compile("id_.*");
+        if (pattern.matcher(column).matches()) {
+            column = column.replace("id_","");
+            query = createQueryWithFK(value, column);
+        } else {
+            //language=SQL
+            query = getQuery(value, column);
+        }
+        return retrieve(query);
+    }
+
+    @NotNull
+    protected String getQuery(String value, String column) {
+        return "SELECT * FROM " + tableName + " WHERE " + column + " LIKE '%" + value + "%'";
+    }
+
+    protected abstract String createQueryWithFK(String value, String column);
+
 
     protected abstract T buildObject(ResultSet rs) throws SQLException;
 

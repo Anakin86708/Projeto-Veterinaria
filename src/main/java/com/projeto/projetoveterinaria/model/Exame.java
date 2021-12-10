@@ -4,7 +4,7 @@ package com.projeto.projetoveterinaria.model;
  *
  * @author ariel
  */
-public class Exame {
+public class Exame implements HasID {
 
     private final int id;
     private int idConsulta;

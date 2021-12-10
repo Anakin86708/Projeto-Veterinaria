@@ -6,18 +6,18 @@ import java.util.Calendar;
  *
  * @author ariel
  */
-public class Consulta {
+public class Consulta implements HasID {
 
     private final int id;
     private Calendar data;
-    private int hora;
+    private Horarios hora;
     private String comentarios;
     private int idAnimal;
     private int idTratamento;
     private int idVeterinario;
     private boolean terminou;
 
-    public Consulta(int id, Calendar data, int hora, String comentarios, int idAnimal, int idTratamento, int idVeterinario, boolean terminou) {
+    public Consulta(int id, Calendar data, Horarios hora, String comentarios, int idAnimal, int idTratamento, int idVeterinario, boolean terminou) {
         this.id = id;
         this.data = data;
         this.hora = hora;
@@ -36,11 +36,11 @@ public class Consulta {
         this.data = data;
     }
 
-    public int getHora() {
+    public Horarios getHora() {
         return hora;
     }
 
-    public void setHora(int hora) {
+    public void setHora(Horarios hora) {
         this.hora = hora;
     }
 

@@ -10,8 +10,10 @@ import java.util.List;
 public class EspecieDAO extends DAO<Especie> {
 
     private static EspecieDAO instance;
+    public final static String COLUMN_NAME = "especie";
 
     private EspecieDAO() {
+        super(COLUMN_NAME);
         getConnection();
         createTable();
     }
@@ -26,6 +28,10 @@ public class EspecieDAO extends DAO<Especie> {
                 rs.getInt("id"),
                 rs.getString("nome")
         );
+    }
+
+    protected String createQueryWithFK(String value, String column) {
+        return getQuery(value, column);
     }
 
     public Especie create(String nome) {
@@ -54,7 +60,7 @@ public class EspecieDAO extends DAO<Especie> {
 
     public Especie retrieveById(int id) {
         //language=SQL
-        String query = "SELECT * FROM cliente WHERE id = " + id;
+        String query = "SELECT * FROM especie WHERE id = " + id;
         List<Especie> especie = retrieve(query);
         if (especie.isEmpty()) {
             throw new RuntimeException("Nenhuma especie encontrada com id " + id);

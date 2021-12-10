@@ -5,18 +5,159 @@
  */
 package com.projeto.projetoveterinaria.view.modals;
 
+import com.projeto.projetoveterinaria.controller.ModalController;
+import com.projeto.projetoveterinaria.model.*;
+import com.projeto.projetoveterinaria.model.DAO.VeterinarioDAO;
+import com.projeto.projetoveterinaria.view.comboBoxModels.TratamentoComboBoxModel;
+import com.projeto.projetoveterinaria.view.comboBoxModels.VeterinarioComboBoxModel;
+import com.projeto.projetoveterinaria.view.tableModels.AnimalTableModel;
+
+import javax.swing.*;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author ariel
  */
-public class ModalConsulta extends javax.swing.JDialog {
+public class ModalConsulta extends ModalGeneric {
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnOK;
+    private javax.swing.JCheckBox checkFinalizado;
+    private javax.swing.JComboBox<String> cmbHorario;
+    private javax.swing.JComboBox<String> cmbTratamento;
+    private javax.swing.JComboBox<String> cmbVeterinario;
+    private com.toedter.calendar.JDateChooser jDateChooser;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel panelBottom;
+    private javax.swing.JTable tableAnimal;
+    private javax.swing.JTextArea txtComentários;
+    private javax.swing.JTextField txtID;
     /**
      * Creates new form DialogConsulta
      */
     public ModalConsulta(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setCurrentDate();
+        loadAnimalModel();
+        loadVeterinarioModel();
+        loadTratamentoModel();
+        loadHorarioModel();
+
+        createNewID();
+    }
+    public ModalConsulta(java.awt.Frame parent, boolean modal, Consulta data) {
+        super(parent, modal);
+        initComponents();
+        setCurrentDate();
+        loadAnimalModel();
+        loadVeterinarioModel();
+        loadTratamentoModel();
+        loadHorarioModel();
+
+        setupData(data);
+    }
+
+    private void setCurrentDate() {
+        jDateChooser.setDate(new Date());
+    }
+
+    private void loadHorarioModel() {
+        ModalController.setModelCmbHorario(cmbHorario);
+    }
+
+    private void loadTratamentoModel() {
+        ModalController.setModelCmbTratamento(cmbTratamento);
+    }
+
+    private void loadVeterinarioModel() {
+        ModalController.setModelCmbVeterinario(cmbVeterinario);
+    }
+
+    private void loadAnimalModel() {
+        ModalController.setModelAnimais(tableAnimal);
+    }
+
+    @Override
+    protected void createNewID() {
+        int id = ModalController.getNewIDConsulta();
+        txtID.setText(String.valueOf(id));
+    }
+
+    private void setupData(Consulta data) {
+        txtID.setText(String.valueOf(data.getId()));
+        txtComentários.setText(data.getComentarios());
+        checkFinalizado.setSelected(data.getTerminou());
+
+        selectRowAnimal(data);
+        selectItemVeterinario(data);
+        selectItemTratamento(data);
+        selectHorario(data);
+    }
+
+    private Consulta getData() {
+        int id = Integer.parseInt(txtID.getText());
+        String comentario = txtComentários.getText();
+        boolean finalizado = checkFinalizado.isSelected();
+        int selecteRow = tableAnimal.getSelectedRow();
+
+
+        Calendar data = jDateChooser.getCalendar();
+        Animal animal = ((AnimalTableModel) tableAnimal.getModel()).getItem(selecteRow);
+        Veterinario veterinario = ((VeterinarioComboBoxModel) cmbVeterinario.getModel()).getVeterinarioAt(cmbVeterinario.getSelectedIndex());
+        Tratamento tratamento = ((TratamentoComboBoxModel) cmbTratamento.getModel()).getTratamentoAt(cmbTratamento.getSelectedIndex());
+        Horarios horario = Horarios.valueOf((String) cmbHorario.getSelectedItem());
+
+        return new Consulta(id, data, horario, comentario, animal.getId(), tratamento.getId(), veterinario.getId(), finalizado);
+    }
+
+    private void selectHorario(Consulta data) {
+        cmbHorario.setSelectedItem(data.getHora().toString());
+    }
+
+    private void selectItemVeterinario(Consulta data) {
+        int idVeterinario = data.getIdVeterinario();
+        try {
+            String nomeVeterinario = VeterinarioDAO.getInstance().retrieveById(idVeterinario).getNome();
+            cmbVeterinario.setSelectedItem(nomeVeterinario);
+        } catch (RuntimeException e) {
+            feedback("Não há um veterinário para essa consulta!", "Consulta sem veterinário", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void selectItemTratamento(Consulta data) {
+        int idTratamento = data.getIdTratamento();
+        try {
+            TratamentoComboBoxModel model = ((TratamentoComboBoxModel) cmbTratamento.getModel());
+            int index = model.getRowIndexForItem(idTratamento);
+            cmbTratamento.setSelectedItem(model.getElementAt(index));
+        } catch (NullPointerException e) {
+            feedback("Não há um tratamento para essa consulta!", "Consulta sem tratamento", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void selectRowAnimal(Consulta data) {
+        int idAnimal = data.getIdAnimal();
+        try {
+            int indexToSelect = ((AnimalTableModel) tableAnimal.getModel()).getRowIndexForItem(idAnimal);
+            tableAnimal.setRowSelectionInterval(indexToSelect, indexToSelect);
+        } catch (NullPointerException e) {
+            feedback("Não há um animal para essa consulta!", "Consulta sem animal", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -45,17 +186,27 @@ public class ModalConsulta extends javax.swing.JDialog {
         cmbVeterinario = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         cmbTratamento = new javax.swing.JComboBox<>();
-        checkNovoTratamento = new javax.swing.JCheckBox();
+        checkFinalizado = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
-        txtData = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         cmbHorario = new javax.swing.JComboBox<>();
+        jDateChooser = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -80,6 +231,7 @@ public class ModalConsulta extends javax.swing.JDialog {
 
         txtID.setEditable(false);
         txtID.setText("0");
+        txtID.setEnabled(false);
 
         jLabel1.setText("ID");
 
@@ -114,11 +266,9 @@ public class ModalConsulta extends javax.swing.JDialog {
 
         cmbTratamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        checkNovoTratamento.setText("Iniciar novo tratamento");
+        checkFinalizado.setText("Finalizado");
 
         jLabel6.setText("Data");
-
-        txtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yy"))));
 
         jLabel7.setText("Horário");
 
@@ -142,18 +292,17 @@ public class ModalConsulta extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4)
-                                    .addComponent(cmbVeterinario, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbVeterinario, 0, 209, Short.MAX_VALUE)
                                     .addComponent(jLabel5)
-                                    .addComponent(cmbTratamento, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbTratamento, 0, 209, Short.MAX_VALUE)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel7)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(cmbHorario, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtData, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(checkNovoTratamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(cmbHorario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(checkFinalizado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -183,11 +332,11 @@ public class ModalConsulta extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbTratamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(checkNovoTratamento)
+                        .addComponent(checkFinalizado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -220,28 +369,25 @@ public class ModalConsulta extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnOK;
-    private javax.swing.JCheckBox checkNovoTratamento;
-    private javax.swing.JComboBox<String> cmbHorario;
-    private javax.swing.JComboBox<String> cmbTratamento;
-    private javax.swing.JComboBox<String> cmbVeterinario;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JPanel panelBottom;
-    private javax.swing.JTable tableAnimal;
-    private javax.swing.JTextArea txtComentários;
-    private javax.swing.JFormattedTextField txtData;
-    private javax.swing.JTextField txtID;
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        try {
+            Consulta data = getData();
+            String msg = ModalController.sendData(data);
+            feedback(msg, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o animal!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            System.err.println("EXCEPTION: " + e.getMessage());
+            feedback("Não foi possível inserir o animal!\n"+ e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        finally {
+            exit();
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        exit();
+    }//GEN-LAST:event_btnCancelarActionPerformed
     // End of variables declaration//GEN-END:variables
 }

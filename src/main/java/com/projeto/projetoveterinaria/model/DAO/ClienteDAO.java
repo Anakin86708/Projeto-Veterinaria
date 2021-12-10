@@ -13,8 +13,11 @@ import java.util.List;
 public class ClienteDAO extends DAO<Cliente> {
 
     private static ClienteDAO instance;
+    public final static String TABLE_NAME = "cliente";
+
 
     private ClienteDAO() {
+        super(TABLE_NAME);
         getConnection();
         createTable();
     }
@@ -23,20 +26,20 @@ public class ClienteDAO extends DAO<Cliente> {
         return (instance == null ? (instance = new ClienteDAO()) : instance);
     }
 
+    protected String createQueryWithFK(String value, String column) {
+        return getQuery(value, column);
+    }
 
     // CRUD
-    public Cliente create(String nome, String endereco, String cep, String email, String telefone) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO cliente (nome, end, cep, email, telefone) VALUES (?,?,?,?,?)");
-            stmt.setString(1, nome);
-            stmt.setString(2, endereco);
-            stmt.setString(3, cep);
-            stmt.setString(4, email);
-            stmt.setString(5, telefone);
-            this.executeUpdate(stmt);
-        } catch (Exception ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
+    public Cliente create(String nome, String endereco, String cep, String email, String telefone) throws SQLException {
+
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO cliente (nome, end, cep, email, telefone) VALUES (?,?,?,?,?)");
+        stmt.setString(1, nome);
+        stmt.setString(2, endereco);
+        stmt.setString(3, cep);
+        stmt.setString(4, email);
+        stmt.setString(5, telefone);
+        this.executeUpdate(stmt);
         return retrieveLast();
     }
 
@@ -63,9 +66,9 @@ public class ClienteDAO extends DAO<Cliente> {
         return client.get(0);
     }
 
-    public List<Cliente> retrieveBySimilarName(String nome) {
+    public List<Cliente> retrieveBySimilarValueOnColumn(String value, String column) {
         //language=SQL
-        String query = "SELECT * FROM cliente WHERE nome LIKE '%" + nome + "%'";
+        String query = "SELECT * FROM cliente WHERE " + column + " LIKE '%" + value + "%'";
         return retrieve(query);
     }
 
@@ -81,20 +84,15 @@ public class ClienteDAO extends DAO<Cliente> {
         );
     }
 
-    public void update(Cliente client) {
-        try {
-            PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE cliente SET nome=?, end=?, cep=?, email=?, telefone=? WHERE id=?");
-            stmt.setString(1, client.getNome());
-            stmt.setString(2, client.getEndereco());
-            stmt.setString(3, client.getCep());
-            stmt.setString(4, client.getEmail());
-            stmt.setString(5, client.getTelefone());
-            stmt.setInt(6, client.getId());
-            this.executeUpdate(stmt);
-        } catch (SQLException ex) {
-            System.err.println("EXCEPTION: " + ex.getMessage());
-        }
-
+    public void update(Cliente client) throws SQLException {
+        PreparedStatement stmt = DAO.getConnection().prepareStatement("UPDATE cliente SET nome=?, end=?, cep=?, email=?, telefone=? WHERE id=?");
+        stmt.setString(1, client.getNome());
+        stmt.setString(2, client.getEndereco());
+        stmt.setString(3, client.getCep());
+        stmt.setString(4, client.getEmail());
+        stmt.setString(5, client.getTelefone());
+        stmt.setInt(6, client.getId());
+        this.executeUpdate(stmt);
     }
 
     public void delete(Cliente client) {
@@ -107,4 +105,7 @@ public class ClienteDAO extends DAO<Cliente> {
         }
     }
 
+    public int getNextId() {
+        return nextId(TABLE_NAME);
+    }
 }
