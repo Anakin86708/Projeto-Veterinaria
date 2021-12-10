@@ -32,6 +32,10 @@ public class ExameDAO extends DAO<Exame> {
         );
     }
 
+    protected String createQueryWithFK(String value, String column) {
+        return getQuery(value, column);
+    }
+
     public Exame create(int idConsulta, String descricaoExame) throws SQLException {
         PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO exame (id_consulta,decricao_exame) VALUES (?,?)");
         stmt.setInt(1, idConsulta);

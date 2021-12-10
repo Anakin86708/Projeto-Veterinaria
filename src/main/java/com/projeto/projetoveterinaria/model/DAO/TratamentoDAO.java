@@ -43,6 +43,11 @@ public class TratamentoDAO extends DAO<Tratamento> {
         );
     }
 
+    // TODO: preciso refazer aqui
+    protected String createQueryWithFK(String value, String column) {
+        return getQuery(value, column);
+    }
+
     public Tratamento create(String nome, Calendar dataEntrada, Calendar dataSaida, int idAnimal, boolean terminou) throws SQLException {
         PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO tratamento (nome, dataIni, dataFim, id_animal, terminado) VALUES  (?,?,?,?,?)");
         stmt.setString(1, nome);

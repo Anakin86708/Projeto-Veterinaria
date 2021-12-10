@@ -42,6 +42,11 @@ public class ConsultaDAO extends DAO<Consulta> {
         );
     }
 
+    protected String createQueryWithFK(String value, String column) {
+        //language=SQL
+        return "SELECT * FROM view_consulta WHERE " + column + " LIKE '%" + value + "%'";
+    }
+
     public Consulta create(Calendar data, Horarios horario, String comentario, int idAnimal, int idTratamento, int idVeterinario, boolean terminou) throws SQLException {
 
         PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO consulta (data, horario, comentario, id_animal, id_vet, id_tratamento, terminado) VALUES (?,?,?,?,?,?,?)");

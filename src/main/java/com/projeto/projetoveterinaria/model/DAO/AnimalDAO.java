@@ -26,6 +26,11 @@ public class AnimalDAO extends DAO<Animal> {
         return (instance == null ? (instance = new AnimalDAO()) : instance);
     }
 
+    protected String createQueryWithFK(String value, String column) {
+        //language=SQL
+        return "SELECT * FROM view_animal WHERE " + column + " LIKE '%" + value + "%'";
+    }
+
     public Animal create(String nome, int anoNasc, Sexo sexo, Especie especie, Cliente cliente) throws SQLException {
         int idEspecie = especie.getId();
         int idCliente = cliente.getId();

@@ -1,6 +1,8 @@
 package com.projeto.projetoveterinaria.model.DAO;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +164,13 @@ public abstract class DAO<T> {
                     "LEFT JOIN vet v ON c.id_vet = v.id"
             );
             executeUpdate(stmt);
+
+            stmt = DAO.getConnection().prepareStatement(
+                    "CREATE VIEW IF NOT EXISTS view_animal AS SELECT a.id, a.nome, a.anoNasc, a.id_especie, a.sexo, " +
+                        "a.id_cliente as 'id_cliente', c.nome as 'cliente' FROM animal a " +
+                        "LEFT JOIN cliente c on a.id_cliente = c.id;"
+            );
+            executeUpdate(stmt);
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }
@@ -175,15 +184,18 @@ public abstract class DAO<T> {
             query = createQueryWithFK(value, column);
         } else {
             //language=SQL
-            query = "SELECT * FROM " + tableName + " WHERE " + column + " LIKE '%" + value + "%'";
+            query = getQuery(value, column);
         }
         return retrieve(query);
     }
 
-    private String createQueryWithFK(String value, String column) {
-        //language=SQL
-        return "SELECT * FROM view_consulta WHERE " + column + " LIKE '%" + value + "%'";
+    @NotNull
+    protected String getQuery(String value, String column) {
+        return "SELECT * FROM " + tableName + " WHERE " + column + " LIKE '%" + value + "%'";
     }
+
+    protected abstract String createQueryWithFK(String value, String column);
+
 
     protected abstract T buildObject(ResultSet rs) throws SQLException;
 

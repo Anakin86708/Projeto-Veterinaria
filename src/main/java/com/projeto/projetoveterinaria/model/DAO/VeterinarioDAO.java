@@ -33,6 +33,10 @@ public class VeterinarioDAO extends DAO<Veterinario> {
         );
     }
 
+    protected String createQueryWithFK(String value, String column) {
+        return getQuery(value, column);
+    }
+
     public Veterinario create(String nome, String endereco, String telefone) throws SQLException {
         PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO vet (nome, endereco, telefone) VALUES (?,?,?)");
         stmt.setString(1, nome);

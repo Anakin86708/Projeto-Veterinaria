@@ -229,8 +229,8 @@ public class Controller {
         return switch (valorCmb) {
             case "Ano de nascimento" -> "anoNasc";
             case "Sexo" -> "sexo";
-            case "ID Espécie" -> "id_especie";
-            case "ID Cliente" -> "id_cliente";
+            case "Espécie" -> "id_especie";
+            case "Cliente" -> "id_cliente";
             default -> "nome";
         };
     }

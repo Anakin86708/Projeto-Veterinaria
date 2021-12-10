@@ -26,6 +26,9 @@ public class ClienteDAO extends DAO<Cliente> {
         return (instance == null ? (instance = new ClienteDAO()) : instance);
     }
 
+    protected String createQueryWithFK(String value, String column) {
+        return getQuery(value, column);
+    }
 
     // CRUD
     public Cliente create(String nome, String endereco, String cep, String email, String telefone) throws SQLException {

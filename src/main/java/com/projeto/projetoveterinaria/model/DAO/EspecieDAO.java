@@ -30,6 +30,10 @@ public class EspecieDAO extends DAO<Especie> {
         );
     }
 
+    protected String createQueryWithFK(String value, String column) {
+        return getQuery(value, column);
+    }
+
     public Especie create(String nome) {
         try {
             PreparedStatement stmt = DAO.getConnection().prepareStatement("INSERT INTO especie (nome) VALUES (?)");
