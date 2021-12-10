@@ -1,10 +1,12 @@
 package com.projeto.projetoveterinaria.view.tableModels;
 
+import com.projeto.projetoveterinaria.controller.listenners.TableListenner;
 import com.projeto.projetoveterinaria.model.Consulta;
 import com.projeto.projetoveterinaria.model.DAO.AnimalDAO;
 import com.projeto.projetoveterinaria.model.DAO.TratamentoDAO;
 import com.projeto.projetoveterinaria.model.DAO.VeterinarioDAO;
 import com.projeto.projetoveterinaria.model.Horarios;
+import com.projeto.projetoveterinaria.view.FormMain;
 
 import java.util.Calendar;
 import java.util.List;
@@ -20,6 +22,7 @@ public class ConsultaTableModel extends GenericTableModel<Consulta> {
 
     public ConsultaTableModel(List<Consulta> dados) {
         super(dados, nomeColunas, nomeTabelaSQL);
+        this.addTableModelListener(new TableListenner(FormMain.getTableProximasConsultas(), FormMain.getTableHistorico()));
     }
 
     @Override

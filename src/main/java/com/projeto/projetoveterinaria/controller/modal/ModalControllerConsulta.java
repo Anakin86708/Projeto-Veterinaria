@@ -7,7 +7,6 @@ import com.projeto.projetoveterinaria.view.modals.ModalConsulta;
 import com.projeto.projetoveterinaria.view.tableModels.ConsultaTableModel;
 
 import javax.swing.*;
-import javax.swing.table.TableModel;
 import java.awt.*;
 
 public class ModalControllerConsulta implements IModalController{
@@ -51,7 +50,8 @@ public class ModalControllerConsulta implements IModalController{
 
     @Override
     public void setTableModel(JTable table) {
-        TableModel model = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll());
+        ConsultaTableModel model = new ConsultaTableModel(ConsultaDAO.getInstance().retrieveAll());
         table.setModel(model);
+        model.fireTableDataChanged();
     }
 }

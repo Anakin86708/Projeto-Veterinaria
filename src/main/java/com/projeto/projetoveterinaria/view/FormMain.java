@@ -31,6 +31,14 @@ public class FormMain extends javax.swing.JFrame {
         controller.initPanels(jTabbedPane1);
         setModels();
     }
+
+    public static JTable getTableHistorico() {
+        return tableHistorico;
+    }
+
+    public static JTable getTableProximasConsultas() {
+        return tableProximasConsultas;
+    }
     
     
     private void setModels() {
@@ -58,13 +66,10 @@ public class FormMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        panelTabInicio = new javax.swing.JPanel();
         panelProximasConsultas = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tableProximasConsultas = new javax.swing.JTable();
         panelHistorico = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tableHistorico = new javax.swing.JTable();
         panelTabCliente = new javax.swing.JPanel();
         panelClientes = new javax.swing.JPanel();
         panelTop3 = new javax.swing.JPanel();
@@ -456,12 +461,12 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelHistorico;
     private javax.swing.JPanel panelProximasConsultas;
     private javax.swing.JPanel panelTabCliente;
-    private javax.swing.JPanel panelTabInicio;
+    private static final javax.swing.JPanel panelTabInicio = new javax.swing.JPanel();
     private javax.swing.JPanel panelTop3;
     private javax.swing.JTable tableAnimaisPertencentes;
     private javax.swing.JTable tableCliente;
-    private javax.swing.JTable tableHistorico;
-    private javax.swing.JTable tableProximasConsultas;
+    private static final javax.swing.JTable tableHistorico = new javax.swing.JTable();
+    private static final javax.swing.JTable tableProximasConsultas = new javax.swing.JTable();
     private javax.swing.JTextField txtBusca;
     // End of variables declaration//GEN-END:variables
 }
