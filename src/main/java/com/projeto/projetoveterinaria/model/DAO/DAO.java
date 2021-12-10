@@ -171,6 +171,13 @@ public abstract class DAO<T> {
                         "LEFT JOIN cliente c on a.id_cliente = c.id;"
             );
             executeUpdate(stmt);
+
+            stmt = DAO.getConnection().prepareStatement(
+                    "CREATE VIEW IF NOT EXISTS view_tratamento AS SELECT t.id, t.id_animal as 'id_animal', a.nome " +
+                            "as 'animal',t.nome, t.dataIni, t.dataFim, t.terminado FROM tratamento t " +
+                            "LEFT JOIN animal a ON t.id_animal = a.id"
+            );
+            executeUpdate(stmt);
         } catch (SQLException ex) {
             System.err.println("EXCEPTION: " + ex.getMessage());
         }

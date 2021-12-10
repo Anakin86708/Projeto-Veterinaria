@@ -43,9 +43,10 @@ public class TratamentoDAO extends DAO<Tratamento> {
         );
     }
 
-    // TODO: preciso refazer aqui
     protected String createQueryWithFK(String value, String column) {
-        return getQuery(value, column);
+        //language=SQL
+        return "SELECT * FROM view_tratamento WHERE " + column + " LIKE '%" + value + "%'";
+
     }
 
     public Tratamento create(String nome, Calendar dataEntrada, Calendar dataSaida, int idAnimal, boolean terminou) throws SQLException {
